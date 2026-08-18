@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BUSAHMED | Manage Users</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA Meta Tags -->
+<!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="/icons/icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/icons/icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="/icons/icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/icons/icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/icons/icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/icons/icon-167x167.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="/icons/icon-180x180.png" sizes="180x180">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-square70x70logo" content="/icons/icon-72x72.png">
+    <meta name="msapplication-square150x150logo" content="/icons/icon-144x144.png">
+    <meta name="msapplication-wide310x150logo" content="/icons/icon-384x384.png">
+    <meta name="msapplication-square310x310logo" content="/icons/icon-512x512.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #1e1b4b, #4f46e5); min-height: 100vh; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .card { background: white; border-radius: 32px; padding: 24px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        h1 { font-size: 24px; color: #1e1b4b; display: flex; align-items: center; gap: 10px; }
+        .back-btn { background: #e2e8f0; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; font-weight: 600; }
+        .invite-box { background: #f1f5f9; border-radius: 20px; padding: 16px; margin-bottom: 20px; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 40px; margin-bottom: 8px; outline: none; font-size: 14px; transition: 0.2s; }
+        input:focus, select:focus, textarea:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+        textarea { border-radius: 20px; min-height: 80px; resize: vertical; font-family: inherit; }
+        .user-card { background: #f8fafc; border-radius: 20px; padding: 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; border-left: 4px solid #4f46e5; transition: 0.2s; }
+        .user-card:hover { background: #eef2ff; }
+        .user-card .user-status { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .user-card .suspended-badge { background: #ef4444; color: white; padding: 2px 10px; border-radius: 40px; font-size: 10px; font-weight: 600; }
+        .user-card .verified-badge { background: #10b981; color: white; padding: 2px 10px; border-radius: 40px; font-size: 10px; font-weight: 600; }
+        .btn-sm { background: #4f46e5; color: white; border: none; border-radius: 40px; padding: 4px 12px; cursor: pointer; font-size: 12px; margin: 2px; transition: 0.2s; }
+        .btn-sm:hover { transform: scale(1.05); }
+        .btn-verify { background: #10b981; }
+        .btn-verify:hover { background: #059669; }
+        .btn-unverify { background: #f59e0b; }
+        .btn-unverify:hover { background: #d97706; }
+        .btn-suspend { background: #ef4444; }
+        .btn-suspend:hover { background: #dc2626; }
+        .btn-unsuspend { background: #f59e0b; }
+        .btn-unsuspend:hover { background: #d97706; }
+        .btn-reward { background: #8b5cf6; }
+        .btn-reward:hover { background: #7c3aed; }
+        .btn-view { background: #4f46e5; }
+        .btn-view:hover { background: #4338ca; }
+        .dark-mode { background: #0f172a; }
+        .dark-mode .card { background: #1e293b; }
+        .dark-mode .user-card, .dark-mode .invite-box { background: #1e293b; border: 1px solid #334155; color: #e2e8f0; }
+        .dark-mode .user-card:hover { background: #334155; }
+        .dark-mode .back-btn { background: #334155; color: #e2e8f0; }
+        .dark-mode input, .dark-mode select, .dark-mode textarea { background: #334155; border-color: #475569; color: white; }
+        .dark-mode input::placeholder, .dark-mode textarea::placeholder { color: #94a3b8; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 8px 20px; border-radius: 40px; font-size: 14px; z-index: 2000; }
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; border-radius: 32px; max-width: 450px; width: 100%; padding: 24px; max-height: 90vh; overflow-y: auto; }
+        .dark-mode .modal-content { background: #1e293b; color: #e2e8f0; }
+        .modal-content .btn-submit { background: #4f46e5; color: white; border: none; border-radius: 40px; padding: 12px; cursor: pointer; width: 100%; font-weight: 600; transition: 0.2s; }
+        .modal-content .btn-submit:hover { background: #4338ca; }
+        .modal-content .btn-cancel { background: #e2e8f0; color: #1e293b; border: none; border-radius: 40px; padding: 12px; cursor: pointer; width: 100%; font-weight: 600; margin-top: 8px; transition: 0.2s; }
+        .modal-content .btn-cancel:hover { background: #cbd5e1; }
+        .dark-mode .modal-content .btn-cancel { background: #334155; color: #e2e8f0; }
+        .dark-mode .modal-content .btn-cancel:hover { background: #475569; }
+        .modal-content .form-group { margin-bottom: 12px; }
+        .modal-content .form-group label { display: block; font-weight: 600; margin-bottom: 4px; color: #1e293b; }
+        .dark-mode .modal-content .form-group label { color: #e2e8f0; }
+        .modal-content .form-group input, .modal-content .form-group textarea, .modal-content .form-group select { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 40px; outline: none; font-size: 14px; margin-bottom: 4px; }
+        .modal-content .form-group textarea { border-radius: 20px; min-height: 80px; resize: vertical; font-family: inherit; }
+        .dark-mode .modal-content .form-group input, .dark-mode .modal-content .form-group textarea, .dark-mode .modal-content .form-group select { background: #334155; border-color: #475569; color: white; }
+        .loading-spinner { text-align: center; padding: 40px; color: #94a3b8; }
+        .loading-spinner i { font-size: 30px; display: block; margin-bottom: 12px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .empty-state { text-align: center; padding: 40px 20px; color: #94a3b8; }
+        .empty-state i { font-size: 40px; display: block; margin-bottom: 12px; opacity: 0.5; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1><i class="fas fa-users-cog" style="color:#4f46e5;"></i> Manage Users</h1>
+            <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        <div class="invite-box">
+            <h3>📱 WhatsApp Invite</h3>
+            <input type="tel" id="invitePhone" placeholder="Phone number (e.g., 2348012345678)">
+            <select id="inviteRole">
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option>
+            </select>
+            <button id="inviteBtn" class="btn-sm" style="width:100%; padding:10px; background:#25D366; color:white; border:none; border-radius:40px; cursor:pointer; font-weight:600;">
+                <i class="fab fa-whatsapp"></i> Send WhatsApp Invite
+            </button>
+        </div>
+        <div id="usersList">
+            <div class="loading-spinner"><i class="fas fa-spinner"></i> Loading users...</div>
+        </div>
+    </div>
+</div>
+
+<!-- Reward Modal -->
+<div class="modal" id="rewardModal">
+    <div class="modal-content">
+        <h3 style="margin-bottom:16px;"><i class="fas fa-gift" style="color:#8b5cf6;"></i> Reward User</h3>
+        <p style="color:#64748b; font-size:14px; margin-bottom:16px;">Send a reward to <strong id="rewardUserName"></strong></p>
+        <div class="form-group">
+            <label>Amount (₦)</label>
+            <input type="number" id="rewardAmount" placeholder="Enter amount" min="100">
+        </div>
+        <div class="form-group">
+            <label>Custom Message</label>
+            <textarea id="rewardMessage" placeholder="We want to reward you for your contribution on this platform. Please drop your account number for payment.">We want to reward you for your contribution on this platform. Please drop your account number for payment.</textarea>
+        </div>
+        <button class="btn-submit" id="sendRewardBtn" style="background:#8b5cf6;"><i class="fas fa-paper-plane"></i> Send Reward</button>
+        <button class="btn-cancel" onclick="closeRewardModal()">Cancel</button>
+        <div id="rewardStatus" style="margin-top:12px; text-align:center; display:none;"></div>
+    </div>
+</div>
+
+<!-- Suspend Modal -->
+<div class="modal" id="suspendModal">
+    <div class="modal-content">
+        <h3 style="margin-bottom:16px;"><i class="fas fa-ban" style="color:#ef4444;"></i> Suspend User</h3>
+        <p style="color:#64748b; font-size:14px; margin-bottom:16px;">Suspend <strong id="suspendUserName"></strong> for a specific duration</p>
+        <div class="form-group">
+            <label>Hours</label>
+            <input type="number" id="suspendHours" placeholder="Number of hours (e.g., 24)" min="1" value="24">
+        </div>
+        <div class="form-group">
+            <label>Reason (Optional)</label>
+            <textarea id="suspendReason" placeholder="Reason for suspension..."></textarea>
+        </div>
+        <button class="btn-submit" id="confirmSuspendBtn" style="background:#ef4444;"><i class="fas fa-ban"></i> Suspend User</button>
+        <button class="btn-cancel" onclick="closeSuspendModal()">Cancel</button>
+        <div id="suspendStatus" style="margin-top:12px; text-align:center; display:none;"></div>
+    </div>
+</div>
+
+<script>
+const API_BASE = window.location.origin + '/api/';
+    let currentUserId = null;
+
+    function showToast(msg, isError = false) {
+        const t = document.createElement("div");
+        t.className = "toast";
+        t.innerText = msg;
+        if (isError) t.style.background = "#dc2626";
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    }
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+
+    function getToken() {
+        return localStorage.getItem('busahmed_token');
+    }
+
+    function formatDate(dateStr) {
+        if (!dateStr) return 'N/A';
+        const d = new Date(dateStr);
+        return d.toLocaleString();
+    }
+
+    async function checkAuth() {
+        const token = getToken();
+        if (!token) {
+            window.location.href = 'login.html';
+            return null;
+        }
+        try {
+            const response = await fetch(API_BASE + 'profile.php?token=' + encodeURIComponent(token));
+            if (!response.ok) {
+                localStorage.clear();
+                window.location.href = 'login.html';
+                return null;
+            }
+            const user = await response.json();
+            if (user.role !== 'admin') {
+                window.location.href = 'login.html';
+                return null;
+            }
+            return user;
+        } catch(err) {
+            console.error("Auth error:", err);
+            window.location.href = 'login.html';
+            return null;
+        }
+    }
+
+    function goBack() {
+        window.location.href = 'dashboard-admin.html';
+    }
+
+    async function loadUsers() {
+        const token = getToken();
+        if (!token) return;
+        const container = document.getElementById("usersList");
+        container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i> Loading users...</div>';
+        
+        try {
+            const response = await fetch(API_BASE + 'admin-users.php?token=' + encodeURIComponent(token));
+            const users = await response.json();
+            renderUsers(users);
+        } catch(err) {
+            console.error(err);
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i>Error loading users</div>';
+        }
+    }
+
+    function renderUsers(users) {
+        const container = document.getElementById("usersList");
+        if (!users || users.length === 0) {
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-users"></i>No users found</div>';
+            return;
+        }
+        
+        let html = "";
+        users.forEach(u => {
+            const isSuspended = u.suspended && (u.suspended_until === null || new Date(u.suspended_until) > new Date());
+            const suspendedUntil = u.suspended_until ? formatDate(u.suspended_until) : 'N/A';
+            const isVerified = u.verified == 1;
+            
+            let statusBadges = '';
+            if (isSuspended) {
+                statusBadges += `<span class="suspended-badge">⛔ Suspended until ${suspendedUntil}</span>`;
+            }
+            if (isVerified) {
+                statusBadges += `<span class="verified-badge">✅ Verified</span>`;
+            }
+            
+            html += `
+                <div class="user-card">
+                    <div style="flex:1; min-width:150px;">
+                        <div><strong>${escapeHtml(u.name)}</strong></div>
+                        <div style="font-size:13px; color:#64748b;">${u.role} | 📧 ${escapeHtml(u.email)}</div>
+                        <div style="font-size:12px; color:#64748b; margin-top:4px;">
+                            ⭐ ${u.average_rating || 'Not rated'} | 🏆 ${u.points || 0} pts
+                            ${u.suspended_until ? ` | ⛔ ${formatDate(u.suspended_until)}` : ''}
+                        </div>
+                        <div class="user-status" style="margin-top:4px;">
+                            ${statusBadges}
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:4px; flex-wrap:wrap;">
+                        ${isVerified ? 
+                            `<button class="btn-sm btn-unverify" data-id="${u.id}">🔄 Unverify</button>` : 
+                            `<button class="btn-sm btn-verify" data-id="${u.id}">✅ Verify</button>`
+                        }
+                        <button class="btn-sm btn-reward" data-id="${u.id}" data-name="${escapeHtml(u.name)}">🎁 Reward</button>
+                        ${isSuspended ? 
+                            `<button class="btn-sm btn-unsuspend" data-id="${u.id}">🔓 Unsuspend</button>` : 
+                            `<button class="btn-sm btn-suspend" data-id="${u.id}" data-name="${escapeHtml(u.name)}">⛔ Suspend</button>`
+                        }
+                        <button class="btn-sm btn-view" onclick="location.href='view-profile.html?id=${u.id}'">👁️ View</button>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+        
+        // Verify button
+        document.querySelectorAll(".btn-verify").forEach(btn => {
+            btn.onclick = async () => {
+                const id = btn.dataset.id;
+                const token = getToken();
+                await fetch(API_BASE + 'admin-verify-user.php?token=' + encodeURIComponent(token), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: id, action: 'verify' })
+                });
+                showToast("User verified!");
+                loadUsers();
+            };
+        });
+        
+        // Unverify button
+        document.querySelectorAll(".btn-unverify").forEach(btn => {
+            btn.onclick = async () => {
+                const id = btn.dataset.id;
+                if (!confirm("Unverify this user?")) return;
+                const token = getToken();
+                await fetch(API_BASE + 'admin-verify-user.php?token=' + encodeURIComponent(token), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: id, action: 'unverify' })
+                });
+                showToast("User unverified");
+                loadUsers();
+            };
+        });
+        
+        // Suspend button - open modal
+        document.querySelectorAll(".btn-suspend").forEach(btn => {
+            btn.onclick = () => {
+                const id = btn.dataset.id;
+                const name = btn.dataset.name;
+                openSuspendModal(id, name);
+            };
+        });
+        
+        // Unsuspend button
+        document.querySelectorAll(".btn-unsuspend").forEach(btn => {
+            btn.onclick = async () => {
+                const id = btn.dataset.id;
+                if (!confirm("Unsuspend this user?")) return;
+                const token = getToken();
+                await fetch(API_BASE + 'admin-suspend-user.php?token=' + encodeURIComponent(token), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        user_id: id, 
+                        action: 'unsuspend' 
+                    })
+                });
+                showToast("User unsuspended");
+                loadUsers();
+            };
+        });
+        
+        // Reward button - open modal
+        document.querySelectorAll(".btn-reward").forEach(btn => {
+            btn.onclick = () => {
+                const id = btn.dataset.id;
+                const name = btn.dataset.name;
+                openRewardModal(id, name);
+            };
+        });
+    }
+
+    // ==================== REWARD MODAL ====================
+    let rewardUserId = null;
+
+    function openRewardModal(userId, userName) {
+        rewardUserId = userId;
+        document.getElementById('rewardUserName').textContent = userName;
+        document.getElementById('rewardAmount').value = '';
+        document.getElementById('rewardMessage').value = 'We want to reward you for your contribution on this platform. Please drop your account number for payment.';
+        document.getElementById('rewardStatus').style.display = 'none';
+        document.getElementById('rewardStatus').innerHTML = '';
+        document.getElementById('rewardModal').classList.add('active');
+        setTimeout(() => document.getElementById('rewardAmount').focus(), 300);
+    }
+
+    function closeRewardModal() {
+        document.getElementById('rewardModal').classList.remove('active');
+        rewardUserId = null;
+    }
+
+    document.getElementById('rewardModal').addEventListener('click', function(e) {
+        if (e.target === this) closeRewardModal();
+    });
+
+    document.getElementById('sendRewardBtn').onclick = async function() {
+        const amount = document.getElementById('rewardAmount').value.trim();
+        const message = document.getElementById('rewardMessage').value.trim();
+        
+        if (!amount || parseInt(amount) <= 0) {
+            showToast('Please enter a valid amount', true);
+            document.getElementById('rewardAmount').focus();
+            return;
+        }
+        
+        if (!message) {
+            showToast('Please enter a message', true);
+            document.getElementById('rewardMessage').focus();
+            return;
+        }
+        
+        const btn = this;
+        const statusDiv = document.getElementById('rewardStatus');
+        statusDiv.style.display = 'block';
+        statusDiv.innerHTML = '<span style="color:#4f46e5;"><i class="fas fa-spinner fa-spin"></i> Sending reward...</span>';
+        btn.disabled = true;
+        
+        const token = getToken();
+        try {
+            const response = await fetch(API_BASE + 'admin-reward-user.php?token=' + encodeURIComponent(token), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    user_id: rewardUserId, 
+                    amount: parseInt(amount),
+                    message: message
+                })
+            });
+            
+            const data = await response.json();
+            if (data.success) {
+                statusDiv.innerHTML = '<span style="color:#10b981;">✅ ' + data.message + '</span>';
+                showToast('✅ Reward sent successfully!');
+                setTimeout(() => {
+                    closeRewardModal();
+                    loadUsers();
+                }, 2000);
+            } else {
+                statusDiv.innerHTML = '<span style="color:#dc2626;">❌ ' + (data.error || 'Failed to send reward') + '</span>';
+                showToast(data.error || 'Failed to send reward', true);
+            }
+        } catch(err) {
+            statusDiv.innerHTML = '<span style="color:#dc2626;">❌ Network error</span>';
+            showToast('Network error', true);
+        } finally {
+            btn.disabled = false;
+        }
+    };
+
+    // ==================== SUSPEND MODAL ====================
+    let suspendUserId = null;
+
+    function openSuspendModal(userId, userName) {
+        suspendUserId = userId;
+        document.getElementById('suspendUserName').textContent = userName;
+        document.getElementById('suspendHours').value = 24;
+        document.getElementById('suspendReason').value = '';
+        document.getElementById('suspendStatus').style.display = 'none';
+        document.getElementById('suspendStatus').innerHTML = '';
+        document.getElementById('suspendModal').classList.add('active');
+        setTimeout(() => document.getElementById('suspendHours').focus(), 300);
+    }
+
+    function closeSuspendModal() {
+        document.getElementById('suspendModal').classList.remove('active');
+        suspendUserId = null;
+    }
+
+    document.getElementById('suspendModal').addEventListener('click', function(e) {
+        if (e.target === this) closeSuspendModal();
+    });
+
+    document.getElementById('confirmSuspendBtn').onclick = async function() {
+        const hours = parseInt(document.getElementById('suspendHours').value) || 24;
+        const reason = document.getElementById('suspendReason').value.trim();
+        
+        if (hours < 1) {
+            showToast('Please enter a valid number of hours (minimum 1)', true);
+            document.getElementById('suspendHours').focus();
+            return;
+        }
+        
+        const btn = this;
+        const statusDiv = document.getElementById('suspendStatus');
+        statusDiv.style.display = 'block';
+        statusDiv.innerHTML = '<span style="color:#4f46e5;"><i class="fas fa-spinner fa-spin"></i> Suspending user...</span>';
+        btn.disabled = true;
+        
+        const token = getToken();
+        try {
+            const response = await fetch(API_BASE + 'admin-suspend-user.php?token=' + encodeURIComponent(token), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    user_id: suspendUserId, 
+                    action: 'suspend',
+                    hours: hours,
+                    reason: reason
+                })
+            });
+            
+            const data = await response.json();
+            if (data.success) {
+                statusDiv.innerHTML = '<span style="color:#10b981;">✅ ' + data.message + '</span>';
+                showToast('✅ User suspended for ' + hours + ' hours');
+                setTimeout(() => {
+                    closeSuspendModal();
+                    loadUsers();
+                }, 2000);
+            } else {
+                statusDiv.innerHTML = '<span style="color:#dc2626;">❌ ' + (data.error || 'Failed to suspend user') + '</span>';
+                showToast(data.error || 'Failed to suspend user', true);
+            }
+        } catch(err) {
+            statusDiv.innerHTML = '<span style="color:#dc2626;">❌ Network error</span>';
+            showToast('Network error', true);
+        } finally {
+            btn.disabled = false;
+        }
+    };
+
+    // ==================== INVITE ====================
+    document.getElementById("inviteBtn").onclick = () => {
+        const phone = document.getElementById("invitePhone").value.trim();
+        const role = document.getElementById("inviteRole").value;
+        if (!phone) { showToast("Enter phone number", true); return; }
+        const formattedPhone = phone.replace(/^0+/, '234');
+        const message = `Join BUSAHMED as a ${role}! Download the app and start learning today. 🚀`;
+        window.open(`https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`, "_blank");
+    };
+
+    // ==================== INIT ====================
+    async function init() {
+        await checkAuth();
+        await loadUsers();
+        document.getElementById("backBtn").onclick = goBack;
+        if (localStorage.getItem("busahmed_dark_mode") === "true") document.body.classList.add("dark-mode");
+    }
+    init();
+</script>
+</body>
+</html>

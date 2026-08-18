@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>BUSAHMED | Timetable Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; margin:0; padding:0; box-sizing:border-box; }
+        
+        body { 
+            background: #f0f2f5; 
+            min-height: 100vh; 
+            padding: 12px;
+        }
+        
+        .container { max-width: 1400px; margin: 0 auto; }
+        
+        /* ============ HEADER ============ */
+        .header-section {
+            background: white;
+            border-radius: 20px;
+            padding: 14px 18px;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        
+        .header-section h1 {
+            font-size: 20px;
+            color: #1e1b4b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .header-section h1 i { color: #4f46e5; }
+        
+        .header-section .back-btn {
+            background: #e2e8f0;
+            border: none;
+            border-radius: 40px;
+            padding: 6px 16px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+            color: #1e293b;
+            font-size: 14px;
+        }
+        
+        .header-section .back-btn:hover { background: #cbd5e1; }
+        
+        /* ============ STEP NAVIGATION ============ */
+        .step-navigation {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 16px;
+            background: white;
+            border-radius: 16px;
+            padding: 6px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            justify-content: center;
+        }
+        
+        .step-nav-item {
+            padding: 8px 12px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: transparent;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border: none;
+            white-space: nowrap;
+            flex: 1 1 auto;
+            justify-content: center;
+            min-width: 36px;
+        }
+        
+        .step-nav-item i { font-size: 0.8rem; }
+        
+        .step-nav-item .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #64748b;
+            font-size: 0.55rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        
+        .step-nav-item .step-label {
+            display: none;
+        }
+        
+        .step-nav-item:hover { 
+            background: #f1f5f9; 
+            transform: translateY(-1px); 
+        }
+        
+        .step-nav-item.active { 
+            background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%); 
+            color: white; 
+            box-shadow: 0 4px 12px -4px #4f46e5; 
+        }
+        
+        .step-nav-item.active .step-number {
+            background: rgba(255,255,255,0.25);
+            color: white;
+        }
+        
+        .step-nav-item.completed {
+            background: #10b981;
+            color: white;
+        }
+        
+        .step-nav-item.completed .step-number {
+            background: rgba(255,255,255,0.25);
+            color: white;
+        }
+        
+        .step-divider { display: none; }
+        
+        /* ============ CONTENT CARDS ============ */
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .content-card h2 {
+            font-size: 18px;
+            color: #1e1b4b;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .content-card h2 i { color: #4f46e5; }
+        .content-card p { color: #64748b; font-size: 14px; margin-bottom: 16px; }
+        
+        /* ============ GRID ============ */
+        .grid-2 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+        .grid-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .grid-5 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        
+        /* ============ FORM ============ */
+        .form-group { margin-bottom: 14px; }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #1e293b;
+            font-size: 14px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            outline: none;
+            transition: 0.2s;
+            background: white;
+            color: #1e293b;
+            font-size: 14px;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+        }
+        
+        /* ============ BUTTONS ============ */
+        .btn-primary, .btn-success, .btn-danger, .btn-warning {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+        
+        .btn-primary { background: #4f46e5; color: white; }
+        .btn-primary:hover { background: #4338ca; transform: scale(1.02); }
+        
+        .btn-success { background: #10b981; color: white; }
+        .btn-success:hover { background: #059669; transform: scale(1.02); }
+        
+        .btn-danger { background: #ef4444; color: white; }
+        .btn-danger:hover { background: #dc2626; transform: scale(1.02); }
+        
+        .btn-warning { background: #f59e0b; color: white; }
+        .btn-warning:hover { background: #d97706; transform: scale(1.02); }
+        
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        
+        .btn-group .btn-primary,
+        .btn-group .btn-success,
+        .btn-group .btn-danger,
+        .btn-group .btn-warning {
+            flex: 1 1 auto;
+            min-width: 100px;
+        }
+        
+        /* ============ TIMETABLE ============ */
+        .timetable-container { overflow-x: auto; position: relative; margin-top: 12px; }
+        
+        .timetable-table { 
+            width: 100%; 
+            border-collapse: separate; 
+            border-spacing: 0; 
+            min-width: 600px; 
+        }
+        
+        .timetable-table th { 
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); 
+            color: white; 
+            font-weight: 600; 
+            padding: 12px 8px; 
+            font-size: 0.75rem; 
+            text-align: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 10; 
+        }
+        
+        .timetable-table th:first-child { 
+            border-top-left-radius: 16px; 
+            position: sticky; 
+            left: 0; 
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); 
+            z-index: 20; 
+        }
+        
+        .timetable-table td { 
+            padding: 8px 4px; 
+            border-bottom: 1px solid #e2e8f0; 
+            vertical-align: top; 
+            background: white; 
+            transition: all 0.2s; 
+        }
+        
+        .timetable-table td:first-child { 
+            position: sticky; 
+            left: 0; 
+            background: #f1f5f9; 
+            font-weight: 700; 
+            color: #1e293b; 
+            z-index: 5; 
+            border-right: 2px solid #e2e8f0; 
+            font-size: 12px;
+        }
+        
+        .period-card { 
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); 
+            border-radius: 8px; 
+            padding: 4px 6px; 
+            margin-bottom: 4px; 
+            border-left: 3px solid #3b82f6; 
+            font-size: 11px;
+        }
+        
+        .period-card:last-child { margin-bottom: 0; }
+        .period-time { font-size: 0.6rem; font-weight: 600; color: #3b82f6; }
+        .period-subject { font-size: 0.7rem; font-weight: 700; color: #1e293b; }
+        .period-teacher { font-size: 0.6rem; color: #64748b; margin-top: 1px; }
+        .break-card { background: #fef3c7; border-left-color: #f59e0b; }
+        .blocked-card { background: #f1f5f9; border-left-color: #94a3b8; }
+        .concurrent-card { background: linear-gradient(135deg, #fae8ff 0%, #f3e8ff 100%); border-left-color: #a855f7; }
+        .free-card { background: #e2e8f0; border-left-color: #94a3b8; color: #475569; }
+        
+        /* ============ SUB NAV ============ */
+        .sub-nav { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 8px; 
+            margin-bottom: 16px; 
+            padding: 4px; 
+            background: #f1f5f9; 
+            border-radius: 30px; 
+        }
+        
+        .sub-nav-item { 
+            padding: 6px 16px; 
+            border-radius: 30px; 
+            font-weight: 500; 
+            font-size: 0.8rem; 
+            transition: all 0.2s; 
+            cursor: pointer; 
+            background: transparent; 
+            color: #475569; 
+            display: flex; 
+            align-items: center; 
+            gap: 6px; 
+            border: none;
+            flex: 1 1 auto;
+            justify-content: center;
+        }
+        
+        .sub-nav-item:hover { background: #e2e8f0; }
+        .sub-nav-item.active-sub { background: #4f46e5; color: white; }
+        
+        /* ============ STATS ============ */
+        .stat-card-modern { 
+            background: white; 
+            border-radius: 16px; 
+            padding: 14px; 
+            border: 1px solid rgba(79,70,229,0.1); 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+        
+        .stat-card-modern .stat-number { font-size: 28px; font-weight: 700; color: #1e1b4b; }
+        .stat-card-modern .stat-label { font-size: 12px; color: #64748b; }
+        
+        /* ============ VIEW TABLES ============ */
+        .view-table { 
+            border-collapse: collapse; 
+            width: 100%; 
+            border: 1px solid #cbd5e1; 
+            font-size: 13px;
+        }
+        
+        .view-table th, .view-table td { 
+            border: 1px solid #cbd5e1; 
+            padding: 6px 4px; 
+            text-align: center; 
+            vertical-align: top; 
+        }
+        
+        .view-table th { background: #f1f5f9; font-weight: 700; }
+        
+        /* ============ PERIOD SELECTOR ============ */
+        .period-selector { 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            width: 34px; 
+            height: 34px; 
+            margin: 2px; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            background: #e2e8f0; 
+            font-size: 12px; 
+            font-weight: 600; 
+            transition: all 0.2s; 
+            border: none;
+            color: #1e293b;
+        }
+        
+        .period-selector.selected { 
+            background: #10b981; 
+            color: white; 
+            transform: scale(1.05); 
+        }
+        
+        /* ============ ALLOCATION EDITOR ============ */
+        .alloc-editor { overflow-x: auto; }
+        .alloc-editor table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 400px; }
+        .alloc-editor th, .alloc-editor td { 
+            border: 1px solid #e2e8f0; 
+            padding: 4px 6px; 
+            text-align: left; 
+        }
+        .alloc-editor th { background: #f1f5f9; font-weight: 600; }
+        .alloc-editor input, .alloc-editor select { 
+            border: 1px solid #e2e8f0; 
+            border-radius: 4px; 
+            padding: 4px 6px; 
+            font-size: 0.75rem; 
+            width: 100%;
+            background: white;
+            color: #1e293b;
+        }
+        
+        /* ============ CONCURRENT GROUPS ============ */
+        .concurrent-group-item {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 12px 14px;
+            border-left: 4px solid #a855f7;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .concurrent-group-item .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .concurrent-group-item .group-name {
+            font-weight: 700;
+            font-size: 15px;
+            color: #1e293b;
+        }
+        
+        .concurrent-group-item .group-details {
+            font-size: 13px;
+            color: #64748b;
+        }
+        
+        .concurrent-group-item .group-actions {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .concurrent-group-item .group-actions button {
+            padding: 4px 12px;
+            border: none;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        
+        .concurrent-group-item .group-actions .btn-edit { background: #4f46e5; color: white; }
+        .concurrent-group-item .group-actions .btn-edit:hover { background: #4338ca; }
+        .concurrent-group-item .group-actions .btn-delete { background: #ef4444; color: white; }
+        .concurrent-group-item .group-actions .btn-delete:hover { background: #dc2626; }
+        
+        /* ============ GENERATE SECTION ============ */
+        .generate-card {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+        }
+        
+        .generate-card h2 { color: white; justify-content: center; }
+        .generate-card p { color: rgba(255,255,255,0.8); }
+        
+        .generate-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 16px 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 14px;
+        }
+        
+        .generate-stats .stat-item { text-align: center; }
+        .generate-stats .stat-item .num { font-size: 24px; font-weight: 700; }
+        .generate-stats .stat-item .lbl { font-size: 12px; opacity: 0.8; }
+        
+        .generate-card .btn-group { justify-content: center; }
+        .generate-card .btn-group .btn-success { background: white; color: #4f46e5; }
+        .generate-card .btn-group .btn-success:hover { background: #f0f2f5; }
+        .generate-card .btn-group .btn-warning { 
+            background: rgba(255,255,255,0.2); 
+            color: white; 
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .generate-card .btn-group .btn-warning:hover { background: rgba(255,255,255,0.3); }
+        
+        /* ============ TOAST ============ */
+        .toast { 
+            position: fixed; 
+            bottom: 20px; 
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b; 
+            color: white; 
+            padding: 12px 24px; 
+            border-radius: 50px; 
+            font-size: 0.875rem; 
+            z-index: 10000; 
+            animation: slideUp 0.3s ease; 
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2); 
+            max-width: 90%;
+            text-align: center;
+        }
+        
+        .toast.error { background: #dc2626; }
+        
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translate(-50%, 30px); } 
+            to { opacity: 1; transform: translate(-50%, 0); } 
+        }
+        
+        /* ============ DARK MODE ============ */
+        .dark-mode { background: #0f172a; }
+        .dark-mode .header-section,
+        .dark-mode .content-card,
+        .dark-mode .step-navigation,
+        .dark-mode .stat-card-modern {
+            background: #1e293b;
+            color: #e2e8f0;
+        }
+        .dark-mode .header-section h1,
+        .dark-mode .content-card h2 { color: #f1f5f9; }
+        .dark-mode .header-section .back-btn { background: #334155; color: #e2e8f0; }
+        .dark-mode .header-section .back-btn:hover { background: #475569; }
+        
+        .dark-mode .step-nav-item { color: #94a3b8; }
+        .dark-mode .step-nav-item .step-number { background: #334155; color: #94a3b8; }
+        .dark-mode .step-nav-item.active { background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%); color: white; }
+        .dark-mode .step-nav-item.active .step-number { background: rgba(255,255,255,0.25); color: white; }
+        .dark-mode .step-nav-item.completed { background: #10b981; color: white; }
+        .dark-mode .step-nav-item.completed .step-number { background: rgba(255,255,255,0.25); color: white; }
+        .dark-mode .step-nav-item:hover { background: #1e293b; }
+        
+        .dark-mode .timetable-table td { background: #1e293b; color: #e2e8f0; border-color: #334155; }
+        .dark-mode .timetable-table td:first-child { background: #0f172a; color: #e2e8f0; border-color: #334155; }
+        .dark-mode .timetable-table tr:hover td { background: #0f172a; }
+        .dark-mode .period-card { background: #0f172a; border-color: #4f46e5; }
+        .dark-mode .period-subject { color: #e2e8f0; }
+        .dark-mode .period-time { color: #a5b4fc; }
+        .dark-mode .period-teacher { color: #94a3b8; }
+        .dark-mode .break-card { background: #422006; border-color: #f59e0b; }
+        .dark-mode .blocked-card { background: #1e293b; border-color: #64748b; }
+        .dark-mode .concurrent-card { background: #1e1b4b; border-color: #a855f7; }
+        .dark-mode .free-card { background: #1e293b; border-color: #64748b; }
+        
+        .dark-mode .sub-nav { background: #0f172a; }
+        .dark-mode .sub-nav-item { color: #94a3b8; }
+        .dark-mode .sub-nav-item.active-sub { background: #4f46e5; color: white; }
+        .dark-mode .sub-nav-item:hover { background: #1e293b; }
+        
+        .dark-mode .form-group label { color: #e2e8f0; }
+        .dark-mode .form-group input,
+        .dark-mode .form-group select,
+        .dark-mode .form-group textarea {
+            background: #0f172a;
+            border-color: #334155;
+            color: #f1f5f9;
+        }
+        .dark-mode .form-group input::placeholder { color: #64748b; }
+        .dark-mode .view-table td,
+        .dark-mode .view-table th {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-color: #334155;
+        }
+        .dark-mode .view-table th { background: #0f172a; }
+        .dark-mode .alloc-editor th { background: #0f172a; color: #e2e8f0; }
+        .dark-mode .alloc-editor td { border-color: #334155; }
+        .dark-mode .alloc-editor input,
+        .dark-mode .alloc-editor select {
+            background: #0f172a;
+            border-color: #334155;
+            color: #f1f5f9;
+        }
+        .dark-mode .period-selector { background: #334155; color: #94a3b8; }
+        .dark-mode .period-selector.selected { background: #10b981; color: white; }
+        .dark-mode .stat-card-modern .stat-number { color: #f1f5f9; }
+        .dark-mode .concurrent-group-item { background: #0f172a; border-color: #a855f7; }
+        .dark-mode .concurrent-group-item .group-name { color: #f1f5f9; }
+        .dark-mode .concurrent-group-item .group-details { color: #94a3b8; }
+        .dark-mode .generate-card { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); }
+        
+        /* ============ RESPONSIVE ============ */
+        @media (min-width: 480px) {
+            .step-nav-item .step-label { display: inline; }
+            .step-nav-item { padding: 8px 16px; font-size: 0.8rem; }
+            .grid-2 { grid-template-columns: 1fr 1fr; }
+            .grid-3 { grid-template-columns: 1fr 1fr; }
+            .grid-5 { grid-template-columns: repeat(5, 1fr); }
+        }
+        
+        @media (min-width: 768px) {
+            body { padding: 20px; }
+            .header-section { padding: 20px 24px; }
+            .header-section h1 { font-size: 24px; }
+            .content-card { padding: 24px; }
+            .content-card h2 { font-size: 20px; }
+            .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+            .grid-4 { grid-template-columns: repeat(4, 1fr); }
+            .step-divider { display: inline; color: #cbd5e1; font-size: 0.8rem; }
+            .step-nav-item .step-label { display: inline; }
+            .step-nav-item { padding: 10px 20px; font-size: 0.85rem; }
+            .step-nav-item .step-number { width: 24px; height: 24px; font-size: 0.7rem; }
+            .timetable-table { min-width: 800px; }
+            .timetable-table th { padding: 16px 12px; font-size: 0.85rem; }
+            .timetable-table td { padding: 12px 8px; }
+            .period-card { padding: 8px; font-size: 13px; border-radius: 12px; }
+            .period-time { font-size: 0.65rem; }
+            .period-subject { font-size: 0.75rem; }
+            .period-teacher { font-size: 0.65rem; }
+            .generate-stats { grid-template-columns: repeat(4, 1fr); }
+            .generate-stats .stat-item .num { font-size: 28px; }
+            .alloc-editor table { min-width: auto; }
+            .view-table { font-size: 14px; }
+            .view-table th, .view-table td { padding: 8px; }
+            .period-selector { width: 38px; height: 38px; font-size: 13px; margin: 3px; }
+            .concurrent-group-item { flex-direction: row; align-items: center; }
+        }
+        
+        @media (min-width: 1024px) {
+            .container { padding: 0 20px; }
+            .step-navigation { border-radius: 60px; padding: 8px; gap: 0; }
+            .step-nav-item { padding: 12px 24px; font-size: 0.9rem; flex: 0 1 auto; }
+        }
+        
+        /* ============ UTILITY ============ */
+        .text-center { text-align: center; }
+        .text-muted { color: #94a3b8; }
+        .mt-2 { margin-top: 8px; }
+        .mt-3 { margin-top: 12px; }
+        .mt-4 { margin-top: 16px; }
+        .mb-2 { margin-bottom: 8px; }
+        .mb-3 { margin-bottom: 12px; }
+        .mb-4 { margin-bottom: 16px; }
+        .gap-2 { gap: 8px; }
+        .flex-wrap { flex-wrap: wrap; }
+        .flex-center { display: flex; align-items: center; justify-content: center; }
+        
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header-section">
+        <h1><i class="fas fa-calendar-alt"></i> Timetable</h1>
+        <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Back</button>
+    </div>
+
+    <!-- Step Navigation -->
+    <div class="step-navigation" id="stepNavigation">
+        <button class="step-nav-item active" data-step="periodsettings" onclick="navigateTo('periodsettings')">
+            <span class="step-number">1</span>
+            <i class="fas fa-clock"></i>
+            <span class="step-label">Periods</span>
+        </button>
+        <span class="step-divider"><i class="fas fa-chevron-right"></i></span>
+        
+        <button class="step-nav-item" data-step="classes" onclick="navigateTo('classes')">
+            <span class="step-number">2</span>
+            <i class="fas fa-building"></i>
+            <span class="step-label">Classes</span>
+        </button>
+        <span class="step-divider"><i class="fas fa-chevron-right"></i></span>
+        
+        <button class="step-nav-item" data-step="teacher-availability" onclick="navigateTo('teacher-availability')">
+            <span class="step-number">3</span>
+            <i class="fas fa-user-clock"></i>
+            <span class="step-label">Availability</span>
+        </button>
+        <span class="step-divider"><i class="fas fa-chevron-right"></i></span>
+        
+        <button class="step-nav-item" data-step="subject-allocation" onclick="navigateTo('subject-allocation')">
+            <span class="step-number">4</span>
+            <i class="fas fa-book"></i>
+            <span class="step-label">Allocation</span>
+        </button>
+        <span class="step-divider"><i class="fas fa-chevron-right"></i></span>
+        
+        <button class="step-nav-item" data-step="concurrent-subjects" onclick="navigateTo('concurrent-subjects')">
+            <span class="step-number">5</span>
+            <i class="fas fa-layer-group"></i>
+            <span class="step-label">Concurrent</span>
+        </button>
+        <span class="step-divider"><i class="fas fa-chevron-right"></i></span>
+        
+        <button class="step-nav-item" data-step="generate" onclick="navigateTo('generate')">
+            <span class="step-number">6</span>
+            <i class="fas fa-magic"></i>
+            <span class="step-label">Generate</span>
+        </button>
+        <span class="step-divider"><i class="fas fa-chevron-right"></i></span>
+        
+        <button class="step-nav-item" data-step="timetable" onclick="navigateTo('timetable')">
+            <span class="step-number">7</span>
+            <i class="fas fa-calendar-check"></i>
+            <span class="step-label">View</span>
+        </button>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent"></div>
+</div>
+
+<script>
+    // ======================== DATA MODEL ========================
+    let schoolData = null;
+    let currentTimetableView = "master";
+    let currentStep = "periodsettings";
+    
+    const DEFAULT_CLASSES = ["JSS1 GOLD", "JSS1 DIAMOND", "JSS1 SILVER", "JSS2 GOLD", "JSS2 SILVER", "JSS2 DIAMOND", "JSS3 GOLD", "JSS3 DIAMOND", "SS1 SCIENCE", "SS1 ART & COMMERCIAL", "SS2 SCIENCE", "SS2 ART & COMMERCIAL", "SS3 SCIENCE", "SS3 ART & COMMERCIAL"];
+    const DEFAULT_TEACHERS = ["Mrs Badru", "Mrs Durodola", "Mr. Sofoluwe", "Mr. Ayoola", "Mr. Lawal", "Mr. Azeez", "Miss Bisola", "Mrs princewell", "Mr. Jide", "Mr. Olamide", "Mrs Williams", "Miss Dahunsi", "Mrs Ajibose", "Miss Adewale", "Mr igbokwe", "Mrs Banjo", "Mrs olumide", "Mr. Jimoh", "Mr. Afolabi", "Mr Nifemi", "Mrs Akpoede", "Mr. Ganiu", "Mr Kumasi", "Mr. Ogundapo", "Mr. Henry", "Mr. Adeyemi"];
+    const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+    
+    let config = {
+        periodsPerDay: 8,
+        shortBreakAfter: 2,
+        longBreakAfter: 4,
+        shortBreakDuration: 15,
+        longBreakDuration: 30,
+        skipFirstPeriodDays: ["Monday", "Wednesday"],
+        daySettings: {
+            Monday:    { startHour: 8, startMin: 30, duration: 40 },
+            Tuesday:   { startHour: 8, startMin: 30, duration: 40 },
+            Wednesday: { startHour: 9, startMin: 0,  duration: 40 },
+            Thursday:  { startHour: 8, startMin: 30, duration: 40 },
+            Friday:    { startHour: 8, startMin: 30, duration: 35 }
+        }
+    };
+    
+    function initConcurrentGroups() {
+        return [
+            { id: "cg_irs_crs_all", groupName: "IRS/CRS", displayName: "IRS/CRS", subjects: ["IRS", "CRS"], frequency: 2, applicableClassPattern: "^(?!.*SCIENCE).*", teacherMap: { "IRS": "Mr. Ganiu", "CRS": "Miss Adewale" } },
+            { id: "cg_senior_science_prac", groupName: "Agric/FN/TD", displayName: "Agric/FN/TD", subjects: ["Agricultural Science", "Food & Nutrition", "Technical Drawing"], frequency: 2, applicableClassPattern: "SS[1-3] SCIENCE", teacherMap: { "Agricultural Science": "Miss Bisola", "Food & Nutrition": "Mrs Williams", "Technical Drawing": "Mr. Sofoluwe" } },
+            { id: "cg_commercial_arts_electives", groupName: "Commerce/Literature", displayName: "Commerce/Literature", subjects: ["Commerce", "Literature"], frequency: 2, applicableClassPattern: "SS[1-3] ART & COMMERCIAL", teacherMap: { "Commerce": "Mr. Ogundapo", "Literature": "Miss Dahunsi" } },
+            { id: "cg_commercial_arts_languages", groupName: "Yoruba/French", displayName: "Yoruba/French", subjects: ["Yoruba", "French"], frequency: 2, applicableClassPattern: "SS[1-3] ART & COMMERCIAL", teacherMap: { "Yoruba": "Mrs olumide", "French": "Mrs Akpoede" } }
+        ];
+    }
+    
+    function buildDefaultAllocations() {
+        const alloc = {};
+        function setSubj(classes, subject, teacher, frequency) {
+            const clsList = Array.isArray(classes) ? classes : [classes];
+            for (let cls of clsList) {
+                if (!alloc[cls]) alloc[cls] = {};
+                alloc[cls][subject] = { teacher, frequency };
+            }
+        }
+        const allJSS = DEFAULT_CLASSES.filter(c => c.includes("JSS"));
+        const jss1 = DEFAULT_CLASSES.filter(c => c.includes("JSS1"));
+        const jss2 = DEFAULT_CLASSES.filter(c => c.includes("JSS2"));
+        const jss3 = DEFAULT_CLASSES.filter(c => c.includes("JSS3"));
+        const sciClasses = DEFAULT_CLASSES.filter(c => c.includes("SCIENCE"));
+        const artCommClasses = DEFAULT_CLASSES.filter(c => c.includes("ART & COMMERCIAL"));
+        
+        setSubj(sciClasses, "Chemistry", "Mrs Badru", 4);
+        setSubj(allJSS, "Computer Studies", "Mrs Durodola", 2);
+        setSubj(sciClasses, "Digital Technology", "Mrs Durodola", 2);
+        setSubj(jss2, "Basic Technology", "Mr. Sofoluwe", 2);
+        setSubj(jss3, "Basic Technology", "Mr. Ayoola", 2);
+        setSubj(allJSS, "PHE", "Mr. Lawal", 2);
+        setSubj(allJSS, "Basic Science", "Mr. Lawal", 2);
+        setSubj(jss3, "Mathematics", "Mr. Azeez", 4);
+        setSubj(jss2, "Mathematics", "Mr. Azeez", 4);
+        setSubj(allJSS, "Agricultural Science", "Miss Bisola", 2);
+        setSubj(ss2Sci, "Biology", "Miss Bisola", 4);
+        setSubj(allJSS, "Home Economics", "Mrs princewell", 2);
+        setSubj(ss3Sci, "Biology", "Mrs princewell", 4);
+        setSubj(["JSS1 DIAMOND"], "Mathematics", "Mr. Jide", 4);
+        setSubj(["JSS2 DIAMOND"], "Mathematics", "Mr. Jide", 4);
+        setSubj(sciClasses, "Geography", "Mr. Jide", 2);
+        setSubj(["JSS1 GOLD", "JSS1 SILVER"], "Mathematics", "Mr. Olamide", 4);
+        setSubj(allJSS, "CCA", "Mr. Olamide", 2);
+        setSubj(allJSS, "English", "Miss Dahunsi", 4);
+        setSubj(jss2, "CRS", "Miss Dahunsi", 2);
+        setSubj(artCommClasses, "Literature", "Miss Dahunsi", 4);
+        setSubj(ss3Sci, "CRS", "Mrs Ajibose", 2);
+        setSubj(jss1, "History", "Mrs Ajibose", 2);
+        setSubj(ss1Art, "CRS", "Miss Adewale", 2);
+        setSubj(jss1, "CRS", "Miss Adewale", 2);
+        setSubj(jss3, "CRS", "Miss Adewale", 2);
+        setSubj(jss2, "Civic Education", "Mr igbokwe", 2);
+        setSubj(jss2, "History", "Mr igbokwe", 2);
+        setSubj(allJSS, "Social Studies", "Mr igbokwe", 2);
+        setSubj(jss2, "English", "Mrs Banjo", 4);
+        setSubj(ss1Art, "English Language", "Mrs Banjo", 4);
+        setSubj(ss3Art, "English Language", "Mrs Banjo", 4);
+        setSubj(jss1, "Yoruba", "Mr. Afolabi", 2);
+        setSubj(artCommClasses, "Yoruba", "Mrs olumide", 3);
+        setSubj(artCommClasses, "Government", "Mr. Jimoh", 4);
+        setSubj(jss3, "History", "Mr. Jimoh", 2);
+        setSubj(allJSS, "Music", "Mr Nifemi", 2);
+        setSubj(allJSS, "French", "Mrs Akpoede", 2);
+        setSubj(artCommClasses, "French", "Mrs Akpoede", 3);
+        setSubj(allJSS, "IRS", "Mr. Ganiu", 2);
+        setSubj(artCommClasses, "IRS", "Mr. Ganiu", 2);
+        setSubj(artCommClasses, "Commerce", "Mr. Ogundapo", 4);
+        setSubj(jss1, "Business Studies", "Mr. Ogundapo", 2);
+        setSubj(jss3, "Business Studies", "Mr. Henry", 2);
+        setSubj(ss1Art, "Account", "Mr. Henry", 4);
+        setSubj(artCommClasses, "Marketing", "Mr. Henry", 2);
+        setSubj(sciClasses, "Economics", "Mr. Adeyemi", 3);
+        setSubj(jss2, "Business Studies", "Mr. Adeyemi", 2);
+        return alloc;
+    }
+    
+    function buildTeacherAvailability() {
+        const avail = {};
+        avail["Mrs Badru"] = { "Friday": [] };
+        avail["Mrs Williams"] = { "Monday": [], "Friday": [] };
+        avail["Mr Nifemi"] = { "Monday": [], "Wednesday": [], "Friday": [] };
+        avail["Mrs Akpoede"] = { "Monday": [], "Tuesday": [], "Thursday": [] };
+        avail["Mr. Ganiu"] = { "Tuesday": [], "Wednesday": [], "Friday": [] };
+        avail["Mr Kumasi"] = { "Monday": [], "Tuesday": [], "Wednesday": [], "Thursday": [], "Friday": [] };
+        return avail;
+    }
+    
+    function initData() {
+        let allocation = buildDefaultAllocations();
+        const sciClasses = DEFAULT_CLASSES.filter(c => c.includes("SCIENCE"));
+        for (let cls of sciClasses) {
+            if (allocation[cls]) {
+                delete allocation[cls]["Agricultural Science"];
+                delete allocation[cls]["Food & Nutrition"];
+                delete allocation[cls]["Technical Drawing"];
+            }
+        }
+        for (let cls in allocation) {
+            if (allocation[cls]["IRS"]) delete allocation[cls]["IRS"];
+            if (allocation[cls]["CRS"]) delete allocation[cls]["CRS"];
+        }
+        let classSubjects = {};
+        DEFAULT_CLASSES.forEach(cls => {
+            let subjectsSet = new Set();
+            if (allocation[cls]) Object.keys(allocation[cls]).forEach(s => subjectsSet.add(s));
+            classSubjects[cls] = Array.from(subjectsSet);
+        });
+        let irsCrs = {};
+        DEFAULT_CLASSES.forEach(c => { irsCrs[c] = { irsTeacher: "Mr. Ganiu", crsTeacher: "Miss Adewale" }; });
+        let timetable = {};
+        DEFAULT_CLASSES.forEach(c => { timetable[c] = {}; DAYS.forEach(d => { timetable[c][d] = []; }); });
+        return { 
+            classes: [...DEFAULT_CLASSES], days: [...DAYS], teachers: [...DEFAULT_TEACHERS], 
+            classSubjects, subjectAllocation: allocation, teacherAvailability: buildTeacherAvailability(), irsCrsTeachers: irsCrs,
+            timetable, config, 
+            concurrentGroups: initConcurrentGroups(),
+            concurrentGroupClassTeachers: {} 
+        };
+    }
+    
+    function generatePeriodLabels(day) {
+        let labels = [];
+        let skipFirst = config.skipFirstPeriodDays.includes(day);
+        let startHour = config.daySettings[day].startHour;
+        let startMin = config.daySettings[day].startMin;
+        let duration = config.daySettings[day].duration;
+        let hour = startHour, min = startMin;
+        let periodNum = 0;
+        for (let i = 0; i < config.periodsPerDay; i++) {
+            if (skipFirst && i === 0) { labels.push({ label: "BLOCKED", isBlocked: true, isBreak: false }); continue; }
+            periodNum++;
+            let start = `${hour.toString().padStart(2,'0')}:${min.toString().padStart(2,'0')}`;
+            let endMin = min + duration;
+            let endHour = hour + Math.floor(endMin / 60);
+            endMin = endMin % 60;
+            let end = `${endHour.toString().padStart(2,'0')}:${endMin.toString().padStart(2,'0')}`;
+            labels.push({ label: `${start} - ${end}`, isBlocked: false, isBreak: false, periodNum });
+            hour = endHour; min = endMin;
+            if (periodNum === config.shortBreakAfter) { labels.push({ label: `☕ Short Break`, isBlocked: false, isBreak: true }); min += config.shortBreakDuration; hour += Math.floor(min / 60); min = min % 60; }
+            if (periodNum === config.longBreakAfter) { labels.push({ label: `🍽️ Long Break`, isBlocked: false, isBreak: true }); min += config.longBreakDuration; hour += Math.floor(min / 60); min = min % 60; }
+        }
+        return labels;
+    }
+    
+    function initTimetable() {
+        schoolData.classes.forEach(c => {
+            schoolData.days.forEach(d => {
+                let periods = generatePeriodLabels(d);
+                schoolData.timetable[c][d] = periods.map(p => {
+                    if (p.isBreak) return { subject: p.label, teacher: "--", periodLabel: p.label, isBlocked: false, isBreak: true, concurrentData: null };
+                    if (p.isBlocked) return { subject: "BLOCKED", teacher: "N/A", periodLabel: p.label, isBlocked: true, isBreak: false, concurrentData: null };
+                    return { subject: null, teacher: null, periodLabel: p.label, isBlocked: false, isBreak: false, concurrentData: null };
+                });
+            });
+        });
+    }
+    
+    function saveData() { 
+        try {
+            localStorage.setItem("busahmed_timetable_data", JSON.stringify(schoolData)); 
+        } catch(e) {}
+    }
+    
+    function loadData() { 
+        let d = localStorage.getItem("busahmed_timetable_data"); 
+        if (d) {
+            try {
+                schoolData = JSON.parse(d);
+                if (!schoolData.concurrentGroups) schoolData.concurrentGroups = initConcurrentGroups();
+                if (!schoolData.concurrentGroupClassTeachers) schoolData.concurrentGroupClassTeachers = {};
+                if (!schoolData.timetable) initTimetable();
+                if (!schoolData.subjectAllocation) schoolData.subjectAllocation = initData().subjectAllocation;
+                if (!schoolData.teacherAvailability) schoolData.teacherAvailability = buildTeacherAvailability();
+                if (!schoolData.irsCrsTeachers) schoolData.irsCrsTeachers = initData().irsCrsTeachers;
+                if (!schoolData.config) schoolData.config = config;
+            } catch(e) {
+                schoolData = initData(); 
+                initTimetable();
+            }
+        } else { 
+            schoolData = initData(); 
+            initTimetable();
+        }
+        saveData(); 
+    }
+    
+    function showToast(msg, isError = false) { 
+        let t = document.createElement("div"); 
+        t.className = "toast" + (isError ? " error" : ""); 
+        t.innerText = msg; 
+        document.body.appendChild(t); 
+        setTimeout(() => t.remove(), 3000); 
+    }
+    
+    // ============= NAVIGATION - FIXED =============
+    function navigateTo(step) {
+        console.log('Navigating to:', step);
+        currentStep = step;
+        
+        // Update step navigation
+        document.querySelectorAll('.step-nav-item').forEach(item => {
+            item.classList.remove('active', 'completed');
+            const itemStep = item.dataset.step;
+            const steps = ['periodsettings', 'classes', 'teacher-availability', 'subject-allocation', 'concurrent-subjects', 'generate', 'timetable'];
+            const currentIndex = steps.indexOf(step);
+            const itemIndex = steps.indexOf(itemStep);
+            
+            if (itemIndex < currentIndex) {
+                item.classList.add('completed');
+            } else if (itemIndex === currentIndex) {
+                item.classList.add('active');
+            }
+        });
+        
+        // Show content
+        showPage(step);
+        
+        // Scroll to top on mobile
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    // ============= PAGE RENDERER =============
+    function showPage(page) {
+        console.log('Showing page:', page);
+        const content = document.getElementById('mainContent');
+        if (!content) return;
+        
+        let html = '';
+        switch(page) {
+            case 'periodsettings': html = renderPeriodSettings(); break;
+            case 'classes': html = renderClasses(); break;
+            case 'teacher-availability': html = renderTeacherAvailability(); break;
+            case 'subject-allocation': html = renderSubjectAllocation(); break;
+            case 'concurrent-subjects': html = renderConcurrentSubjects(); break;
+            case 'generate': html = renderGenerate(); break;
+            case 'timetable': html = renderTimetable(); break;
+            default: html = renderPeriodSettings();
+        }
+        
+        content.innerHTML = html;
+        
+        // Re-initialize event listeners after rendering
+        setTimeout(initEventListeners, 150);
+    }
+    
+    function initEventListeners() {
+        console.log('Initializing event listeners...');
+        
+        // Class selector for allocation
+        const allocSelector = document.getElementById('allocClassSelector');
+        if (allocSelector) {
+            allocSelector.onchange = function() { loadAllocationEditor(); };
+            loadAllocationEditor();
+        }
+        
+        // Class view selector
+        const classViewSelector = document.getElementById('classSelectView');
+        if (classViewSelector) {
+            classViewSelector.onchange = function() { loadClassTableView(); };
+        }
+        
+        // Teacher view selector
+        const teacherViewSelector = document.getElementById('teacherSelectView');
+        if (teacherViewSelector) {
+            teacherViewSelector.onchange = function() { loadTeacherWorkloadView(); };
+        }
+        
+        // Teacher availability load button
+        const loadAvailBtn = document.getElementById('loadAvailBtn');
+        if (loadAvailBtn) {
+            loadAvailBtn.onclick = function() { loadTeacherAvailability(); };
+        }
+        
+        // Teacher availability save button
+        const saveAvailBtn = document.getElementById('saveAvailBtn');
+        if (saveAvailBtn) {
+            saveAvailBtn.onclick = function() { saveTeacherAvailability(); };
+        }
+        
+        // Period settings save button
+        const savePeriodBtn = document.getElementById('savePeriodBtn');
+        if (savePeriodBtn) {
+            savePeriodBtn.onclick = function() { savePeriodSettings(); };
+        }
+        
+        // Update classes button
+        const updateClassesBtn = document.getElementById('updateClassesBtn');
+        if (updateClassesBtn) {
+            updateClassesBtn.onclick = function() { updateClasses(); };
+        }
+        
+        // Update teachers button
+        const updateTeachersBtn = document.getElementById('updateTeachersBtn');
+        if (updateTeachersBtn) {
+            updateTeachersBtn.onclick = function() { updateTeachers(); };
+        }
+    }
+    
+    // ============= PERIOD SETTINGS =============
+    function renderPeriodSettings() {
+        return `
+            <div class="content-card">
+                <h2><i class="fas fa-clock"></i> Period Settings</h2>
+                <p>Configure periods per day, duration, and break times.</p>
+                
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label><i class="fas fa-hashtag"></i> Periods per Day</label>
+                        <input type="number" id="periodsNum" value="${config.periodsPerDay}" min="4" max="12">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-clock"></i> Duration (minutes)</label>
+                        <input type="number" id="periodDuration" value="${config.daySettings.Monday.duration}" min="30" max="60">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-coffee"></i> Short Break After</label>
+                        <input type="number" id="shortAfter" value="${config.shortBreakAfter}" min="1" max="10">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-utensils"></i> Long Break After</label>
+                    <input type="number" id="longAfter" value="${config.longBreakAfter}" min="1" max="10">
+                </div>
+                
+                <div class="btn-group">
+                    <button id="savePeriodBtn" class="btn-primary"><i class="fas fa-save"></i> Save</button>
+                    <button onclick="navigateTo('classes')" class="btn-success"><i class="fas fa-arrow-right"></i> Next</button>
+                </div>
+            </div>
+        `;
+    }
+    
+    window.savePeriodSettings = function() {
+        const periods = parseInt(document.getElementById('periodsNum').value);
+        const duration = parseInt(document.getElementById('periodDuration').value);
+        const shortAfter = parseInt(document.getElementById('shortAfter').value);
+        const longAfter = parseInt(document.getElementById('longAfter').value);
+        
+        if (!periods || periods < 4) { showToast('Please enter at least 4 periods', true); return; }
+        if (!duration || duration < 30) { showToast('Please enter at least 30 minutes', true); return; }
+        
+        config.periodsPerDay = periods;
+        config.shortBreakAfter = shortAfter;
+        config.longBreakAfter = longAfter;
+        DAYS.forEach(day => { config.daySettings[day].duration = duration; });
+        schoolData.config = config;
+        initTimetable();
+        saveData();
+        showToast('✅ Settings saved!');
+        navigateTo('classes');
+    };
+    
+    // ============= CLASSES & TEACHERS =============
+    function renderClasses() {
+        return `
+            <div class="content-card">
+                <h2><i class="fas fa-building"></i> Classes & Teachers</h2>
+                <p>Manage classes and teachers. Use comma separated values.</p>
+                
+                <div class="grid-2">
+                    <div>
+                        <div class="form-group">
+                            <label><i class="fas fa-users"></i> Classes</label>
+                            <textarea id="classesList" rows="6">${schoolData.classes.join(', ')}</textarea>
+                        </div>
+                        <button id="updateClassesBtn" class="btn-primary"><i class="fas fa-save"></i> Update Classes</button>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label><i class="fas fa-chalkboard-user"></i> Teachers</label>
+                            <textarea id="teachersList" rows="6">${schoolData.teachers.join(', ')}</textarea>
+                        </div>
+                        <button id="updateTeachersBtn" class="btn-primary"><i class="fas fa-save"></i> Update Teachers</button>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button onclick="navigateTo('periodsettings')" class="btn-warning"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button onclick="navigateTo('teacher-availability')" class="btn-success"><i class="fas fa-arrow-right"></i> Next</button>
+                </div>
+            </div>
+        `;
+    }
+    
+    window.updateClasses = function() {
+        const newClasses = document.getElementById("classesList").value.split(',').map(s=>s.trim()).filter(s=>s);
+        if (newClasses.length > 0) { 
+            schoolData.classes = newClasses; 
+            initTimetable(); 
+            saveData(); 
+            showToast("✅ Classes updated!"); 
+        } else {
+            showToast("Please enter at least one class", true);
+        }
+    };
+    
+    window.updateTeachers = function() {
+        const newTeachers = document.getElementById("teachersList").value.split(',').map(s=>s.trim()).filter(s=>s);
+        if (newTeachers.length > 0) { 
+            schoolData.teachers = newTeachers; 
+            saveData(); 
+            showToast("✅ Teachers updated!"); 
+        } else {
+            showToast("Please enter at least one teacher", true);
+        }
+    };
+    
+    // ============= TEACHER AVAILABILITY =============
+    function renderTeacherAvailability() {
+        return `
+            <div class="content-card">
+                <h2><i class="fas fa-user-clock"></i> Teacher Availability</h2>
+                <p>Select periods (green = available) for each teacher.</p>
+                
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Select Teacher</label>
+                        <select id="availTeacher">
+                            ${schoolData.teachers.map(t => `<option value="${t}">${t}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div style="display:flex; gap:8px; align-items:flex-end;">
+                        <button id="loadAvailBtn" class="btn-primary"><i class="fas fa-download"></i> Load</button>
+                        <button id="saveAvailBtn" class="btn-success"><i class="fas fa-save"></i> Save</button>
+                    </div>
+                </div>
+                
+                <div id="availabilityGrid" class="mt-3"></div>
+                
+                <div class="btn-group">
+                    <button onclick="navigateTo('classes')" class="btn-warning"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button onclick="navigateTo('subject-allocation')" class="btn-success"><i class="fas fa-arrow-right"></i> Next</button>
+                </div>
+            </div>
+        `;
+    }
+    
+    window.loadTeacherAvailability = function() {
+        const teacher = document.getElementById("availTeacher").value;
+        const avail = schoolData.teacherAvailability[teacher] || {};
+        let html = '<div class="grid-5">';
+        DAYS.forEach(day => {
+            const periodsForDay = avail[day] || [];
+            html += `<div style="text-align:center;">
+                <label style="font-weight:600; display:block; margin-bottom:6px; font-size:12px;">${day.substring(0,3)}</label>
+                <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:2px;">`;
+            for (let p = 0; p < config.periodsPerDay; p++) {
+                const isSelected = periodsForDay.includes(p);
+                html += `<div class="period-selector ${isSelected ? 'selected' : ''}" data-day="${day}" data-period="${p}" onclick="togglePeriod(this, '${day}', ${p})">${p+1}</div>`;
+            }
+            html += `</div></div>`;
+        });
+        html += `</div><input type="hidden" id="tempAvailabilityData" value='${JSON.stringify(avail)}'>`;
+        document.getElementById("availabilityGrid").innerHTML = html;
+    };
+    
+    window.togglePeriod = function(el, day, period) {
+        const hidden = document.getElementById("tempAvailabilityData");
+        let avail = JSON.parse(hidden.value || '{}');
+        if (!avail[day]) avail[day] = [];
+        const idx = avail[day].indexOf(period);
+        if (idx === -1) { avail[day].push(period); el.classList.add("selected"); }
+        else { avail[day].splice(idx, 1); el.classList.remove("selected"); }
+        hidden.value = JSON.stringify(avail);
+    };
+    
+    window.saveTeacherAvailability = function() {
+        const teacher = document.getElementById("availTeacher").value;
+        const hidden = document.getElementById("tempAvailabilityData");
+        let avail = JSON.parse(hidden.value || '{}');
+        for (let day of DAYS) if (!avail[day]) avail[day] = [];
+        schoolData.teacherAvailability[teacher] = avail;
+        saveData();
+        showToast(`✅ Saved availability for ${teacher}`);
+        navigateTo('subject-allocation');
+    };
+    
+    // ============= SUBJECT ALLOCATION =============
+    function renderSubjectAllocation() {
+        return `
+            <div class="content-card">
+                <h2><i class="fas fa-book"></i> Subject Allocation</h2>
+                <p>Assign subjects with teachers and frequency per week.</p>
+                
+                <div class="form-group" style="max-width:400px;">
+                    <label>Select Class</label>
+                    <select id="allocClassSelector">
+                        ${schoolData.classes.map(c => `<option value="${c}">${c}</option>`).join('')}
+                    </select>
+                </div>
+                
+                <div id="allocEditorTable" class="alloc-editor mt-3"></div>
+                
+                <div class="btn-group">
+                    <button onclick="saveAllocationsFromEditor()" class="btn-success"><i class="fas fa-save"></i> Save All</button>
+                    <button onclick="navigateTo('teacher-availability')" class="btn-warning"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button onclick="navigateTo('concurrent-subjects')" class="btn-primary"><i class="fas fa-arrow-right"></i> Next</button>
+                </div>
+            </div>
+        `;
+    }
+    
+    function loadAllocationEditor() {
+        const cls = document.getElementById("allocClassSelector")?.value;
+        if (!cls) return;
+        
+        const alloc = schoolData.subjectAllocation[cls] || {};
+        const teachers = schoolData.teachers;
+        let html = `
+            <table>
+                <thead><tr><th>Subject</th><th>Teacher</th><th>Freq</th><th>Action</th></tr></thead>
+                <tbody>
+        `;
+        
+        for (let [sub, data] of Object.entries(alloc)) {
+            html += `<tr>
+                <td><input type="text" value="${sub.replace(/"/g, '&quot;')}" data-field="subject" data-orig="${sub.replace(/"/g, '&quot;')}"></td>
+                <td>
+                    <select data-field="teacher">
+                        ${teachers.map(t => `<option ${data.teacher === t ? 'selected' : ''}>${t}</option>`).join('')}
+                    </select>
+                </td>
+                <td><input type="number" min="1" max="8" value="${data.frequency}" data-field="freq" style="width:60px;"></td>
+                <td style="text-align:center;">
+                    <button onclick="deleteSubjectFromAllocation('${cls}','${sub.replace(/'/g, "\\'")}')" style="background:none; border:none; color:#ef4444; cursor:pointer;"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>`;
+        }
+        
+        html += `
+                </tbody>
+            </table>
+            <div class="mt-2">
+                <button onclick="addNewSubjectToAllocation('${cls}')" class="btn-primary" style="padding:4px 14px; font-size:13px;"><i class="fas fa-plus"></i> Add Subject</button>
+            </div>
+        `;
+        document.getElementById("allocEditorTable").innerHTML = html;
+    }
+    
+    window.addNewSubjectToAllocation = function(cls) {
+        const newSub = prompt("Enter new subject name:");
+        if (!newSub) return;
+        if (schoolData.subjectAllocation[cls][newSub]) { showToast("Subject already exists", true); return; }
+        schoolData.subjectAllocation[cls][newSub] = { teacher: schoolData.teachers[0] || "Staff", frequency: 2 };
+        saveData();
+        loadAllocationEditor();
+        showToast(`✅ Added ${newSub}`);
+    };
+    
+    window.deleteSubjectFromAllocation = function(cls, sub) {
+        if (!confirm(`Delete "${sub}"?`)) return;
+        delete schoolData.subjectAllocation[cls][sub];
+        saveData();
+        loadAllocationEditor();
+        showToast(`✅ Deleted ${sub}`);
+    };
+    
+    window.saveAllocationsFromEditor = function() {
+        const cls = document.getElementById("allocClassSelector").value;
+        const rows = document.querySelectorAll("#allocEditorTable tbody tr");
+        const newAlloc = {};
+        rows.forEach(row => {
+            const subjInput = row.cells[0]?.querySelector("input");
+            const teacherSelect = row.cells[1]?.querySelector("select");
+            const freqInput = row.cells[2]?.querySelector("input");
+            if (subjInput && teacherSelect && freqInput) {
+                const subject = subjInput.value.trim();
+                if (subject) {
+                    newAlloc[subject] = { teacher: teacherSelect.value, frequency: parseInt(freqInput.value) || 2 };
+                }
+            }
+        });
+        if (Object.keys(newAlloc).length === 0) { showToast("No subjects to save", true); return; }
+        schoolData.subjectAllocation[cls] = newAlloc;
+        saveData();
+        showToast(`✅ Allocations saved for ${cls}`);
+        loadAllocationEditor();
+    };
+    
+    // ============= CONCURRENT SUBJECTS =============
+    function renderConcurrentSubjects() {
+        return `
+            <div class="content-card">
+                <h2><i class="fas fa-layer-group"></i> Concurrent Subjects</h2>
+                <p>Define subjects that run at the same time with different teachers.</p>
+                
+                <button onclick="addConcurrentGroupUI()" class="btn-primary"><i class="fas fa-plus"></i> Add Group</button>
+                
+                <div id="concurrentGroupsListUI" class="mt-3" style="display:flex; flex-direction:column; gap:10px;"></div>
+                
+                <div class="btn-group">
+                    <button onclick="navigateTo('subject-allocation')" class="btn-warning"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button onclick="navigateTo('generate')" class="btn-success"><i class="fas fa-arrow-right"></i> Next</button>
+                </div>
+            </div>
+        `;
+    }
+    
+    function refreshConcurrentGroupsUI() {
+        const container = document.getElementById("concurrentGroupsListUI");
+        if (!container) return;
+        let html = '';
+        schoolData.concurrentGroups.forEach((g, idx) => {
+            html += `
+                <div class="concurrent-group-item">
+                    <div class="group-header">
+                        <div class="group-name">${g.displayName}</div>
+                        <div class="group-actions">
+                            <button class="btn-edit" onclick="editConcurrentGroupUI(${idx})"><i class="fas fa-edit"></i></button>
+                            <button class="btn-delete" onclick="deleteConcurrentGroupUI(${idx})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div class="group-details">
+                        Subjects: ${g.subjects.join(', ')} | Frequency: ${g.frequency}/week
+                        <br>Pattern: ${g.applicableClassPattern}
+                        <br>Teachers: ${Object.entries(g.teacherMap).map(([s,t]) => `${s}→${t}`).join(', ')}
+                    </div>
+                </div>
+            `;
+        });
+        if (schoolData.concurrentGroups.length === 0) {
+            html = '<div class="text-center text-muted" style="padding:20px;">No concurrent groups defined.</div>';
+        }
+        container.innerHTML = html;
+    }
+    
+    window.addConcurrentGroupUI = function() {
+        const id = "cg_" + Date.now();
+        schoolData.concurrentGroups.push({ 
+            id, groupName: "New Group", displayName: "New Group", 
+            subjects: ["Subject 1", "Subject 2"], frequency: 2, 
+            applicableClassPattern: ".*", 
+            teacherMap: { "Subject 1": schoolData.teachers[0] || "Staff", "Subject 2": schoolData.teachers[0] || "Staff" } 
+        });
+        saveData();
+        refreshConcurrentGroupsUI();
+        showToast("✅ Group added! Click Edit to configure.");
+        editConcurrentGroupUI(schoolData.concurrentGroups.length - 1);
+    };
+    
+    window.editConcurrentGroupUI = function(idx) {
+        const g = schoolData.concurrentGroups[idx];
+        const newName = prompt("Display Name:", g.displayName);
+        if (newName !== null && newName.trim()) g.displayName = newName.trim();
+        const subjects = prompt("Subjects (comma separated):", g.subjects.join(","));
+        if (subjects !== null && subjects.trim()) g.subjects = subjects.split(",").map(s => s.trim()).filter(s => s);
+        const freq = prompt("Frequency per week:", g.frequency);
+        if (freq !== null && freq.trim()) g.frequency = parseInt(freq) || 2;
+        const pattern = prompt("Class pattern (regex):", g.applicableClassPattern);
+        if (pattern !== null && pattern.trim()) g.applicableClassPattern = pattern.trim();
+        const teacherMapStr = prompt("Teacher mapping (subject:teacher, ...):", Object.entries(g.teacherMap).map(([s,t]) => `${s}:${t}`).join(", "));
+        if (teacherMapStr !== null && teacherMapStr.trim()) {
+            const newMap = {};
+            teacherMapStr.split(",").forEach(pair => {
+                const [sub, teach] = pair.split(":").map(s => s.trim());
+                if (sub && teach) newMap[sub] = teach;
+            });
+            if (Object.keys(newMap).length) g.teacherMap = newMap;
+        }
+        saveData();
+        refreshConcurrentGroupsUI();
+        showToast(`✅ Updated ${g.displayName}`);
+    };
+    
+    window.deleteConcurrentGroupUI = function(idx) {
+        if (!confirm("Delete this group?")) return;
+        schoolData.concurrentGroups.splice(idx, 1);
+        saveData();
+        refreshConcurrentGroupsUI();
+        showToast("✅ Group deleted");
+    };
+    
+    // ============= GENERATE =============
+    function renderGenerate() {
+        return `
+            <div class="generate-card">
+                <h2><i class="fas fa-magic"></i> Generate Timetable</h2>
+                <p>Generate a complete timetable based on all your settings.</p>
+                
+                <div class="generate-stats">
+                    <div class="stat-item"><div class="num">${schoolData.classes.length}</div><div class="lbl">Classes</div></div>
+                    <div class="stat-item"><div class="num">${schoolData.teachers.length}</div><div class="lbl">Teachers</div></div>
+                    <div class="stat-item"><div class="num">${config.periodsPerDay}</div><div class="lbl">Periods/Day</div></div>
+                    <div class="stat-item"><div class="num">${schoolData.concurrentGroups.length}</div><div class="lbl">Concurrent Groups</div></div>
+                </div>
+                
+                <div class="btn-group">
+                    <button onclick="generateAndShow()" class="btn-success"><i class="fas fa-play"></i> Generate</button>
+                    <button onclick="navigateTo('concurrent-subjects')" class="btn-warning"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button onclick="navigateTo('timetable')" class="btn-primary"><i class="fas fa-arrow-right"></i> View</button>
+                </div>
+                
+                <div id="generateStatus" class="mt-3" style="color:rgba(255,255,255,0.9);"></div>
+            </div>
+        `;
+    }
+    
+    window.generateAndShow = function() {
+        const status = document.getElementById('generateStatus');
+        if (status) status.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+        
+        generateTimetable();
+        
+        if (status) {
+            status.innerHTML = '<i class="fas fa-check-circle"></i> ✅ Generated successfully!';
+        }
+        showToast("✅ Timetable generated!");
+        setTimeout(() => navigateTo('timetable'), 1500);
+    };
+    
+    // ============= GENERATE TIMETABLE LOGIC =============
+    function generateTimetable() {
+        initTimetable();
+        
+        for (let cls of schoolData.classes) {
+            let applicableGroups = schoolData.concurrentGroups.filter(g => {
+                if (g.id === "cg_irs_crs_all" && cls.includes("SCIENCE")) return false;
+                try { return new RegExp(g.applicableClassPattern).test(cls); } catch(e) { return false; }
+            });
+            let alloc = schoolData.subjectAllocation[cls] || {};
+            for (let group of applicableGroups) {
+                for (let sub of group.subjects) if (alloc[sub]) delete alloc[sub];
+            }
+            schoolData.subjectAllocation[cls] = alloc;
+        }
+        
+        for (let cls of schoolData.classes) {
+            let applicableGroups = schoolData.concurrentGroups.filter(g => {
+                if (g.id === "cg_irs_crs_all" && cls.includes("SCIENCE")) return false;
+                try { return new RegExp(g.applicableClassPattern).test(cls); } catch(e) { return false; }
+            });
+            for (let group of applicableGroups) {
+                let placed = 0;
+                for (let attempt = 0; attempt < 200 && placed < group.frequency; attempt++) {
+                    for (let day of schoolData.days) {
+                        if (placed >= group.frequency) break;
+                        let periods = [...Array(schoolData.timetable[cls][day].length).keys()];
+                        for (let i = periods.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [periods[i], periods[j]] = [periods[j], periods[i]]; }
+                        for (let pIdx of periods) {
+                            if (placed >= group.frequency) break;
+                            if (canPlaceConcurrentGroup(cls, day, pIdx, group)) {
+                                placeConcurrentGroup(cls, day, pIdx, group);
+                                placed++;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        let classSlots = {};
+        for (let cls of schoolData.classes) {
+            let count = 0;
+            for (let day of schoolData.days) {
+                for (let slot of schoolData.timetable[cls][day]) {
+                    if (!slot.isBreak && !slot.isBlocked && !slot.isConcurrent && slot.subject === null) count++;
+                }
+            }
+            classSlots[cls] = count;
+        }
+        
+        for (let cls of schoolData.classes) {
+            if (!cls.includes("JSS")) continue;
+            let alloc = schoolData.subjectAllocation[cls] || {};
+            let totalDemand = 0;
+            for (let sub in alloc) totalDemand += alloc[sub].frequency;
+            let deficit = classSlots[cls] - totalDemand;
+            if (deficit > 0) {
+                for (let i = 0; i < deficit; i++) {
+                    let filler = `General Studies ${i+1}`;
+                    while (alloc[filler]) filler += "_";
+                    alloc[filler] = { teacher: "Staff", frequency: 1 };
+                }
+                schoolData.subjectAllocation[cls] = alloc;
+            }
+        }
+        
+        let classTasks = {};
+        for (let cls of schoolData.classes) {
+            let tasks = [];
+            let alloc = schoolData.subjectAllocation[cls] || {};
+            let isJunior = cls.includes("JSS");
+            for (let [subject, data] of Object.entries(alloc)) {
+                let isFiller = subject.startsWith("General Studies");
+                if (!isJunior && isFiller) continue;
+                for (let i = 0; i < data.frequency; i++) {
+                    tasks.push({ subject, teacher: data.teacher, isFiller });
+                }
+            }
+            classTasks[cls] = tasks;
+        }
+        
+        for (let cls of schoolData.classes) {
+            let allSlots = [];
+            for (let day of schoolData.days) {
+                for (let pIdx = 0; pIdx < schoolData.timetable[cls][day].length; pIdx++) {
+                    let slot = schoolData.timetable[cls][day][pIdx];
+                    if (!slot.isBreak && !slot.isBlocked && !slot.isConcurrent && slot.subject === null) {
+                        allSlots.push({ day, pIdx });
+                    }
+                }
+            }
+            let tasks = classTasks[cls] || [];
+            let realTasks = tasks.filter(t => !t.isFiller);
+            for (let i = realTasks.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [realTasks[i], realTasks[j]] = [realTasks[j], realTasks[i]]; }
+            let usedPerDay = new Map(); DAYS.forEach(d => usedPerDay.set(d, new Set()));
+            let remainingSlots = [...allSlots];
+            
+            for (let task of realTasks) {
+                let placed = false;
+                for (let i = remainingSlots.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [remainingSlots[i], remainingSlots[j]] = [remainingSlots[j], remainingSlots[i]]; }
+                for (let idx = 0; idx < remainingSlots.length; idx++) {
+                    let { day, pIdx } = remainingSlots[idx];
+                    if (usedPerDay.get(day).has(task.subject)) continue;
+                    if (!isTeacherAvailable(task.teacher, day, pIdx)) continue;
+                    let isMathEnglish = (task.subject === "Mathematics" || task.subject === "English" || task.subject === "English Language");
+                    if (isMathEnglish && pIdx >= 5) continue;
+                    let clash = false;
+                    for (let otherCls of schoolData.classes) {
+                        if (otherCls === cls) continue;
+                        let other = schoolData.timetable[otherCls][day][pIdx];
+                        if (other && other.teacher === task.teacher) { clash = true; break; }
+                    }
+                    if (clash) continue;
+                    schoolData.timetable[cls][day][pIdx].subject = task.subject;
+                    schoolData.timetable[cls][day][pIdx].teacher = task.teacher;
+                    usedPerDay.get(day).add(task.subject);
+                    remainingSlots.splice(idx, 1);
+                    placed = true;
+                    break;
+                }
+                if (!placed && remainingSlots.length > 0) {
+                    let { day, pIdx } = remainingSlots[0];
+                    schoolData.timetable[cls][day][pIdx].subject = task.subject;
+                    schoolData.timetable[cls][day][pIdx].teacher = task.teacher;
+                    remainingSlots.splice(0, 1);
+                }
+            }
+            
+            if (cls.includes("JSS")) {
+                let fillerTasks = tasks.filter(t => t.isFiller);
+                for (let task of fillerTasks) {
+                    if (remainingSlots.length === 0) break;
+                    let { day, pIdx } = remainingSlots[0];
+                    schoolData.timetable[cls][day][pIdx].subject = task.subject;
+                    schoolData.timetable[cls][day][pIdx].teacher = task.teacher;
+                    remainingSlots.splice(0, 1);
+                }
+                for (let { day, pIdx } of remainingSlots) {
+                    schoolData.timetable[cls][day][pIdx].subject = "Extra Session";
+                    schoolData.timetable[cls][day][pIdx].teacher = "Staff";
+                }
+            }
+            
+            if (cls.includes("SS")) {
+                let slotsByDay = new Map();
+                for (let slot of remainingSlots) {
+                    if (!slotsByDay.has(slot.day)) slotsByDay.set(slot.day, []);
+                    slotsByDay.get(slot.day).push(slot);
+                }
+                for (let [day, slots] of slotsByDay.entries()) {
+                    let lateSlots = slots.filter(s => s.pIdx >= 5);
+                    let earlySlots = slots.filter(s => s.pIdx < 5);
+                    if (lateSlots.length > 0) {
+                        lateSlots.sort((a,b) => b.pIdx - a.pIdx);
+                        let freeSlot = lateSlots[0];
+                        schoolData.timetable[cls][day][freeSlot.pIdx].subject = "Free Period";
+                        schoolData.timetable[cls][day][freeSlot.pIdx].teacher = "--";
+                        let remainingAfterFree = [...lateSlots.slice(1), ...earlySlots];
+                        for (let s of remainingAfterFree) {
+                            schoolData.timetable[cls][day][s.pIdx].subject = "Study Period";
+                            schoolData.timetable[cls][day][s.pIdx].teacher = "Staff";
+                        }
+                    } else {
+                        for (let s of slots) {
+                            schoolData.timetable[cls][day][s.pIdx].subject = "Study Period";
+                            schoolData.timetable[cls][day][s.pIdx].teacher = "Staff";
+                        }
+                    }
+                }
+            }
+        }
+        saveData();
+    }
+    
+    function isTeacherAvailable(teacher, day, periodIdx) {
+        let avail = schoolData.teacherAvailability[teacher];
+        if (!avail) return true;
+        if (avail[day] !== undefined && avail[day].length === 0) return false;
+        if (avail[day] && avail[day].length > 0 && !avail[day].includes(periodIdx)) return false;
+        return true;
+    }
+    
+    function getConcurrentTeacher(group, cls, subject) {
+        let perClass = schoolData.concurrentGroupClassTeachers?.[group.id]?.[cls];
+        if (perClass && perClass[subject]) return perClass[subject];
+        return group.teacherMap[subject];
+    }
+    
+    function canPlaceConcurrentGroup(cls, day, periodIdx, group) {
+        let slot = schoolData.timetable[cls][day][periodIdx];
+        if (!slot || slot.isBreak || slot.isBlocked) return false;
+        if (slot.subject !== null) return false;
+        for (let sub of group.subjects) {
+            let teacher = getConcurrentTeacher(group, cls, sub);
+            if (!teacher) return false;
+            if (!isTeacherAvailable(teacher, day, periodIdx)) return false;
+        }
+        return true;
+    }
+    
+    function placeConcurrentGroup(cls, day, periodIdx, group) {
+        let slot = schoolData.timetable[cls][day][periodIdx];
+        slot.subject = group.displayName;
+        slot.teacher = group.subjects.map(sub => `${sub} (${getConcurrentTeacher(group, cls, sub)})`).join(" | ");
+        slot.isConcurrent = true;
+        return true;
+    }
+    
+    // ============= TIMETABLE VIEW =============
+    function renderTimetable() {
+        return `
+            <div class="content-card">
+                <h2><i class="fas fa-calendar-check"></i> Timetable View</h2>
+                
+                <div class="sub-nav">
+                    <button class="sub-nav-item ${currentTimetableView === 'master' ? 'active-sub' : ''}" onclick="setTimetableView('master')"><i class="fas fa-table"></i> Master</button>
+                    <button class="sub-nav-item ${currentTimetableView === 'class' ? 'active-sub' : ''}" onclick="setTimetableView('class')"><i class="fas fa-users"></i> Class</button>
+                    <button class="sub-nav-item ${currentTimetableView === 'teacher' ? 'active-sub' : ''}" onclick="setTimetableView('teacher')"><i class="fas fa-chalkboard-user"></i> Teacher</button>
+                </div>
+                
+                <div id="timetableViewContent"></div>
+                
+                <div class="btn-group">
+                    <button onclick="navigateTo('generate')" class="btn-warning"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button onclick="window.print()" class="btn-primary"><i class="fas fa-print"></i> Print</button>
+                    <button onclick="exportWord()" class="btn-success"><i class="fas fa-file-word"></i> Export Word</button>
+                </div>
+            </div>
+        `;
+    }
+    
+    window.setTimetableView = function(view) {
+        currentTimetableView = view;
+        loadTimetableView();
+    };
+    
+    function loadTimetableView() {
+        const container = document.getElementById('timetableViewContent');
+        if (!container) return;
+        
+        if (currentTimetableView === 'master') {
+            container.innerHTML = renderMasterTimetable();
+        } else if (currentTimetableView === 'class') {
+            container.innerHTML = `
+                <div class="form-group" style="max-width:400px;">
+                    <select id="classSelectView">
+                        <option value="">Select Class</option>
+                        ${schoolData.classes.map(c => `<option value="${c}">${c}</option>`).join('')}
+                    </select>
+                </div>
+                <div id="classTableView"></div>
+            `;
+            setTimeout(() => {
+                const sel = document.getElementById('classSelectView');
+                if (sel) { sel.onchange = loadClassTableView; loadClassTableView(); }
+            }, 50);
+        } else if (currentTimetableView === 'teacher') {
+            container.innerHTML = `
+                <div class="form-group" style="max-width:400px;">
+                    <select id="teacherSelectView">
+                        <option value="">Select Teacher</option>
+                        ${schoolData.teachers.map(t => `<option value="${t}">${t}</option>`).join('')}
+                    </select>
+                </div>
+                <div id="teacherWorkloadView"></div>
+            `;
+            setTimeout(() => {
+                const sel = document.getElementById('teacherSelectView');
+                if (sel) { sel.onchange = loadTeacherWorkloadView; loadTeacherWorkloadView(); }
+            }, 50);
+        }
+    }
+    
+    function renderMasterTimetable() {
+        let html = `<div class="timetable-container"><table class="timetable-table"><thead><th>Class / Day</th>${DAYS.map(d=>`<th>${d}</th>`).join('')}</thead><tbody>`;
+        for (let cls of schoolData.classes) {
+            html += `<tr><td style="font-size:12px;">${cls}</td>`;
+            for (let day of schoolData.days) {
+                let cell = '<div style="display:flex; flex-direction:column; gap:2px;">';
+                schoolData.timetable[cls][day].forEach(p => {
+                    let extraClass = '';
+                    if(p.isBreak) extraClass = 'break-card';
+                    else if(p.isBlocked) extraClass = 'blocked-card';
+                    else if(p.isConcurrent) extraClass = 'concurrent-card';
+                    else if(p.subject === "Free Period") extraClass = 'free-card';
+                    if(p.isBreak) cell+=`<div class="period-card break-card"><div class="period-time">${p.periodLabel}</div><div class="period-subject">${p.subject}</div></div>`;
+                    else if(p.isBlocked) cell+=`<div class="period-card blocked-card"><div class="period-time">${p.periodLabel}</div><div class="period-subject">🔒 Blocked</div></div>`;
+                    else if(p.subject===null) cell+=`<div class="period-card"><div class="period-time">${p.periodLabel}</div><div class="period-subject text-muted">—</div></div>`;
+                    else cell+=`<div class="period-card ${extraClass}"><div class="period-time">${p.periodLabel}</div><div class="period-subject">${p.subject}</div><div class="period-teacher">${p.teacher}</div></div>`;
+                });
+                cell+=`</div>`;
+                html+=`<td>${cell}</td>`;
+            }
+            html+=`</tr>`;
+        }
+        html+=`</tbody></table></div>`;
+        return html;
+    }
+    
+    function loadClassTableView() {
+        const cls = document.getElementById("classSelectView")?.value;
+        const container = document.getElementById("classTableView");
+        if (!cls) { container.innerHTML = '<div class="text-center text-muted" style="padding:20px;">Select a class</div>'; return; }
+        
+        let html = `<div class="timetable-container"><table class="view-table"><thead><th>Day</th>`;
+        for (let i = 1; i <= config.periodsPerDay; i++) html += `<th>P${i}</th>`;
+        html += `</thead><tbody>`;
+        for (let day of schoolData.days) {
+            html += `<tr><td style="font-weight:700;">${day.substring(0,3)}</td>`;
+            for (let p of schoolData.timetable[cls][day]) {
+                if (p.isBreak) html += `<td style="background:#fef3c7; font-size:11px;">${p.subject}</td>`;
+                else if (p.isBlocked) html += `<td style="background:#f1f5f9; color:#94a3b8;">🔒</td>`;
+                else if (p.subject === null) html += `<td style="color:#cbd5e1;">—</td>`;
+                else if (p.subject === "Free Period") html += `<td style="background:#e2e8f0; color:#64748b; font-size:11px;">Free</td>`;
+                else html += `<td style="font-size:12px;"><div style="font-weight:600;">${p.subject}</div><div style="color:#64748b; font-size:10px;">${p.teacher}</div></td>`;
+            }
+            html += `</tr>`;
+        }
+        html += `</tbody></table></div>`;
+        container.innerHTML = html;
+    }
+    
+    function loadTeacherWorkloadView() {
+        const teacher = document.getElementById("teacherSelectView")?.value;
+        const container = document.getElementById("teacherWorkloadView");
+        if (!teacher) { container.innerHTML = '<div class="text-center text-muted" style="padding:20px;">Select a teacher</div>'; return; }
+        
+        let assignments = [];
+        for (let cls of schoolData.classes) {
+            for (let day of schoolData.days) {
+                for (let period of schoolData.timetable[cls][day]) {
+                    if (!period.isBreak && !period.isBlocked && period.teacher === teacher && 
+                        period.subject !== "Free Period" && period.subject !== "Study Period") {
+                        assignments.push({ cls, day, subject: period.subject, time: period.periodLabel });
+                    }
+                }
+            }
+        }
+        
+        let html = `<div class="timetable-container"><table class="view-table"><thead><th>Day</th><th>Class</th><th>Subject</th><th>Time</th></thead><tbody>`;
+        if (assignments.length === 0) {
+            html += `<tr><td colspan="4" style="text-align:center; padding:16px; color:#94a3b8;">No teaching periods</td></tr>`;
+        }
+        for (let a of assignments) {
+            html += `<tr><td>${a.day.substring(0,3)}</td><td>${a.cls}</td><td style="font-weight:600;">${a.subject}</td><td>${a.time}</td></tr>`;
+        }
+        html += `</tbody></table><div style="margin-top:10px; padding:10px; background:#f1f5f9; border-radius:10px; font-weight:600;">Total: ${assignments.length} periods</div></div>`;
+        container.innerHTML = html;
+    }
+    
+    // ============= EXPORT WORD =============
+    function exportWord() {
+        let html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>BUSAHMED Timetable</title><style>body{font-family:Arial;margin:40px;} table{border-collapse:collapse;width:100%;margin-bottom:20px;} th,td{border:1px solid #ccc;padding:8px;text-align:left;} th{background:#f0f0f0;}</style></head><body><h1>BUSAHMED Timetable</h1>`;
+        
+        if (currentTimetableView === 'master') {
+            html += `<h2>Master Timetable</h2><table><thead><th>Class / Day</th>${DAYS.map(d=>`<th>${d}</th>`).join('')}</thead><tbody>`;
+            for (let cls of schoolData.classes) {
+                html += `<tr><td style="font-weight:bold">${cls}</td>`;
+                for (let day of schoolData.days) {
+                    let cell = '';
+                    schoolData.timetable[cls][day].forEach(p => {
+                        if (!p.isBreak && !p.isBlocked && p.subject !== null && p.subject !== "Free Period")
+                            cell += `<div><strong>${p.periodLabel}</strong><br/>${p.subject}<br/><span style="color:#666;">${p.teacher}</span></div>`;
+                        else if (p.subject === "Free Period")
+                            cell += `<div><strong>${p.periodLabel}</strong><br/>FREE</div>`;
+                    });
+                    html += `<td>${cell}</td>`;
+                }
+                html += `</tr>`;
+            }
+            html += `</tbody></table>`;
+        } else if (currentTimetableView === 'class') {
+            const cls = document.getElementById("classSelectView")?.value;
+            if (cls) {
+                html += `<h2>Class Timetable: ${cls}</h2><table><thead><th>Day</th>`;
+                for (let i = 1; i <= config.periodsPerDay; i++) html += `<th>Period ${i}</th>`;
+                html += `</thead><tbody>`;
+                for (let day of schoolData.days) {
+                    html += `<tr><th>${day}</th>`;
+                    for (let p of schoolData.timetable[cls][day]) {
+                        if (p.isBreak) html += `<td style="background:#fff3cd">${p.subject}</td>`;
+                        else if (p.isBlocked) html += `<td style="background:#e9ecef">🔒 Blocked</td>`;
+                        else if (p.subject === "Free Period") html += `<td style="background:#e9ecef">FREE</td>`;
+                        else if (p.subject === null) html += `<td>—</td>`;
+                        else html += `<td><b>${p.subject}</b><br/><small>${p.teacher}</small></td>`;
+                    }
+                    html += `</tr>`;
+                }
+                html += `</tbody></table>`;
+            }
+        } else if (currentTimetableView === 'teacher') {
+            const teacher = document.getElementById("teacherSelectView")?.value;
+            if (teacher) {
+                let assignments = [];
+                for (let cls of schoolData.classes) {
+                    for (let day of schoolData.days) {
+                        for (let period of schoolData.timetable[cls][day]) {
+                            if (!period.isBreak && !period.isBlocked && period.teacher === teacher && 
+                                period.subject !== "Free Period" && period.subject !== "Study Period") {
+                                assignments.push({ cls, day, subject: period.subject, time: period.periodLabel });
+                            }
+                        }
+                    }
+                }
+                html += `<h2>Teacher Workload: ${teacher}</h2><table><thead><th>Day</th><th>Class</th><th>Subject</th><th>Time</th></thead><tbody>`;
+                for (let a of assignments) {
+                    html += `<tr><td>${a.day}</td><td>${a.cls}</td><td>${a.subject}</td><td>${a.time}</td></tr>`;
+                }
+                html += `</tbody></table><div style="margin-top:20px;"><strong>Total: ${assignments.length} periods</strong></div>`;
+            }
+        }
+        html += `</body></html>`;
+        
+        const blob = new Blob([html], { type: "application/msword" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "BUSAHMED_Timetable.doc";
+        a.click();
+        URL.revokeObjectURL(a.href);
+        showToast("📄 Downloaded!");
+    }
+    
+    // ============= BACK BUTTON =============
+    document.getElementById('backBtn').addEventListener('click', function() {
+        const user = JSON.parse(localStorage.getItem('busahmed_user') || '{}');
+        const roleMap = {
+            'admin': 'dashboard-admin.html',
+            'teacher': 'dashboard-teacher.html',
+            'student': 'dashboard-student.html',
+            'owner': 'dashboard-owner.html'
+        };
+        window.location.href = roleMap[user.role] || 'login.html';
+    });
+
+    // ============= DARK MODE =============
+    function checkDarkMode() {
+        if (localStorage.getItem('busahmed_dark_mode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+    }
+    checkDarkMode();
+
+    // ============= INIT =============
+    loadData();
+    
+    // Wait for DOM to render then load first step
+    setTimeout(() => {
+        navigateTo('periodsettings');
+        // Pre-populate first teacher availability
+        setTimeout(() => {
+            const firstTeacher = schoolData.teachers[0] || '';
+            if (firstTeacher) {
+                const avail = schoolData.teacherAvailability[firstTeacher] || {};
+                DAYS.forEach(day => { if (!avail[day]) avail[day] = []; });
+                schoolData.teacherAvailability[firstTeacher] = avail;
+                saveData();
+            }
+        }, 200);
+    }, 100);
+</script>
+</body>
+</html>

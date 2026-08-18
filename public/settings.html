@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BUSAHMED | Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #1e1b4b, #4f46e5); min-height: 100vh; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .card { background: white; border-radius: 32px; padding: 24px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        h1 { font-size: 24px; color: #1e1b4b; display: flex; align-items: center; gap: 10px; }
+        .back-btn { background: #e2e8f0; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .back-btn:hover { background: #cbd5e1; }
+        .setting-item { background: #f8fafc; border-radius: 20px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; transition: 0.2s; }
+        .setting-item:hover { background: #eef2ff; }
+        .setting-item .setting-info { display: flex; align-items: center; gap: 12px; }
+        .setting-item .setting-info i { font-size: 20px; width: 36px; color: #4f46e5; text-align: center; }
+        .setting-item .setting-info .setting-label { font-weight: 600; }
+        .setting-item .setting-info .setting-desc { font-size: 12px; color: #64748b; }
+        .setting-btn { background: #4f46e5; color: white; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; font-weight: 500; transition: 0.2s; }
+        .setting-btn:hover { background: #4338ca; transform: scale(1.05); }
+        .setting-btn.danger { background: #ef4444; }
+        .setting-btn.danger:hover { background: #dc2626; }
+        .setting-btn.success { background: #10b981; }
+        .setting-btn.success:hover { background: #059669; }
+        .setting-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .toggle-switch { position: relative; width: 50px; height: 28px; background: #cbd5e1; border-radius: 40px; cursor: pointer; transition: 0.3s; flex-shrink: 0; }
+        .toggle-switch.active { background: #4f46e5; }
+        .toggle-switch .toggle-slider { position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; background: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .toggle-switch.active .toggle-slider { left: 25px; }
+        .dark-mode { background: #0f172a; }
+        .dark-mode .card { background: #1e293b; }
+        .dark-mode h1 { color: #f1f5f9; }
+        .dark-mode .setting-item { background: #1e293b; border: 1px solid #334155; color: #e2e8f0; }
+        .dark-mode .setting-item:hover { background: #334155; }
+        .dark-mode .setting-item .setting-info .setting-desc { color: #94a3b8; }
+        .dark-mode .back-btn { background: #334155; color: #e2e8f0; }
+        .dark-mode .back-btn:hover { background: #475569; }
+        .dark-mode .toggle-switch { background: #475569; }
+        .dark-mode .toggle-switch.active { background: #4f46e5; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 10px 24px; border-radius: 40px; font-size: 14px; z-index: 2000; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; border-radius: 32px; max-width: 400px; width: 100%; padding: 24px; }
+        .dark-mode .modal-content { background: #1e293b; color: #e2e8f0; }
+        .modal-content h3 { margin-bottom: 12px; }
+        .modal-content p { color: #64748b; font-size: 14px; margin-bottom: 20px; }
+        .modal-content .btn-group { display: flex; gap: 10px; }
+        .modal-content .btn-group button { flex: 1; padding: 12px; border: none; border-radius: 40px; cursor: pointer; font-weight: 600; font-size: 14px; transition: 0.2s; }
+        .modal-content .btn-group .btn-confirm { background: #ef4444; color: white; }
+        .modal-content .btn-group .btn-confirm:hover { background: #dc2626; }
+        .modal-content .btn-group .btn-cancel { background: #e2e8f0; color: #1e293b; }
+        .modal-content .btn-group .btn-cancel:hover { background: #cbd5e1; }
+        .dark-mode .modal-content .btn-group .btn-cancel { background: #334155; color: #e2e8f0; }
+        .dark-mode .modal-content .btn-group .btn-cancel:hover { background: #475569; }
+        .dark-mode .modal-content p { color: #94a3b8; }
+        .status-badge { display: inline-block; padding: 2px 10px; border-radius: 40px; font-size: 11px; font-weight: 600; }
+        .status-enabled { background: #d1fae5; color: #059669; }
+        .status-disabled { background: #fee2e2; color: #dc2626; }
+        .status-pending { background: #fef3c7; color: #d97706; }
+        .status-blocked { background: #fee2e2; color: #dc2626; }
+        @media (max-width: 500px) {
+            .setting-item { padding: 12px 14px; }
+            .modal-content { margin: 10px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1><i class="fas fa-cog" style="color:#4f46e5;"></i> Settings</h1>
+            <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        
+        <div class="setting-item">
+            <div class="setting-info">
+                <i class="fas fa-moon"></i>
+                <div>
+                    <div class="setting-label">Dark Mode</div>
+                    <div class="setting-desc">Switch between light and dark theme</div>
+                </div>
+            </div>
+            <div class="toggle-switch" id="darkModeToggle">
+                <div class="toggle-slider"></div>
+            </div>
+        </div>
+        
+        <div class="setting-item">
+            <div class="setting-info">
+                <i class="fas fa-bell"></i>
+                <div>
+                    <div class="setting-label">Push Notifications</div>
+                    <div class="setting-desc">Get notifications on your device</div>
+                </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                <span id="notifStatusBadge" class="status-badge status-pending">Checking...</span>
+                <button class="setting-btn" id="notifBtn"><i class="fas fa-bell"></i> Enable</button>
+            </div>
+        </div>
+        
+        <div class="setting-item">
+            <div class="setting-info">
+                <i class="fas fa-star"></i>
+                <div>
+                    <div class="setting-label">Rate Us</div>
+                    <div class="setting-desc">Rate BUSAHMED on the app store</div>
+                </div>
+            </div>
+            <button class="setting-btn" id="rateBtn"><i class="fas fa-star"></i> Rate</button>
+        </div>
+        
+        <div class="setting-item">
+            <div class="setting-info">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    <div class="setting-label">App Version</div>
+                    <div class="setting-desc">Current version of BUSAHMED</div>
+                </div>
+            </div>
+            <span style="font-weight:600; color:#4f46e5;">v2.0.0</span>
+        </div>
+        
+        <div class="setting-item" style="border-left: 4px solid #ef4444;">
+            <div class="setting-info">
+                <i class="fas fa-sign-out-alt" style="color:#ef4444;"></i>
+                <div>
+                    <div class="setting-label">Logout</div>
+                    <div class="setting-desc">Sign out of your account</div>
+                </div>
+            </div>
+            <button class="setting-btn danger" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </div>
+</div>
+
+<!-- Logout Confirmation Modal -->
+<div class="modal" id="logoutModal">
+    <div class="modal-content">
+        <h3><i class="fas fa-sign-out-alt" style="color:#ef4444;"></i> Logout</h3>
+        <p>Are you sure you want to logout? You will need to login again to access your account.</p>
+        <div class="btn-group">
+            <button class="btn-confirm" id="confirmLogoutBtn"><i class="fas fa-check"></i> Yes, Logout</button>
+            <button class="btn-cancel" onclick="closeLogoutModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const API_BASE = window.location.origin + '/api/';
+// =============================================
+// VALID VAPID PUBLIC KEY
+// =============================================
+const VAPID_PUBLIC_KEY = 'BI71RHFjQRo47lL_RYET0fJy2v4QBD7DvJYxYOM21Mh7xQQ0CJb7l0d1U4qqDOeH9-7XcYVjQV7yiE0_2R3aK4c';
+
+let currentUser = null;
+let isSubscribed = false;
+
+function showToast(msg, isError = false) {
+    const t = document.createElement("div");
+    t.className = "toast";
+    t.innerText = msg;
+    if (isError) t.style.background = "#dc2626";
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 3000);
+}
+
+function updateNotificationStatus(status, message) {
+    const badge = document.getElementById('notifStatusBadge');
+    const btn = document.getElementById('notifBtn');
+    
+    badge.className = 'status-badge';
+    
+    if (status === 'enabled') {
+        badge.classList.add('status-enabled');
+        badge.textContent = '✅ ' + (message || 'Enabled');
+        btn.innerHTML = '<i class="fas fa-check"></i> Enabled';
+        btn.style.background = '#10b981';
+        btn.disabled = true;
+        isSubscribed = true;
+    } else if (status === 'disabled') {
+        badge.classList.add('status-disabled');
+        badge.textContent = '❌ ' + (message || 'Disabled');
+        btn.innerHTML = '<i class="fas fa-bell"></i> Enable';
+        btn.style.background = '#4f46e5';
+        btn.disabled = false;
+        isSubscribed = false;
+    } else if (status === 'pending') {
+        badge.classList.add('status-pending');
+        badge.textContent = '⏳ ' + (message || 'Checking...');
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+        btn.disabled = true;
+    } else if (status === 'blocked') {
+        badge.classList.add('status-blocked');
+        badge.textContent = '🚫 ' + (message || 'Blocked by browser');
+        btn.innerHTML = '<i class="fas fa-bell-slash"></i> Unblock in Settings';
+        btn.style.background = '#ef4444';
+        btn.disabled = false;
+        btn.onclick = function() {
+            if (navigator.userAgent.toLowerCase().indexOf('android') > -1) {
+                if (confirm('Open browser notification settings?')) {
+                    window.location.href = 'intent://settings#Intent;action=android.settings.APP_NOTIFICATION_SETTINGS;end';
+                }
+            } else {
+                showToast('Please enable notifications in your browser settings', true);
+            }
+        };
+    } else if (status === 'unsupported') {
+        badge.classList.add('status-disabled');
+        badge.textContent = '⚠️ ' + (message || 'Not supported');
+        btn.innerHTML = '<i class="fas fa-bell-slash"></i> Unavailable';
+        btn.style.background = '#94a3b8';
+        btn.disabled = true;
+    }
+}
+
+function getToken() {
+    return localStorage.getItem('busahmed_token');
+}
+
+function getUserId() {
+    return localStorage.getItem('busahmed_user_id');
+}
+
+async function checkAuth() {
+    const token = getToken();
+    if (!token) {
+        window.location.href = 'login.html';
+        return null;
+    }
+    try {
+        const response = await fetch(API_BASE + 'profile.php?token=' + encodeURIComponent(token));
+        if (!response.ok) {
+            localStorage.clear();
+            window.location.href = 'login.html';
+            return null;
+        }
+        currentUser = await response.json();
+        return currentUser;
+    } catch(err) {
+        console.error("Auth error:", err);
+        window.location.href = 'login.html';
+        return null;
+    }
+}
+
+async function goBack() {
+    if (currentUser) {
+        if (currentUser.role === 'student') window.location.href = 'dashboard-student.html';
+        else if (currentUser.role === 'teacher') window.location.href = 'dashboard-teacher.html';
+        else if (currentUser.role === 'admin') window.location.href = 'dashboard-admin.html';
+        else if (currentUser.role === 'owner') window.location.href = 'dashboard-owner.html';
+        else window.location.href = 'login.html';
+    } else {
+        window.location.href = 'login.html';
+    }
+}
+
+// ==================== DARK MODE ====================
+function initDarkMode() {
+    const toggle = document.getElementById('darkModeToggle');
+    const isDark = localStorage.getItem('busahmed_dark_mode') === 'true';
+    
+    if (isDark) {
+        document.body.classList.add('dark-mode');
+        toggle.classList.add('active');
+    }
+    
+    toggle.onclick = () => {
+        const isCurrentlyDark = document.body.classList.toggle('dark-mode');
+        toggle.classList.toggle('active');
+        localStorage.setItem('busahmed_dark_mode', isCurrentlyDark);
+        showToast(isCurrentlyDark ? '🌙 Dark mode enabled' : '☀️ Light mode enabled');
+    };
+}
+
+// ==================== URL Base64 to Uint8Array ====================
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+
+// ==================== PUSH NOTIFICATIONS ====================
+async function subscribeToPush() {
+    try {
+        console.log('🔔 Starting push subscription...');
+        
+        const token = getToken();
+        const userId = getUserId();
+        
+        console.log('👤 User ID:', userId);
+        console.log('🔑 Token exists:', token ? 'YES' : 'NO');
+        console.log('🔑 Token:', token ? token.substring(0, 30) + '...' : 'NONE');
+        
+        if (!token) {
+            throw new Error('No authentication token found. Please login again.');
+        }
+        
+        const registration = await navigator.serviceWorker.ready;
+        if (!registration) {
+            throw new Error('Service worker not ready');
+        }
+        console.log('✅ Service worker ready');
+        
+        // Check if already subscribed
+        let subscription = await registration.pushManager.getSubscription();
+        if (subscription) {
+            console.log('✅ Already subscribed');
+            updateNotificationStatus('enabled', 'Already subscribed');
+            return subscription;
+        }
+        
+        console.log('🔑 Using VAPID key...');
+        
+        // Subscribe
+        subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+        });
+        console.log('✅ Subscribed successfully');
+        
+        // Build request - SEND TOKEN IN BOTH WAYS
+        const requestBody = {
+            subscription: subscription,
+            user_id: parseInt(userId) || 0,
+            token: token  // Send token in body
+        };
+        
+        console.log('📤 Sending to server...');
+        
+        // Try with token in URL AND Authorization header
+        const response = await fetch(API_BASE + 'subscribe-push.php?token=' + encodeURIComponent(token), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+                'token': token
+            },
+            body: JSON.stringify(requestBody)
+        });
+        
+        const data = await response.json();
+        console.log('📥 Server response:', data);
+        
+        if (data.success) {
+            updateNotificationStatus('enabled', 'Subscribed successfully');
+            showToast('🔔 Push notifications enabled!');
+            
+            setTimeout(() => {
+                sendTestNotification();
+            }, 2000);
+            
+            return subscription;
+        } else {
+            throw new Error(data.error || 'Failed to save subscription');
+        }
+        
+    } catch (error) {
+        console.error('❌ Push subscription error:', error);
+        
+        if (error.message && error.message.includes('permission')) {
+            updateNotificationStatus('blocked', 'Permission denied');
+            showToast('Please allow notifications in browser settings', true);
+        } else {
+            updateNotificationStatus('disabled', 'Error: ' + error.message);
+            showToast('Failed: ' + error.message, true);
+        }
+        return null;
+    }
+}
+
+async function unsubscribeFromPush() {
+    try {
+        const token = getToken();
+        const registration = await navigator.serviceWorker.ready;
+        const subscription = await registration.pushManager.getSubscription();
+        
+        if (subscription) {
+            await subscription.unsubscribe();
+            
+            await fetch(API_BASE + 'unsubscribe-push.php?token=' + encodeURIComponent(token), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({ user_id: getUserId() })
+            });
+            
+            updateNotificationStatus('disabled', 'Unsubscribed');
+            showToast('Push notifications disabled');
+        }
+    } catch (error) {
+        console.error('Unsubscribe error:', error);
+        showToast('Error disabling notifications', true);
+    }
+}
+
+async function sendTestNotification() {
+    try {
+        const token = getToken();
+        const userId = getUserId();
+        
+        const response = await fetch(API_BASE + 'send-test-push.php?token=' + encodeURIComponent(token), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                user_id: parseInt(userId) || 0,
+                title: '🔔 BUSAHMED',
+                body: 'Notifications are working! You will receive alerts for new messages.',
+                url: '/chat.html'
+            })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            showToast('📨 Test notification sent! Check your notification bar.');
+        } else {
+            console.log('Test notification response:', data);
+        }
+    } catch (error) {
+        console.error('Test notification error:', error);
+    }
+}
+
+async function checkNotificationStatus() {
+    updateNotificationStatus('pending', 'Checking...');
+    
+    if (!('Notification' in window)) {
+        updateNotificationStatus('unsupported', 'Browser not supported');
+        return;
+    }
+    
+    let registration = null;
+    try {
+        registration = await navigator.serviceWorker.ready;
+    } catch (error) {
+        updateNotificationStatus('disabled', 'Service worker not ready');
+        return;
+    }
+    
+    if (!registration) {
+        updateNotificationStatus('disabled', 'Service worker not ready');
+        return;
+    }
+    
+    const permission = Notification.permission;
+    console.log('🔔 Notification permission:', permission);
+    
+    if (permission === 'denied') {
+        updateNotificationStatus('blocked', 'Blocked by browser');
+        return;
+    }
+    
+    if (permission === 'granted') {
+        try {
+            const token = getToken();
+            const userId = getUserId();
+            
+            const response = await fetch(API_BASE + 'check-push-status.php?token=' + encodeURIComponent(token) + '&user_id=' + userId);
+            const data = await response.json();
+            
+            if (data.subscribed) {
+                updateNotificationStatus('enabled', 'Active');
+                isSubscribed = true;
+            } else {
+                updateNotificationStatus('disabled', 'Not subscribed');
+            }
+        } catch (error) {
+            console.error('Status check error:', error);
+            updateNotificationStatus('disabled', 'Status check failed');
+        }
+    } else {
+        updateNotificationStatus('disabled', 'Click to enable');
+    }
+}
+
+// ==================== NOTIFICATION BUTTON HANDLER ====================
+document.getElementById('notifBtn').onclick = async function() {
+    const btn = this;
+    
+    if (isSubscribed) {
+        if (confirm('Disable push notifications?')) {
+            await unsubscribeFromPush();
+        }
+        return;
+    }
+    
+    if (Notification.permission === 'denied') {
+        updateNotificationStatus('blocked', 'Blocked by browser');
+        showToast('Please enable notifications in your browser settings', true);
+        if (navigator.userAgent.toLowerCase().indexOf('android') > -1) {
+            if (confirm('Open browser notification settings?')) {
+                window.location.href = 'intent://settings#Intent;action=android.settings.APP_NOTIFICATION_SETTINGS;end';
+            }
+        }
+        return;
+    }
+    
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Requesting...';
+    
+    try {
+        const permission = await Notification.requestPermission();
+        console.log('🔔 Permission result:', permission);
+        
+        if (permission === 'granted') {
+            await subscribeToPush();
+        } else if (permission === 'denied') {
+            updateNotificationStatus('blocked', 'Permission denied');
+            showToast('Notification permission denied. Please enable in browser settings.', true);
+        } else {
+            updateNotificationStatus('disabled', 'Permission not granted');
+            showToast('Please allow notifications', true);
+        }
+    } catch (error) {
+        console.error('Notification setup error:', error);
+        showToast('Error setting up notifications: ' + error.message, true);
+        updateNotificationStatus('disabled', 'Setup failed');
+    }
+    
+    btn.disabled = false;
+    btn.innerHTML = isSubscribed ? '<i class="fas fa-check"></i> Enabled' : '<i class="fas fa-bell"></i> Enable';
+};
+
+// ==================== RATE US ====================
+document.getElementById('rateBtn').onclick = () => {
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.innerHTML = `
+        <div class="modal-content" style="text-align:center;">
+            <h3>⭐ Rate BUSAHMED</h3>
+            <p style="margin-bottom:16px;">How would you rate your experience?</p>
+            <div style="font-size:40px; margin-bottom:20px; color:#fbbf24; cursor:pointer;">
+                <span onclick="rateApp(1)">☆</span>
+                <span onclick="rateApp(2)">☆</span>
+                <span onclick="rateApp(3)">☆</span>
+                <span onclick="rateApp(4)">☆</span>
+                <span onclick="rateApp(5)">☆</span>
+            </div>
+            <button class="btn-cancel" onclick="this.closest('.modal').remove()" style="width:100%; padding:12px; border:none; border-radius:40px; cursor:pointer; background:#e2e8f0; font-weight:600;">Close</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', function(e) {
+        if (e.target === this) this.remove();
+    });
+};
+
+window.rateApp = function(rating) {
+    const modal = document.querySelector('.modal.active');
+    if (modal) {
+        modal.innerHTML = `
+            <div class="modal-content" style="text-align:center;">
+                <h3>⭐ Thank You!</h3>
+                <p style="font-size:48px; margin:16px 0;">${'⭐'.repeat(rating)}</p>
+                <p style="margin-bottom:16px;">You rated us ${rating}/5 stars!</p>
+                <button class="btn-cancel" onclick="this.closest('.modal').remove()" style="width:100%; padding:12px; border:none; border-radius:40px; cursor:pointer; background:#e2e8f0; font-weight:600;">Close</button>
+            </div>
+        `;
+        showToast('⭐ Thank you for rating!');
+    }
+};
+
+// ==================== LOGOUT ====================
+function openLogoutModal() {
+    document.getElementById('logoutModal').classList.add('active');
+}
+
+function closeLogoutModal() {
+    document.getElementById('logoutModal').classList.remove('active');
+}
+
+document.getElementById('logoutBtn').onclick = openLogoutModal;
+document.getElementById('confirmLogoutBtn').onclick = function() {
+    localStorage.clear();
+    showToast('👋 Logged out successfully');
+    setTimeout(() => {
+        window.location.href = 'login.html';
+    }, 1000);
+};
+
+document.getElementById('logoutModal').addEventListener('click', function(e) {
+    if (e.target === this) closeLogoutModal();
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && document.getElementById('logoutModal').classList.contains('active')) {
+        closeLogoutModal();
+    }
+});
+
+// ==================== INIT ====================
+async function init() {
+    await checkAuth();
+    if (!currentUser) return;
+    
+    document.getElementById('backBtn').onclick = goBack;
+    initDarkMode();
+    
+    if ('serviceWorker' in navigator) {
+        try {
+            const registration = await navigator.serviceWorker.ready;
+            if (registration) {
+                await checkNotificationStatus();
+            }
+        } catch (error) {
+            console.error('Service worker error:', error);
+            updateNotificationStatus('disabled', 'Service worker error');
+        }
+    } else {
+        updateNotificationStatus('unsupported', 'Service worker not supported');
+    }
+    
+    if (localStorage.getItem("busahmed_dark_mode") === "true") {
+        document.body.classList.add('dark-mode');
+    }
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
+</script>
+</body>
+</html>

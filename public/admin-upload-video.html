@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BUSAHMED | Admin Upload Video</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA Meta Tags -->
+<!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="/icons/icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/icons/icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="/icons/icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/icons/icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/icons/icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/icons/icon-167x167.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="/icons/icon-180x180.png" sizes="180x180">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-square70x70logo" content="/icons/icon-72x72.png">
+    <meta name="msapplication-square150x150logo" content="/icons/icon-144x144.png">
+    <meta name="msapplication-wide310x150logo" content="/icons/icon-384x384.png">
+    <meta name="msapplication-square310x310logo" content="/icons/icon-512x512.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #1e1b4b, #4f46e5); min-height: 100vh; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .card { background: white; border-radius: 32px; padding: 24px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        h1 { font-size: 24px; color: #1e1b4b; display: flex; align-items: center; gap: 10px; }
+        .back-btn { background: #e2e8f0; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .back-btn:hover { background: #cbd5e1; }
+        
+        .upload-form { margin-top: 20px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 6px; color: #1e293b; }
+        .form-group input, .form-group textarea { 
+            width: 100%; 
+            padding: 12px 16px; 
+            border: 1px solid #e2e8f0; 
+            border-radius: 20px; 
+            outline: none; 
+            font-size: 14px;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        .form-group input:focus, .form-group textarea:focus { 
+            border-color: #4f46e5; 
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+        }
+        /* Remove any restriction on spaces */
+        .form-group input[type="text"] {
+            -webkit-user-select: text;
+            user-select: text;
+        }
+        .form-group textarea { min-height: 100px; resize: vertical; }
+        .form-group .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        .form-group .file-input-wrapper input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        .form-group .file-input-wrapper .file-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px;
+            background: #f1f5f9;
+            border: 2px dashed #cbd5e1;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #64748b;
+        }
+        .form-group .file-input-wrapper .file-label:hover {
+            background: #eef2ff;
+            border-color: #4f46e5;
+        }
+        .form-group .file-input-wrapper .file-label .file-name {
+            color: #1e293b;
+            font-weight: 500;
+        }
+        
+        .upload-btn { 
+            background: #4f46e5; 
+            color: white; 
+            border: none; 
+            border-radius: 40px; 
+            padding: 14px 24px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: 600;
+            width: 100%;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .upload-btn:hover { background: #4338ca; }
+        .upload-btn:disabled { background: #94a3b8; cursor: not-allowed; }
+        
+        .info-box {
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border-left: 4px solid #4f46e5;
+        }
+        .info-box h4 { color: #1e293b; margin-bottom: 8px; }
+        .info-box p { color: #64748b; font-size: 14px; }
+        .info-box ul { color: #64748b; font-size: 14px; padding-left: 20px; margin-top: 8px; }
+        .info-box ul li { margin-bottom: 4px; }
+        .info-box .badge-admin {
+            display: inline-block;
+            background: #4f46e5;
+            color: white;
+            padding: 2px 12px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .progress-bar {
+            display: none;
+            background: #e2e8f0;
+            border-radius: 40px;
+            height: 10px;
+            margin: 12px 0;
+            overflow: hidden;
+        }
+        .progress-bar .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: #4f46e5;
+            transition: 0.3s;
+            border-radius: 40px;
+        }
+        .upload-status { 
+            text-align: center; 
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 20px;
+            display: none;
+        }
+        .upload-status.success { 
+            display: block;
+            background: #d1fae5; 
+            color: #059669; 
+            border: 1px solid #10b981;
+        }
+        .upload-status.error { 
+            display: block;
+            background: #fee2e2; 
+            color: #dc2626; 
+            border: 1px solid #ef4444;
+        }
+        .upload-status .status-icon { font-size: 24px; display: block; margin-bottom: 4px; }
+        
+        .preview-container {
+            display: none;
+            margin: 12px 0;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+        }
+        .preview-container video {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+        }
+        
+        .dark-mode { background: #0f172a; }
+        .dark-mode .card { background: #1e293b; }
+        .dark-mode h1 { color: #f1f5f9; }
+        .dark-mode .back-btn { background: #334155; color: #e2e8f0; }
+        .dark-mode .back-btn:hover { background: #475569; }
+        .dark-mode .form-group label { color: #e2e8f0; }
+        .dark-mode .form-group input, 
+        .dark-mode .form-group textarea { 
+            background: #334155; 
+            border-color: #475569; 
+            color: white; 
+        }
+        .dark-mode .form-group input::placeholder, 
+        .dark-mode .form-group textarea::placeholder { color: #94a3b8; }
+        .dark-mode .form-group .file-input-wrapper .file-label {
+            background: #334155;
+            border-color: #475569;
+            color: #94a3b8;
+        }
+        .dark-mode .form-group .file-input-wrapper .file-label .file-name {
+            color: #e2e8f0;
+        }
+        .dark-mode .info-box { background: #0f172a; border-color: #4f46e5; }
+        .dark-mode .info-box h4 { color: #e2e8f0; }
+        .dark-mode .info-box p, .dark-mode .info-box ul { color: #94a3b8; }
+        .dark-mode .upload-status.success { background: #064e3b; color: #6ee7b7; border-color: #10b981; }
+        .dark-mode .upload-status.error { background: #7f1d1d; color: #fca5a5; border-color: #ef4444; }
+        
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 8px 20px; border-radius: 40px; font-size: 14px; z-index: 2000; }
+        
+        @media (max-width: 600px) {
+            .card { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1><i class="fas fa-video" style="color:#4f46e5;"></i> Upload Video</h1>
+            <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        
+        <div class="info-box">
+            <h4><i class="fas fa-crown" style="color:#4f46e5;"></i> Admin Upload</h4>
+            <p>As an admin, your videos are <strong>auto-approved</strong> and published immediately!</p>
+            <ul>
+                <li>📁 Max file size: <strong>1GB</strong></li>
+                <li>⏱️ Max duration: <strong>30 minutes</strong></li>
+                <li>✅ Auto-approved - No waiting!</li>
+                <li>👑 Videos show "Admin" badge</li>
+            </ul>
+        </div>
+        
+        <div class="upload-form">
+            <div class="form-group">
+                <label><i class="fas fa-tag"></i> Video Title *</label>
+                <input type="text" id="videoTitle" placeholder="Enter video title..." autocomplete="off" spellcheck="true">
+            </div>
+            
+            <div class="form-group">
+                <label><i class="fas fa-hashtag"></i> Tags (comma separated)</label>
+                <input type="text" id="videoTags" placeholder="e.g., tutorial, education, technology" autocomplete="off" spellcheck="true">
+            </div>
+            
+            <div class="form-group">
+                <label><i class="fas fa-align-left"></i> Description</label>
+                <textarea id="videoDescription" placeholder="Describe your video..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label><i class="fas fa-file-video"></i> Select Video File *</label>
+                <div class="file-input-wrapper">
+                    <div class="file-label" id="fileLabel">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Click to select video file</span>
+                        <span class="file-name" id="fileName"></span>
+                    </div>
+                    <input type="file" id="videoFile" accept="video/*,.mp4,.mov,.avi,.webm,.mkv,.3gp,.flv,.wmv,.mpeg">
+                </div>
+                <div class="preview-container" id="previewContainer">
+                    <video id="videoPreview" controls></video>
+                </div>
+            </div>
+            
+            <div class="progress-bar" id="uploadProgress">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            
+            <div class="upload-status" id="uploadStatus"></div>
+            
+            <button class="upload-btn" id="submitBtn">
+                <i class="fas fa-upload"></i> Publish Video
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+const API_BASE = window.location.origin + '/api/';
+let currentUser = null;
+
+function getToken() {
+    return localStorage.getItem('busahmed_token');
+}
+
+function escapeHtml(str) {
+    if (!str) return "";
+    return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+}
+
+function showToast(msg, isError = false) {
+    const t = document.createElement("div");
+    t.className = "toast";
+    t.innerText = msg;
+    if (isError) t.style.background = "#dc2626";
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 3000);
+}
+
+async function checkAuth() {
+    const token = getToken();
+    if (!token) {
+        window.location.href = 'login.html';
+        return null;
+    }
+    try {
+        const response = await fetch(API_BASE + 'profile.php?token=' + encodeURIComponent(token));
+        if (!response.ok) {
+            localStorage.clear();
+            window.location.href = 'login.html';
+            return null;
+        }
+        currentUser = await response.json();
+        if (currentUser.role !== 'admin') {
+            showToast('Only admins can access this page', true);
+            setTimeout(() => window.location.href = 'dashboard-admin.html', 2000);
+            return null;
+        }
+        return currentUser;
+    } catch(err) {
+        console.error("Auth error:", err);
+        window.location.href = 'login.html';
+        return null;
+    }
+}
+
+function goBack() {
+    window.location.href = 'dashboard-admin.html';
+}
+
+// ==================== FILE PREVIEW ====================
+document.getElementById('videoFile').addEventListener('change', function(e) {
+    const file = this.files[0];
+    const fileName = document.getElementById('fileName');
+    const previewContainer = document.getElementById('previewContainer');
+    const videoPreview = document.getElementById('videoPreview');
+    
+    if (file) {
+        fileName.textContent = file.name;
+        document.querySelector('.file-label span:not(.file-name)').textContent = 'Selected:';
+        
+        // Preview video
+        const url = URL.createObjectURL(file);
+        videoPreview.src = url;
+        previewContainer.style.display = 'block';
+        
+        // Check duration if possible
+        videoPreview.onloadedmetadata = function() {
+            const duration = Math.round(this.duration);
+            const mins = Math.floor(duration / 60);
+            const secs = duration % 60;
+            const durationText = mins + ':' + String(secs).padStart(2, '0');
+            fileName.textContent += ' (' + durationText + ')';
+        };
+    } else {
+        fileName.textContent = '';
+        document.querySelector('.file-label span:not(.file-name)').textContent = 'Click to select video file';
+        previewContainer.style.display = 'none';
+        videoPreview.src = '';
+    }
+});
+
+// ==================== UPLOAD VIDEO ====================
+document.getElementById('submitBtn').onclick = async function() {
+    const title = document.getElementById('videoTitle').value.trim();
+    const tags = document.getElementById('videoTags').value.trim();
+    const description = document.getElementById('videoDescription').value.trim();
+    const file = document.getElementById('videoFile').files[0];
+    
+    if (!file) {
+        showToast('Please select a video file', true);
+        return;
+    }
+    
+    if (!title) {
+        showToast('Please enter a video title', true);
+        document.getElementById('videoTitle').focus();
+        return;
+    }
+    
+    const btn = this;
+    const progressDiv = document.getElementById('uploadProgress');
+    const statusDiv = document.getElementById('uploadStatus');
+    
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    progressDiv.style.display = 'block';
+    statusDiv.className = 'upload-status';
+    statusDiv.style.display = 'none';
+    
+    const formData = new FormData();
+    formData.append('video', file);
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('tags', tags);
+    
+    const token = getToken();
+    
+    try {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', API_BASE + 'upload-video.php?token=' + encodeURIComponent(token));
+        
+        xhr.upload.onprogress = function(e) {
+            if (e.lengthComputable) {
+                const percent = Math.round((e.loaded / e.total) * 100);
+                document.getElementById('progressBar').style.width = percent + '%';
+            }
+        };
+        
+        xhr.onload = function() {
+            try {
+                const data = JSON.parse(xhr.responseText);
+                
+                if (data.success) {
+                    statusDiv.className = 'upload-status success';
+                    statusDiv.style.display = 'block';
+                    statusDiv.innerHTML = `
+                        <span class="status-icon">✅</span>
+                        <strong>${data.message}</strong>
+                        ${data.video_url ? `<br><small style="font-size:12px;">Video URL: ${escapeHtml(data.video_url)}</small>` : ''}
+                        ${data.status === 'approved' ? '<br><span style="font-size:13px; color:#059669;">📢 Video is now live on the feed!</span>' : ''}
+                    `;
+                    showToast('✅ Video published successfully!');
+                    
+                    setTimeout(() => {
+                        document.getElementById('videoTitle').value = '';
+                        document.getElementById('videoTags').value = '';
+                        document.getElementById('videoDescription').value = '';
+                        document.getElementById('videoFile').value = '';
+                        document.getElementById('fileName').textContent = '';
+                        document.getElementById('previewContainer').style.display = 'none';
+                        document.getElementById('videoPreview').src = '';
+                        document.getElementById('progressBar').style.width = '0%';
+                        progressDiv.style.display = 'none';
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-upload"></i> Publish Video';
+                        document.querySelector('.file-label span:not(.file-name)').textContent = 'Click to select video file';
+                        
+                        setTimeout(() => {
+                            if (confirm('Video published! Would you like to view it on the feed?')) {
+                                window.location.href = 'videos.html';
+                            }
+                        }, 1000);
+                    }, 3000);
+                } else {
+                    statusDiv.className = 'upload-status error';
+                    statusDiv.style.display = 'block';
+                    statusDiv.innerHTML = `
+                        <span class="status-icon">❌</span>
+                        ${escapeHtml(data.error || 'Upload failed')}
+                    `;
+                    showToast(data.error || 'Upload failed', true);
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-upload"></i> Publish Video';
+                }
+            } catch (e) {
+                console.error('Parse error:', e, 'Response:', xhr.responseText);
+                statusDiv.className = 'upload-status error';
+                statusDiv.style.display = 'block';
+                statusDiv.innerHTML = `
+                    <span class="status-icon">❌</span>
+                    Error processing response
+                `;
+                showToast('Error processing response', true);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-upload"></i> Publish Video';
+            }
+        };
+        
+        xhr.onerror = function() {
+            statusDiv.className = 'upload-status error';
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = `
+                <span class="status-icon">❌</span>
+                Network error. Please check your internet connection.
+            `;
+            showToast('Network error. Please try again.', true);
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-upload"></i> Publish Video';
+            progressDiv.style.display = 'none';
+        };
+        
+        xhr.send(formData);
+        
+    } catch(err) {
+        console.error('Upload error:', err);
+        showToast('Error uploading video', true);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-upload"></i> Publish Video';
+        progressDiv.style.display = 'none';
+    }
+};
+
+// Add event listener to prevent any key blocking
+document.getElementById('videoTitle').addEventListener('keydown', function(e) {
+    // Allow all keys including space
+    return true;
+});
+
+async function init() {
+    await checkAuth();
+    if (!currentUser) return;
+    
+    document.getElementById('backBtn').onclick = goBack;
+    
+    if (localStorage.getItem("busahmed_dark_mode") === "true") {
+        document.body.classList.add("dark-mode");
+    }
+}
+
+init();
+</script>
+</body>
+</html>

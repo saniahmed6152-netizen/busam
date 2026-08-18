@@ -1,0 +1,55 @@
+<?php
+// test-push-subscribe.php - Test subscription endpoint
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Push Subscribe</title>
+</head>
+<body>
+    <h1>Test Push Subscription</h1>
+    <button onclick="testSubscribe()">Test Subscribe</button>
+    <div id="result"></div>
+
+    <script>
+    async function testSubscribe() {
+        const result = document.getElementById('result');
+        result.innerHTML = 'Testing...';
+        
+        try {
+            // Get token from localStorage
+            const token = localStorage.getItem('busahmed_token');
+            const userId = localStorage.getItem('busahmed_user_id');
+            
+            // Create a mock subscription
+            const mockSubscription = {
+                endpoint: 'https://test.endpoint.com',
+                keys: {
+                    auth: 'test-auth-key',
+                    p256dh: 'test-p256dh-key'
+                }
+            };
+            
+            const response = await fetch('/api/subscribe-push.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({
+                    subscription: mockSubscription,
+                    user_id: parseInt(userId) || 1,
+                    token: token
+                })
+            });
+            
+            const data = await response.json();
+            result.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            
+        } catch (error) {
+            result.innerHTML = 'Error: ' + error.message;
+        }
+    }
+    </script>
+</body>
+</html>a

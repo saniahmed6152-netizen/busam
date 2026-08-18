@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BUSAHMED | User Network</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA Meta Tags -->
+<!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="/icons/icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/icons/icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="/icons/icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/icons/icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/icons/icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/icons/icon-167x167.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="/icons/icon-180x180.png" sizes="180x180">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-square70x70logo" content="/icons/icon-72x72.png">
+    <meta name="msapplication-square150x150logo" content="/icons/icon-144x144.png">
+    <meta name="msapplication-wide310x150logo" content="/icons/icon-384x384.png">
+    <meta name="msapplication-square310x310logo" content="/icons/icon-512x512.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #1e1b4b, #4f46e5); min-height: 100vh; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .card { background: white; border-radius: 32px; padding: 24px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        h1 { font-size: 24px; color: #1e1b4b; display: flex; align-items: center; gap: 10px; }
+        .back-btn { background: #e2e8f0; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .back-btn:hover { background: #cbd5e1; }
+        .tabs { display: flex; gap: 16px; margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; flex-wrap: wrap; }
+        .tab { padding: 8px 0; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .tab.active { color: #4f46e5; border-bottom: 2px solid #4f46e5; }
+        .interaction-card { background: #f8fafc; border-radius: 20px; padding: 14px; margin-bottom: 12px; border-left: 4px solid #4f46e5; transition: 0.2s; }
+        .interaction-card:hover { transform: scale(1.01); background: #eef2ff; }
+        .btn-sm { background: #4f46e5; color: white; border: none; border-radius: 40px; padding: 4px 12px; cursor: pointer; font-size: 12px; margin: 2px; transition: 0.2s; }
+        .btn-sm:hover { transform: scale(1.05); }
+        .dark-mode { background: #0f172a; }
+        .dark-mode .card { background: #1e293b; }
+        .dark-mode .interaction-card { background: #1e293b; border-color: #a5b4fc; color: #e2e8f0; }
+        .dark-mode .interaction-card:hover { background: #334155; }
+        .dark-mode .back-btn { background: #334155; color: #e2e8f0; }
+        .dark-mode .back-btn:hover { background: #475569; }
+        .dark-mode .tabs { border-color: #334155; }
+        .dark-mode .tab.active { color: #a5b4fc; border-bottom-color: #a5b4fc; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 8px 20px; border-radius: 40px; font-size: 14px; z-index: 2000; }
+        .loading-spinner { text-align: center; padding: 40px; color: #94a3b8; }
+        .loading-spinner i { font-size: 30px; display: block; margin-bottom: 12px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .empty-state { text-align: center; padding: 40px 20px; color: #94a3b8; }
+        .empty-state i { font-size: 40px; display: block; margin-bottom: 12px; opacity: 0.5; }
+        .dark-mode .empty-state { color: #64748b; }
+        .dark-mode .loading-spinner { color: #64748b; }
+        .status-badge { display: inline-block; padding: 2px 10px; border-radius: 40px; font-size: 11px; font-weight: 600; }
+        .status-pending { background: #fef3c7; color: #d97706; }
+        .status-sent { background: #dbeafe; color: #2563eb; }
+        .status-paid { background: #d1fae5; color: #059669; }
+        .status-rejected { background: #fee2e2; color: #dc2626; }
+        .dark-mode .status-pending { background: #78350f; color: #fbbf24; }
+        .dark-mode .status-sent { background: #1e3a5f; color: #60a5fa; }
+        .dark-mode .status-paid { background: #064e3b; color: #6ee7b7; }
+        .dark-mode .status-rejected { background: #7f1d1d; color: #fca5a5; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1><i class="fas fa-globe" style="color:#4f46e5;"></i> User Network</h1>
+            <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        <div class="tabs">
+            <div class="tab active" data-tab="users">👥 Users</div>
+            <div class="tab" data-tab="follows">🔗 Follows</div>
+            <div class="tab" data-tab="ratings">⭐ Ratings</div>
+            <div class="tab" data-tab="rewards">🎁 Rewards</div>
+        </div>
+        <div id="usersPanel">
+            <div class="loading-spinner"><i class="fas fa-spinner"></i> Loading users...</div>
+        </div>
+        <div id="followsPanel" style="display:none;">
+            <div class="loading-spinner"><i class="fas fa-spinner"></i> Loading follows...</div>
+        </div>
+        <div id="ratingsPanel" style="display:none;">
+            <div class="loading-spinner"><i class="fas fa-spinner"></i> Loading ratings...</div>
+        </div>
+        <div id="rewardsPanel" style="display:none;">
+            <div class="loading-spinner"><i class="fas fa-spinner"></i> Loading rewards...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+const API_BASE = window.location.origin + '/api/';
+    let currentUser = null;
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+
+    function showToast(msg, isError = false) {
+        const t = document.createElement("div");
+        t.className = "toast";
+        t.innerText = msg;
+        if (isError) t.style.background = "#dc2626";
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    }
+
+    function getToken() {
+        return localStorage.getItem('busahmed_token');
+    }
+
+    async function checkAuth() {
+        const token = getToken();
+        if (!token) {
+            window.location.href = 'login.html';
+            return null;
+        }
+        try {
+            const response = await fetch(API_BASE + 'profile.php?token=' + encodeURIComponent(token));
+            if (!response.ok) {
+                localStorage.clear();
+                window.location.href = 'login.html';
+                return null;
+            }
+            const user = await response.json();
+            if (user.role !== 'admin') {
+                window.location.href = 'login.html';
+                return null;
+            }
+            currentUser = user;
+            return user;
+        } catch(err) {
+            console.error("Auth error:", err);
+            window.location.href = 'login.html';
+            return null;
+        }
+    }
+
+    function goBack() {
+        window.location.href = 'dashboard-admin.html';
+    }
+
+    // ==================== USERS ====================
+    async function loadAllUsers() {
+        const token = getToken();
+        if (!token) return;
+        const container = document.getElementById("usersPanel");
+        container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i> Loading users...</div>';
+        
+        try {
+            const response = await fetch(API_BASE + 'admin-users.php?token=' + encodeURIComponent(token));
+            const users = await response.json();
+            
+            if (!Array.isArray(users) || users.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-users"></i>No users found</div>';
+                return;
+            }
+            
+            let html = "";
+            users.forEach(u => {
+                const isSuspended = u.suspended && (u.suspended_until === null || new Date(u.suspended_until) > new Date());
+                const suspendedUntil = u.suspended_until ? new Date(u.suspended_until).toLocaleString() : 'N/A';
+                const isVerified = u.verified == 1;
+                
+                let statusBadges = '';
+                if (isSuspended) {
+                    statusBadges += `<span class="status-badge status-pending">⛔ Suspended until ${suspendedUntil}</span>`;
+                }
+                if (isVerified) {
+                    statusBadges += `<span class="status-badge status-paid">✅ Verified</span>`;
+                }
+                
+                const avatarHtml = u.avatar ? `<img src="${u.avatar}" style="width:32px; height:32px; border-radius:50%; object-fit:cover;">` : `<i class="fas fa-user"></i>`;
+                
+                html += `
+                    <div class="interaction-card">
+                        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <div style="width:32px; height:32px; border-radius:50%; background:#cbd5e1; display:flex; align-items:center; justify-content:center; overflow:hidden; font-size:16px; color:#475569; flex-shrink:0;">
+                                    ${avatarHtml}
+                                </div>
+                                <div>
+                                    <div><strong>${escapeHtml(u.name)}</strong> <span style="font-size:12px; color:#64748b;">(${u.role})</span></div>
+                                    <div style="font-size:12px; color:#64748b;">📧 ${escapeHtml(u.email)}</div>
+                                    <div style="font-size:11px; color:#94a3b8;">⭐ ${u.average_rating || 'Not rated'} | 🏆 ${u.points || 0} pts | 👥 ${u.followers_count || 0} followers</div>
+                                    <div style="margin-top:4px; display:flex; flex-wrap:wrap; gap:4px;">
+                                        ${statusBadges}
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-left:auto; display:flex; gap:4px; flex-wrap:wrap;">
+                                <button class="btn-sm" onclick="location.href='view-profile.html?id=${u.id}'" style="background:#4f46e5;">👁️ View</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            
+        } catch(err) {
+            console.error(err);
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i>Error loading users</div>';
+        }
+    }
+
+    // ==================== FOLLOWS ====================
+    async function loadFollows() {
+        const token = getToken();
+        if (!token) return;
+        const container = document.getElementById("followsPanel");
+        container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i> Loading follows...</div>';
+        
+        try {
+            const response = await fetch(API_BASE + 'admin-follows.php?token=' + encodeURIComponent(token));
+            const follows = await response.json();
+            
+            if (!Array.isArray(follows) || follows.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-link"></i>No follow relationships</div>';
+                return;
+            }
+            
+            let html = "";
+            follows.forEach(f => {
+                html += `
+                    <div class="interaction-card">
+                        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                            <span style="cursor:pointer; color:#4f46e5; font-weight:600;" onclick="location.href='view-profile.html?id=${f.follower_id}'">${escapeHtml(f.follower_name)}</span>
+                            <span style="color:#94a3b8;">→ follows →</span>
+                            <span style="cursor:pointer; color:#4f46e5; font-weight:600;" onclick="location.href='view-profile.html?id=${f.following_id}'">${escapeHtml(f.following_name)}</span>
+                            <div style="margin-left:auto; display:flex; gap:4px; flex-wrap:wrap;">
+                                <button class="btn-sm" onclick="location.href='view-profile.html?id=${f.follower_id}'" style="background:#4f46e5;">👁️ Follower</button>
+                                <button class="btn-sm" onclick="location.href='view-profile.html?id=${f.following_id}'" style="background:#10b981;">👁️ Followed</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            
+        } catch(err) {
+            console.error(err);
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i>Error loading follows</div>';
+        }
+    }
+
+    // ==================== RATINGS ====================
+    async function loadRatings() {
+        const token = getToken();
+        if (!token) return;
+        const container = document.getElementById("ratingsPanel");
+        container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i> Loading ratings...</div>';
+        
+        try {
+            const response = await fetch(API_BASE + 'admin-ratings.php?token=' + encodeURIComponent(token));
+            const ratings = await response.json();
+            
+            if (!Array.isArray(ratings) || ratings.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-star"></i>No ratings yet</div>';
+                return;
+            }
+            
+            let html = "";
+            ratings.forEach(r => {
+                let stars = '';
+                for (let i = 0; i < r.rating; i++) stars += '⭐';
+                for (let i = r.rating; i < 5; i++) stars += '☆';
+                
+                html += `
+                    <div class="interaction-card">
+                        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                            <span style="cursor:pointer; color:#4f46e5; font-weight:600;" onclick="location.href='view-profile.html?id=${r.rater_id}'">${escapeHtml(r.rater_name)}</span>
+                            <span style="color:#94a3b8;">rated</span>
+                            <span style="cursor:pointer; color:#4f46e5; font-weight:600;" onclick="location.href='view-profile.html?id=${r.rated_id}'">${escapeHtml(r.rated_name)}</span>
+                            <span style="font-size:16px;">${stars}</span>
+                            <span style="font-size:12px; color:#64748b;">(${r.rating}/5)</span>
+                            <div style="font-size:11px; color:#94a3b8; margin-left:auto;">
+                                ${new Date(r.created_at).toLocaleString()}
+                            </div>
+                            <div style="width:100%; display:flex; gap:4px; flex-wrap:wrap; margin-top:4px;">
+                                <button class="btn-sm" onclick="location.href='view-profile.html?id=${r.rater_id}'" style="background:#4f46e5;">👁️ Rater</button>
+                                <button class="btn-sm" onclick="location.href='view-profile.html?id=${r.rated_id}'" style="background:#10b981;">👁️ Rated</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            
+        } catch(err) {
+            console.error(err);
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i>Error loading ratings</div>';
+        }
+    }
+
+    // ==================== REWARDS ====================
+    async function loadRewards() {
+        const token = getToken();
+        if (!token) return;
+        const container = document.getElementById("rewardsPanel");
+        container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i> Loading rewards...</div>';
+        
+        try {
+            const response = await fetch(API_BASE + 'admin-rewards.php?token=' + encodeURIComponent(token));
+            
+            if (!response.ok) {
+                throw new Error('HTTP ' + response.status);
+            }
+            
+            const data = await response.json();
+            
+            if (data.error) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i>' + escapeHtml(data.error) + '</div>';
+                return;
+            }
+            
+            if (!Array.isArray(data) || data.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-gift"></i>No rewards yet</div>';
+                return;
+            }
+            
+            let html = "";
+            data.forEach(r => {
+                const statusClass = {
+                    pending: 'status-pending',
+                    sent: 'status-sent',
+                    paid: 'status-paid',
+                    rejected: 'status-rejected'
+                }[r.status] || 'status-pending';
+                
+                const statusLabel = {
+                    pending: '⏳ Pending',
+                    sent: '📤 Sent',
+                    paid: '✅ Paid',
+                    rejected: '❌ Rejected'
+                }[r.status] || r.status;
+                
+                const statusColor = {
+                    pending: '#f59e0b',
+                    sent: '#3b82f6',
+                    paid: '#10b981',
+                    rejected: '#ef4444'
+                }[r.status] || '#64748b';
+                
+                html += `
+                    <div class="interaction-card" style="border-left-color: ${statusColor};">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                            <div>
+                                <strong style="cursor:pointer; color:#4f46e5;" onclick="location.href='view-profile.html?id=${r.user_id}'">${escapeHtml(r.user_name || 'Unknown')}</strong>
+                                <span style="color:#10b981; font-weight:700; font-size:16px;">₦${parseFloat(r.amount).toFixed(2)}</span>
+                                <span class="status-badge ${statusClass}">${statusLabel}</span>
+                            </div>
+                            <div style="font-size:12px; color:#94a3b8;">
+                                ${r.admin_name ? `By: ${escapeHtml(r.admin_name)}` : 'System'}
+                            </div>
+                        </div>
+                        ${r.message ? `<div style="font-size:13px; color:#64748b; margin-top:4px; padding:8px 12px; background:#f1f5f9; border-radius:12px;">${escapeHtml(r.message)}</div>` : ''}
+                        <div style="font-size:11px; color:#94a3b8; margin-top:4px;">
+                            📅 ${r.created_at ? new Date(r.created_at).toLocaleString() : 'N/A'}
+                        </div>
+                        ${r.status === 'sent' ? 
+                            `<button onclick="markPaid(${r.id})" style="background:#10b981; color:white; border:none; border-radius:40px; padding:4px 16px; cursor:pointer; font-size:12px; margin-top:8px; transition:0.2s;">
+                                <i class="fas fa-check"></i> Mark Paid
+                            </button>` : 
+                            ''
+                        }
+                        <div style="margin-top:8px; display:flex; gap:4px; flex-wrap:wrap;">
+                            <button class="btn-sm" onclick="location.href='view-profile.html?id=${r.user_id}'" style="background:#4f46e5;">👁️ View User</button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            
+        } catch(err) {
+            console.error('Load rewards error:', err);
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i>Error loading rewards: ' + escapeHtml(err.message) + '</div>';
+        }
+    }
+
+    async function markPaid(rewardId) {
+        if (!confirm('Mark this reward as paid?')) return;
+        const token = getToken();
+        try {
+            const response = await fetch(API_BASE + 'admin-mark-paid.php?token=' + encodeURIComponent(token), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ reward_id: rewardId })
+            });
+            const data = await response.json();
+            if (data.success) {
+                showToast('✅ Marked as paid');
+                loadRewards();
+            } else {
+                showToast(data.error || 'Failed to mark as paid', true);
+            }
+        } catch(err) { 
+            showToast('Network error', true);
+        }
+    }
+
+    // ==================== INIT ====================
+    async function init() {
+        await checkAuth();
+        if (!currentUser) return;
+        
+        // Load initial data
+        await loadAllUsers();
+        await loadFollows();
+        await loadRatings();
+        await loadRewards();
+        
+        document.getElementById("backBtn").onclick = goBack;
+        
+        // Tab switching
+        document.querySelectorAll(".tab").forEach(tab => {
+            tab.onclick = () => {
+                document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+                tab.classList.add("active");
+                const show = tab.dataset.tab;
+                
+                document.getElementById("usersPanel").style.display = show === "users" ? "block" : "none";
+                document.getElementById("followsPanel").style.display = show === "follows" ? "block" : "none";
+                document.getElementById("ratingsPanel").style.display = show === "ratings" ? "block" : "none";
+                document.getElementById("rewardsPanel").style.display = show === "rewards" ? "block" : "none";
+                
+                // Refresh data when switching tabs
+                if (show === "users") loadAllUsers();
+                else if (show === "follows") loadFollows();
+                else if (show === "ratings") loadRatings();
+                else if (show === "rewards") loadRewards();
+            };
+        });
+        
+        if (localStorage.getItem("busahmed_dark_mode") === "true") document.body.classList.add("dark-mode");
+        
+        // Expose functions globally
+        window.markPaid = markPaid;
+        window.loadRewards = loadRewards;
+    }
+    
+    init();
+</script>
+</body>
+</html>

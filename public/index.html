@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BUSAHMED</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA Meta Tags -->
+<!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="/icons/icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/icons/icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="/icons/icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/icons/icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/icons/icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/icons/icon-167x167.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="/icons/icon-180x180.png" sizes="180x180">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-square70x70logo" content="/icons/icon-72x72.png">
+    <meta name="msapplication-square150x150logo" content="/icons/icon-144x144.png">
+    <meta name="msapplication-wide310x150logo" content="/icons/icon-384x384.png">
+    <meta name="msapplication-square310x310logo" content="/icons/icon-512x512.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        .splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e1b4b, #4f46e5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease;
+        }
+        .splash-content {
+            text-align: center;
+            color: white;
+        }
+        .logo-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        .splash h1 {
+            font-size: 42px;
+            letter-spacing: -1px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        .splash p {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255,255,255,0.2);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+    </style>
+</head>
+<body>
+<div id="splash" class="splash">
+    <div class="splash-content">
+        <div class="logo-icon"><i class="fas fa-brain"></i></div>
+        <h1>BUSAHMED</h1>
+        <p>Solutions. Security. Innovation.</p>
+        <div class="spinner"></div>
+        <p style="margin-top: 24px; font-size: 14px; opacity:0.7;">Loading your experience...</p>
+    </div>
+</div>
+
+<script>
+    // ==================== PWA SETUP ====================
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(registration) {
+                    console.log('✅ Service Worker registered successfully:', registration.scope);
+                    
+                    // Check for updates
+                    registration.addEventListener('updatefound', function() {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', function() {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // New version available
+                                if (confirm('New version available! Refresh to update?')) {
+                                    window.location.reload();
+                                }
+                            }
+                        });
+                    });
+                })
+                .catch(function(error) {
+                    console.error('❌ Service Worker registration failed:', error);
+                });
+        });
+    }
+
+    // ==================== INSTALL PROMPT ====================
+    let deferredPrompt;
+    const installBanner = document.createElement('div');
+    installBanner.style.cssText = `
+        position: fixed; bottom: 0; left: 0; right: 0;
+        background: linear-gradient(135deg, #1e1b4b, #4f46e5);
+        color: white;
+        padding: 16px 20px;
+        display: none;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 9999;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+        flex-wrap: wrap;
+        gap: 12px;
+    `;
+    installBanner.innerHTML = `
+        <div style="display:flex; align-items:center; gap:12px;">
+            <i class="fas fa-mobile-alt" style="font-size:24px;"></i>
+            <div>
+                <strong style="font-size:16px;">Install BUSAHMED</strong>
+                <p style="font-size:12px; opacity:0.8; margin:0;">Get the app for the best experience</p>
+            </div>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button id="installBtn" style="background:#10b981; color:white; border:none; border-radius:40px; padding:8px 20px; font-weight:600; cursor:pointer;">
+                <i class="fas fa-download"></i> Install
+            </button>
+            <button id="dismissInstallBtn" style="background:rgba(255,255,255,0.2); color:white; border:none; border-radius:40px; padding:8px 20px; font-weight:600; cursor:pointer;">
+                Dismiss
+            </button>
+        </div>
+    `;
+    document.body.appendChild(installBanner);
+
+    // Show install prompt
+    window.addEventListener('beforeinstallprompt', function(e) {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBanner.style.display = 'flex';
+        console.log('✅ Install prompt available');
+    });
+
+    document.getElementById('installBtn').addEventListener('click', function() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(function(choiceResult) {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('✅ User accepted the install prompt');
+                    installBanner.style.display = 'none';
+                } else {
+                    console.log('❌ User dismissed the install prompt');
+                }
+                deferredPrompt = null;
+            });
+        }
+    });
+
+    document.getElementById('dismissInstallBtn').addEventListener('click', function() {
+        installBanner.style.display = 'none';
+        // Store dismissal preference
+        localStorage.setItem('busahmed_install_dismissed', 'true');
+    });
+
+    // Check if user already dismissed
+    if (localStorage.getItem('busahmed_install_dismissed') === 'true') {
+        installBanner.style.display = 'none';
+    }
+
+    // Hide install banner after installation
+    window.addEventListener('appinstalled', function() {
+        installBanner.style.display = 'none';
+        console.log('✅ App installed successfully!');
+        // Track installation
+        if (window.gtag) {
+            gtag('event', 'install', {
+                'event_category': 'PWA',
+                'event_label': 'App installed'
+            });
+        }
+    });
+
+    // ==================== PUSH NOTIFICATIONS ====================
+    async function subscribeToPush() {
+        try {
+            const registration = await navigator.serviceWorker.ready;
+            const subscription = await registration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array('YOUR_VAPID_PUBLIC_KEY')
+            });
+            
+            // Send subscription to server
+            await fetch('/api/subscribe.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(subscription)
+            });
+            
+            console.log('✅ Push notification subscribed');
+        } catch (error) {
+            console.error('Push subscription error:', error);
+        }
+    }
+
+    // Helper: Convert VAPID key
+    function urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+    }
+
+    // ==================== SPLASH SCREEN ====================
+    // Enhanced splash screen with app-like feel
+    function showSplashScreen() {
+        const splash = document.getElementById('splash');
+        if (!splash) {
+            // Create splash if not exists
+            const splashDiv = document.createElement('div');
+            splashDiv.id = 'splash';
+            splashDiv.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: linear-gradient(135deg, #1e1b4b, #4f46e5);
+                display: flex; align-items: center; justify-content: center;
+                z-index: 10000; transition: opacity 0.5s ease;
+            `;
+            splashDiv.innerHTML = `
+                <div style="text-align:center; color:white;">
+                    <div style="font-size:80px; margin-bottom:20px; animation: float 2s ease-in-out infinite;">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h1 style="font-size:42px; letter-spacing:-1px; font-weight:800;">BUSAHMED</h1>
+                    <p style="font-size:18px; opacity:0.9;">Solutions. Security. Innovation.</p>
+                    <div style="margin-top:30px;">
+                        <div style="width:50px; height:50px; margin:0 auto; border:4px solid rgba(255,255,255,0.2); border-top:4px solid white; border-radius:50%; animation: spin 1s linear infinite;"></div>
+                    </div>
+                </div>
+                <style>
+                    @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+                    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+                </style>
+            `;
+            document.body.prepend(splashDiv);
+            
+            setTimeout(() => {
+                splashDiv.style.opacity = '0';
+                setTimeout(() => {
+                    splashDiv.style.display = 'none';
+                }, 500);
+            }, 1500);
+        }
+    }
+
+    // Call splash screen
+    showSplashScreen();
+
+    // ==================== AUTO-LOGIN REDIRECT ====================
+    async function initDefaultData() {
+        const API_BASE = window.location.origin + '/api/';
+        try {
+            const token = localStorage.getItem('busahmed_token');
+            if (!token) {
+                setTimeout(() => { window.location.href = "login.html"; }, 500);
+                return;
+            }
+            
+            const res = await fetch(API_BASE + 'profile.php?token=' + encodeURIComponent(token));
+            if (!res.ok) {
+                localStorage.clear();
+                setTimeout(() => { window.location.href = "login.html"; }, 500);
+                return;
+            }
+            
+            const user = await res.json();
+            if (user.suspended == 1) {
+                localStorage.clear();
+                alert('Your account has been suspended. Please contact support.');
+                setTimeout(() => { window.location.href = "login.html"; }, 500);
+                return;
+            }
+            
+            // Redirect to appropriate dashboard
+            const roleMap = {
+                'student': 'dashboard-student.html',
+                'teacher': 'dashboard-teacher.html',
+                'admin': 'dashboard-admin.html',
+                'owner': 'dashboard-owner.html'
+            };
+            
+            const dashboard = roleMap[user.role] || 'login.html';
+            setTimeout(() => { window.location.href = dashboard; }, 500);
+        } catch(e) {
+            console.error('Init error:', e);
+            setTimeout(() => { window.location.href = "login.html"; }, 500);
+        }
+    }
+
+    // Handle splash screen dismissal
+    setTimeout(() => {
+        const splash = document.getElementById("splash");
+        if (splash) {
+            splash.style.opacity = "0";
+            setTimeout(() => {
+                splash.style.display = "none";
+                initDefaultData();
+            }, 500);
+        } else {
+            initDefaultData();
+        }
+    }, 1500);
+</script>
+</body>
+</html>

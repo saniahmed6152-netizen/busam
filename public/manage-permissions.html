@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BUSAHMED | Manage Permissions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA Meta Tags -->
+<!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="/icons/icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/icons/icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="/icons/icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/icons/icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/icons/icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/icons/icon-167x167.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="/icons/icon-180x180.png" sizes="180x180">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-square70x70logo" content="/icons/icon-72x72.png">
+    <meta name="msapplication-square150x150logo" content="/icons/icon-144x144.png">
+    <meta name="msapplication-wide310x150logo" content="/icons/icon-384x384.png">
+    <meta name="msapplication-square310x310logo" content="/icons/icon-512x512.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #1e1b4b, #4f46e5); min-height: 100vh; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .card { background: white; border-radius: 32px; padding: 24px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        h1 { font-size: 24px; color: #1e1b4b; display: flex; align-items: center; gap: 10px; }
+        .back-btn { background: #e2e8f0; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; font-weight: 600; }
+        .search-box { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+        .search-box input { flex: 1; padding: 10px 16px; border: 1px solid #e2e8f0; border-radius: 40px; outline: none; min-width: 150px; }
+        .search-box button { padding: 10px 20px; background: #4f46e5; color: white; border: none; border-radius: 40px; cursor: pointer; font-weight: 600; }
+        .user-perm-item { background: #f8fafc; border-radius: 20px; padding: 16px; margin-bottom: 12px; border-left: 4px solid #4f46e5; }
+        .user-perm-item .user-info { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+        .user-perm-item .perm-checkboxes { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 8px; }
+        .user-perm-item .perm-checkboxes label { display: flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; }
+        .user-perm-item .perm-checkboxes input[type="checkbox"] { width: 18px; height: 18px; accent-color: #4f46e5; cursor: pointer; }
+        .btn-save-perms { background: #10b981; color: white; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; font-weight: 500; transition: 0.2s; }
+        .btn-save-perms:hover { background: #059669; }
+        .btn-save-perms:disabled { opacity: 0.6; cursor: not-allowed; }
+        .appointed-badge { background: #8b5cf6; color: white; padding: 2px 10px; border-radius: 40px; font-size: 10px; font-weight: 600; margin-left: 8px; }
+        .status-badge { padding: 2px 10px; border-radius: 40px; font-size: 10px; font-weight: 600; }
+        .status-pending { background: #fef3c7; color: #d97706; }
+        .status-accepted { background: #d1fae5; color: #059669; }
+        .status-rejected { background: #fee2e2; color: #dc2626; }
+        .dark-mode { background: #0f172a; }
+        .dark-mode .card { background: #1e293b; color: #e2e8f0; }
+        .dark-mode .user-perm-item { background: #1e293b; border-color: #4f46e5; }
+        .dark-mode .back-btn { background: #334155; color: #e2e8f0; }
+        .dark-mode .search-box input { background: #334155; border-color: #475569; color: white; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 8px 20px; border-radius: 40px; font-size: 14px; z-index: 2000; }
+        .loading-spinner { text-align: center; padding: 40px; color: #94a3b8; }
+        .loading-spinner i { font-size: 30px; display: block; margin-bottom: 12px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .empty-state { text-align: center; padding: 40px 20px; color: #94a3b8; }
+        .empty-state i { font-size: 40px; display: block; margin-bottom: 12px; opacity: 0.5; }
+        .perm-highlight { border-color: #8b5cf6 !important; border-width: 3px !important; background: #f0f0ff !important; }
+        .dark-mode .perm-highlight { background: #1e293b !important; border-color: #a5b4fc !important; }
+        .refresh-btn { background: #f59e0b; color: white; border: none; border-radius: 40px; padding: 8px 16px; cursor: pointer; font-weight: 500; }
+        .refresh-btn:hover { background: #d97706; }
+        .flex-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1><i class="fas fa-user-cog" style="color:#4f46e5;"></i> Manage Permissions</h1>
+            <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        <p style="color: #64748b; margin-bottom: 16px; font-size: 14px;">
+            <i class="fas fa-info-circle"></i> Select the features you want the appointed admin to manage, then click <strong>Save</strong>.
+        </p>
+        <div class="search-box">
+            <input type="text" id="searchUsers" placeholder="Search users by name or email..." onkeypress="if(event.key==='Enter') loadUsers()">
+            <button onclick="loadUsers()"><i class="fas fa-search"></i> Search</button>
+            <button class="refresh-btn" onclick="loadUsers()"><i class="fas fa-sync"></i> Refresh</button>
+        </div>
+        <div id="usersList">
+            <div class="loading-spinner"><i class="fas fa-spinner"></i> Loading users...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+const API_BASE = window.location.origin + '/api/';
+    let currentUser = null;
+
+    function showToast(msg, isError = false) {
+        const t = document.createElement("div");
+        t.className = "toast";
+        t.innerText = msg;
+        if (isError) t.style.background = "#dc2626";
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    }
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+
+    function getToken() {
+        return localStorage.getItem('busahmed_token');
+    }
+
+    async function checkAuth() {
+        const token = getToken();
+        if (!token) {
+            window.location.href = 'login.html';
+            return null;
+        }
+        try {
+            const response = await fetch(API_BASE + 'profile.php?token=' + encodeURIComponent(token));
+            if (!response.ok) {
+                localStorage.clear();
+                window.location.href = 'login.html';
+                return null;
+            }
+            const user = await response.json();
+            if (user.role !== 'admin') {
+                showToast('Admin access required', true);
+                setTimeout(() => window.location.href = 'login.html', 2000);
+                return null;
+            }
+            currentUser = user;
+            console.log('✅ Admin logged in:', user.name);
+            return user;
+        } catch(err) {
+            console.error("Auth error:", err);
+            window.location.href = 'login.html';
+            return null;
+        }
+    }
+
+    function goBack() {
+        window.location.href = 'dashboard-admin.html';
+    }
+
+    async function loadUsers() {
+        const token = getToken();
+        if (!token) {
+            showToast('Please login first', true);
+            return;
+        }
+        
+        const container = document.getElementById('usersList');
+        container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i> Loading users...</div>';
+
+        const search = document.getElementById('searchUsers').value.trim();
+        let url = API_BASE + 'admin-users.php?token=' + encodeURIComponent(token);
+        if (search) {
+            url += '&search=' + encodeURIComponent(search);
+        }
+
+        try {
+            const response = await fetch(url);
+            const users = await response.json();
+            
+            if (!Array.isArray(users)) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i> Error loading users</div>';
+                return;
+            }
+            
+            // Log to see if is_appointed_admin is coming through
+            console.log('📊 Users loaded:', users.length);
+            const appointedUsers = users.filter(u => u.is_appointed_admin == 1);
+            console.log('👑 Appointed admins found:', appointedUsers.length);
+            if (appointedUsers.length > 0) {
+                console.log('Appointed users:', appointedUsers.map(u => u.name + ' (Status: ' + u.admin_appointment_status + ')'));
+            } else {
+                console.log('⚠️ No appointed admins found in the data');
+            }
+            
+            renderUsers(users);
+        } catch(err) {
+            console.error('Load users error:', err);
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i> Error loading users: ' + err.message + '</div>';
+        }
+    }
+
+    function renderUsers(users) {
+        const container = document.getElementById('usersList');
+        if (!users || users.length === 0) {
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-users"></i> No users found</div>';
+            return;
+        }
+
+        let html = '';
+        let foundAppointed = false;
+        
+        users.forEach(u => {
+            // Skip full admins
+            if (u.role === 'admin') return;
+            
+            const isAppointed = u.is_appointed_admin == 1;
+            const appointmentStatus = u.admin_appointment_status || 'N/A';
+            const isAccepted = isAppointed && appointmentStatus === 'accepted';
+            
+            if (isAppointed) foundAppointed = true;
+            
+            let statusBadge = '';
+            if (isAppointed) {
+                if (appointmentStatus === 'pending') {
+                    statusBadge = `<span class="status-badge status-pending">⏳ Pending</span>`;
+                } else if (appointmentStatus === 'accepted') {
+                    statusBadge = `<span class="status-badge status-accepted">✅ Accepted</span>`;
+                } else if (appointmentStatus === 'rejected') {
+                    statusBadge = `<span class="status-badge status-rejected">❌ Rejected</span>`;
+                }
+            }
+
+            html += `
+                <div class="user-perm-item" data-userid="${u.id}">
+                    <div class="user-info">
+                        <div>
+                            <strong>${escapeHtml(u.name)}</strong> <span style="font-size:13px; color:#64748b;">(${escapeHtml(u.role)})</span>
+                            ${isAppointed ? `<span class="appointed-badge">👑 Appointed Admin</span>` : ''}
+                            ${statusBadge}
+                            <br><small style="color:#64748b;">${escapeHtml(u.email)}</small>
+                            ${u.can_manage_news || u.can_manage_jobs || u.can_manage_careers || u.can_manage_library ? 
+                                `<br><small style="color:#10b981;">✅ Has permissions assigned</small>` : 
+                                (isAccepted ? `<br><small style="color:#f59e0b;">⚠️ No permissions assigned yet</small>` : '')}
+                            ${!isAppointed ? '<br><small style="color:#94a3b8;">⚠️ User must be appointed as admin first</small>' : ''}
+                            ${isAppointed && !isAccepted ? '<br><small style="color:#d97706;">⏳ Waiting for user to accept appointment...</small>' : ''}
+                        </div>
+                        <div>
+                            ${isAccepted ? `<button class="btn-save-perms" onclick="savePermissions(${u.id})"><i class="fas fa-save"></i> Save</button>` : ''}
+                        </div>
+                    </div>
+                    ${isAccepted ? `
+                        <div class="perm-checkboxes">
+                            <label>
+                                <input type="checkbox" class="perm-check" data-perm="can_manage_news" ${u.can_manage_news ? 'checked' : ''}>
+                                <i class="fas fa-newspaper"></i> News Management
+                            </label>
+                            <label>
+                                <input type="checkbox" class="perm-check" data-perm="can_manage_jobs" ${u.can_manage_jobs ? 'checked' : ''}>
+                                <i class="fas fa-briefcase"></i> Job Management
+                            </label>
+                            <label>
+                                <input type="checkbox" class="perm-check" data-perm="can_manage_careers" ${u.can_manage_careers ? 'checked' : ''}>
+                                <i class="fas fa-laptop-code"></i> Career Management
+                            </label>
+                            <label>
+                                <input type="checkbox" class="perm-check" data-perm="can_manage_library" ${u.can_manage_library ? 'checked' : ''}>
+                                <i class="fas fa-book"></i> Library Management
+                            </label>
+                        </div>
+                    ` : `
+                        <div style="margin-top:8px; color:#94a3b8; font-size:13px;">
+                            ${!isAppointed ? '👤 <a href="admin-appointments.html" style="color:#4f46e5;">Appoint this user as admin</a> to manage permissions.' : '⏳ Waiting for user to accept appointment... They need to check their dashboard.'}
+                        </div>
+                    `}
+                </div>
+            `;
+        });
+        
+        if (!foundAppointed) {
+            html += `<div class="empty-state" style="padding:20px;"><i class="fas fa-info-circle"></i> No users have been appointed as admin yet. Go to "Admin Appointments" to appoint a user.</div>`;
+        }
+        
+        container.innerHTML = html;
+    }
+
+    async function savePermissions(userId) {
+        const container = document.querySelector(`.user-perm-item[data-userid="${userId}"]`);
+        if (!container) {
+            showToast('User not found', true);
+            return;
+        }
+
+        const checkboxes = container.querySelectorAll('.perm-check');
+        const permissions = {};
+        checkboxes.forEach(cb => {
+            permissions[cb.dataset.perm] = cb.checked ? 1 : 0;
+        });
+
+        console.log('📝 Saving permissions for user', userId, ':', permissions);
+
+        // Show saving status
+        const saveBtn = container.querySelector('.btn-save-perms');
+        const originalText = saveBtn.innerHTML;
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+        const token = getToken();
+        try {
+            const response = await fetch(API_BASE + 'update-user-permissions.php?token=' + encodeURIComponent(token), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: userId, permissions })
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                showToast('✅ ' + data.message);
+                // Reload to show updated permissions
+                setTimeout(() => loadUsers(), 1000);
+            } else {
+                showToast(data.error || 'Failed to update permissions', true);
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = originalText;
+            }
+        } catch(err) {
+            console.error('Save permissions error:', err);
+            showToast('Network error: ' + err.message, true);
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = originalText;
+        }
+    }
+
+    // Check URL params for user_id
+    function checkUrlParams() {
+        const params = new URLSearchParams(window.location.search);
+        const userId = params.get('user_id');
+        if (userId) {
+            console.log('🔍 Looking for user ID:', userId);
+            setTimeout(() => {
+                const userItem = document.querySelector(`.user-perm-item[data-userid="${userId}"]`);
+                if (userItem) {
+                    userItem.scrollIntoView({ behavior: 'smooth' });
+                    userItem.classList.add('perm-highlight');
+                    setTimeout(() => {
+                        userItem.classList.remove('perm-highlight');
+                    }, 3000);
+                } else {
+                    console.log('⚠️ User not found in list, reloading...');
+                    // User might not be in the current list, reload
+                    loadUsers();
+                    setTimeout(() => {
+                        const userItemRetry = document.querySelector(`.user-perm-item[data-userid="${userId}"]`);
+                        if (userItemRetry) {
+                            userItemRetry.scrollIntoView({ behavior: 'smooth' });
+                            userItemRetry.classList.add('perm-highlight');
+                            setTimeout(() => {
+                                userItemRetry.classList.remove('perm-highlight');
+                            }, 3000);
+                        }
+                    }, 1500);
+                }
+            }, 1500);
+        }
+    }
+
+    // Initial load
+    async function init() {
+        console.log('🚀 Loading Manage Permissions...');
+        await checkAuth();
+        if (!currentUser) {
+            console.log('❌ Not authenticated');
+            return;
+        }
+        console.log('✅ Authenticated as:', currentUser.name);
+        await loadUsers();
+        checkUrlParams();
+        document.querySelector('.back-btn').onclick = goBack;
+        if (localStorage.getItem('busahmed_dark_mode') === 'true') document.body.classList.add('dark-mode');
+    }
+    
+    init();
+</script>
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BUSAHMED | News & Updates</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="/icons/icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/icons/icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="/icons/icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/icons/icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/icons/icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/icons/icon-167x167.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="/icons/icon-180x180.png" sizes="180x180">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-square70x70logo" content="/icons/icon-72x72.png">
+    <meta name="msapplication-square150x150logo" content="/icons/icon-144x144.png">
+    <meta name="msapplication-wide310x150logo" content="/icons/icon-384x384.png">
+    <meta name="msapplication-square310x310logo" content="/icons/icon-512x512.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #1e1b4b, #4f46e5); min-height: 100vh; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .card { background: white; border-radius: 32px; padding: 24px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        h1 { font-size: 24px; color: #1e1b4b; display: flex; align-items: center; gap: 10px; }
+        .back-btn { background: #e2e8f0; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .back-btn:hover { background: #cbd5e1; }
+        .ad-space { margin: 0 0 16px 0; border-radius: 20px; overflow: hidden; height: 80px; display: flex; align-items: center; justify-content: center; position: relative; background: #f1f5f9; }
+        .news-item { background: #f8fafc; border-radius: 20px; padding: 16px; margin-bottom: 16px; cursor: pointer; transition: 0.2s; border: 1px solid #e2e8f0; }
+        .news-item:hover { transform: scale(1.01); background: #eef2ff; }
+        .news-item .news-image { width: 100%; max-height: 150px; object-fit: cover; border-radius: 12px; margin-bottom: 12px; }
+        .pagination { display: flex; justify-content: center; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
+        .page-btn { background: #e2e8f0; border: none; border-radius: 40px; padding: 6px 14px; cursor: pointer; font-weight: 500; }
+        .page-btn.active { background: #4f46e5; color: white; }
+        .dark-mode { background: #0f172a; }
+        .dark-mode .card { background: #1e293b; }
+        .dark-mode h1 { color: #f1f5f9; }
+        .dark-mode .news-item { background: #1e293b; border-color: #334155; color: #e2e8f0; }
+        .dark-mode .news-item:hover { background: #334155; }
+        .dark-mode .back-btn { background: #334155; color: #e2e8f0; }
+        .dark-mode .page-btn { background: #334155; color: #e2e8f0; }
+        .dark-mode .page-btn.active { background: #4f46e5; }
+        .dark-mode .ad-space { background: #0f172a; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 8px 20px; border-radius: 40px; font-size: 14px; z-index: 2000; }
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 3000; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; border-radius: 32px; max-width: 500px; width: 90%; padding: 24px; max-height: 80vh; overflow-y: auto; }
+        .dark-mode .modal-content { background: #1e293b; color: #e2e8f0; }
+        .modal-content .modal-image { width: 100%; max-height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 12px; }
+        .modal-content button { margin-top: 16px; background: #4f46e5; border: none; border-radius: 40px; padding: 8px 20px; color: white; cursor: pointer; }
+        .error-message { background: #fee2e2; color: #dc2626; padding: 16px; border-radius: 20px; text-align: center; }
+        .loading { text-align: center; padding: 40px; color: #64748b; }
+        .no-news { text-align: center; padding: 40px; color: #64748b; }
+        .dark-mode .error-message { background: #7f1d1d; color: #fca5a5; }
+        .dark-mode .loading { color: #94a3b8; }
+        .dark-mode .no-news { color: #94a3b8; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1><i class="fas fa-newspaper" style="color:#4f46e5;"></i> News & Updates</h1>
+            <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        <div id="adContainer" class="ad-space">📢 Loading ad...</div>
+        <div id="newsList"><div class="loading">Loading news...</div></div>
+        <div id="paginationControls" class="pagination"></div>
+    </div>
+</div>
+
+<script>
+const API_BASE = window.location.origin + '/api/';
+    let allNews = [];
+    let currentPage = 1;
+    const itemsPerPage = 10;
+    let adInterval = null;
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+
+    function showToast(msg, isError = false) {
+        const t = document.createElement("div");
+        t.className = "toast";
+        t.innerText = msg;
+        if (isError) t.style.background = "#dc2626";
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    }
+
+    // ==================== AD HELPER ====================
+    function renderAd(containerId, location, intervalTime = 10000) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        if (adInterval) {
+            clearInterval(adInterval);
+            adInterval = null;
+        }
+        
+        container.innerHTML = "📢 Loading ad...";
+        container.style.cssText = `
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 80px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            cursor: default;
+            color: #94a3b8;
+            font-size: 14px;
+        `;
+        
+        fetch(`${API_BASE}ads.php?location=${location}`)
+            .then(response => response.json())
+            .then(ads => {
+                if (!ads || ads.length === 0) {
+                    container.innerHTML = "📢 Ad space - Promote your school";
+                    container.style.cssText = `
+                        background: #f1f5f9;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 80px;
+                        border-radius: 20px;
+                        overflow: hidden;
+                        position: relative;
+                        cursor: default;
+                        color: #94a3b8;
+                        font-size: 14px;
+                    `;
+                    return;
+                }
+                
+                let idx = 0;
+                
+                function showAd() {
+                    const ad = ads[idx % ads.length];
+                    const imageUrl = ad.image_url || 'https://via.placeholder.com/800x100/4f46e5/ffffff?text=Ad';
+                    const linkUrl = ad.link || '#';
+                    
+                    container.innerHTML = `
+                        <img src="${imageUrl}" 
+                             style="width:100%; height:80px; object-fit:cover; display:block;" 
+                             onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:80px;background:#1e293b;color:#94a3b8;font-size:14px;\\'>📢 Ad</div>'">
+                        <div style="position:absolute; bottom:4px; right:8px; background:rgba(0,0,0,0.6); color:white; font-size:10px; padding:2px 10px; border-radius:20px;">
+                            ${ad.caption || "Sponsored"} | 👁️ ${ad.views || 0}
+                        </div>
+                    `;
+                    container.style.cssText = `
+                        background: transparent;
+                        display: block;
+                        height: 80px;
+                        border-radius: 20px;
+                        overflow: hidden;
+                        position: relative;
+                        cursor: pointer;
+                        padding: 0;
+                    `;
+                    container.onclick = function(e) {
+                        e.preventDefault();
+                        if (linkUrl && linkUrl !== '#') {
+                            window.open(linkUrl, "_blank");
+                        }
+                    };
+                    idx++;
+                }
+                
+                showAd();
+                
+                if (ads.length > 1) {
+                    adInterval = setInterval(showAd, intervalTime);
+                }
+            })
+            .catch(err => {
+                console.error("Ad error:", err);
+                container.innerHTML = "📢 Ad unavailable";
+                container.style.cssText = `
+                    background: #f1f5f9;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 80px;
+                    border-radius: 20px;
+                    overflow: hidden;
+                    position: relative;
+                    cursor: default;
+                    color: #94a3b8;
+                    font-size: 14px;
+                `;
+            });
+    }
+    // =============================================
+
+    function showFullNews(title, content, image) {
+        const modal = document.createElement("div");
+        modal.className = "modal active";
+        const imageHtml = image ? `<img src="${image}" class="modal-image">` : '';
+        modal.innerHTML = `
+            <div class="modal-content">
+                ${imageHtml}
+                <h3>${escapeHtml(title)}</h3>
+                <p style="margin-top:16px; white-space:pre-wrap;">${escapeHtml(content)}</p>
+                <button onclick="this.closest('.modal').remove()">Close</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) this.remove();
+        });
+    }
+
+    async function checkAuth() {
+        const token = localStorage.getItem('busahmed_token');
+        if (!token) return null;
+        try {
+            const response = await fetch(API_BASE + 'profile.php?token=' + encodeURIComponent(token));
+            if (!response.ok) return null;
+            return await response.json();
+        } catch(err) {
+            console.error("Auth error:", err);
+            return null;
+        }
+    }
+
+    async function goBack() {
+        const user = await checkAuth();
+        if (user) {
+            if (user.role === 'student') window.location.href = 'dashboard-student.html';
+            else if (user.role === 'teacher') window.location.href = 'dashboard-teacher.html';
+            else if (user.role === 'admin') window.location.href = 'dashboard-admin.html';
+            else if (user.role === 'owner') window.location.href = 'dashboard-owner.html';
+            else window.location.href = 'login.html';
+        } else {
+            window.location.href = 'login.html';
+        }
+    }
+
+    async function renderNews() {
+        const newsListDiv = document.getElementById('newsList');
+        newsListDiv.innerHTML = '<div class="loading">Loading news...</div>';
+        
+        try {
+            const response = await fetch(API_BASE + 'news.php');
+            
+            if (!response.ok) {
+                let errorMsg = 'HTTP ' + response.status;
+                try {
+                    const errorData = await response.json();
+                    errorMsg = errorData.error || errorData.message || errorMsg;
+                } catch(e) {}
+                throw new Error(errorMsg);
+            }
+            
+            allNews = await response.json();
+            
+            if (!allNews || !Array.isArray(allNews) || allNews.length === 0) {
+                newsListDiv.innerHTML = '<div class="no-news">📰 No news available. Check back later!</div>';
+                document.getElementById("paginationControls").innerHTML = '';
+                return;
+            }
+            
+            allNews.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            
+            const totalPages = Math.ceil(allNews.length / itemsPerPage);
+            const start = (currentPage - 1) * itemsPerPage;
+            const pageNews = allNews.slice(start, start + itemsPerPage);
+            
+            let html = "";
+            pageNews.forEach(item => {
+                const date = item.created_at ? new Date(item.created_at).toLocaleDateString('en-GB', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric' 
+                }) : 'Recent';
+                
+                // Show image if exists
+                const imageHtml = item.image ? `<img src="${item.image}" class="news-image">` : '';
+                const content = item.full_content || item.content || '';
+                const preview = content.length > 150 ? content.substring(0, 150) + '...' : content;
+                
+                html += `
+                    <div class="news-item" onclick='showFullNews("${escapeHtml(item.title)}", "${escapeHtml(content).replace(/\n/g, '\\n').replace(/"/g, '&quot;')}", "${item.image || ''}")'>
+                        ${imageHtml}
+                        <div style="font-weight:700; font-size:18px;">${escapeHtml(item.title)}</div>
+                        <div style="margin-top:8px;">${escapeHtml(preview)}</div>
+                        <div style="font-size:12px; color:#64748b; margin-top:8px;">
+                            <i class="far fa-calendar-alt"></i> ${date}
+                        </div>
+                    </div>
+                `;
+            });
+            newsListDiv.innerHTML = html;
+            
+            let paginationHtml = "";
+            if (totalPages > 1) {
+                if (currentPage > 1) paginationHtml += `<button class="page-btn" data-page="${currentPage - 1}">← Previous</button>`;
+                for (let i = 1; i <= totalPages; i++) {
+                    if (i === currentPage) paginationHtml += `<button class="page-btn active" data-page="${i}">${i}</button>`;
+                    else if (Math.abs(i - currentPage) <= 2 || i === 1 || i === totalPages) {
+                        paginationHtml += `<button class="page-btn" data-page="${i}">${i}</button>`;
+                    } else if (i === currentPage - 3 || i === currentPage + 3) {
+                        paginationHtml += `<span style="margin:0 4px;">...</span>`;
+                    }
+                }
+                if (currentPage < totalPages) paginationHtml += `<button class="page-btn" data-page="${currentPage + 1}">Next →</button>`;
+            }
+            document.getElementById("paginationControls").innerHTML = paginationHtml;
+            
+            document.querySelectorAll(".page-btn").forEach(btn => {
+                btn.onclick = () => {
+                    currentPage = parseInt(btn.dataset.page);
+                    renderNews();
+                    window.scrollTo(0, 0);
+                };
+            });
+            
+        } catch(err) {
+            console.error("Failed to load news:", err);
+            newsListDiv.innerHTML = `
+                <div class="error-message">
+                    ❌ Error loading news: ${escapeHtml(err.message)}<br>
+                    <button onclick="renderNews()" style="margin-top:12px; background:#4f46e5; color:white; border:none; border-radius:40px; padding:8px 20px; cursor:pointer;">
+                        <i class="fas fa-redo"></i> Retry
+                    </button>
+                </div>
+            `;
+        }
+    }
+
+    async function init() {
+        await renderNews();
+        renderAd('adContainer', 'news', 10000);
+        document.getElementById("backBtn").onclick = goBack;
+        
+        if (localStorage.getItem("busahmed_dark_mode") === "true") document.body.classList.add("dark-mode");
+        window.showFullNews = showFullNews;
+    }
+    
+    init();
+</script>
+</body>
+</html>

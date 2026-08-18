@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BUSAHMED | Advertise Your School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- PWA Meta Tags -->
+<!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="/icons/icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/icons/icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="/icons/icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/icons/icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/icons/icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/icons/icon-167x167.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="/icons/icon-180x180.png" sizes="180x180">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-square70x70logo" content="/icons/icon-72x72.png">
+    <meta name="msapplication-square150x150logo" content="/icons/icon-144x144.png">
+    <meta name="msapplication-wide310x150logo" content="/icons/icon-384x384.png">
+    <meta name="msapplication-square310x310logo" content="/icons/icon-512x512.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #1e1b4b, #4f46e5); min-height: 100vh; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .card { background: white; border-radius: 32px; padding: 24px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        h1 { font-size: 24px; color: #1e1b4b; display: flex; align-items: center; gap: 10px; }
+        .back-btn { background: #e2e8f0; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .back-btn:hover { background: #cbd5e1; }
+        .bank-details { background: #f1f5f9; border-radius: 20px; padding: 16px; margin-bottom: 20px; }
+        .dimension-note { background: #fef9c3; border-radius: 20px; padding: 12px; margin-bottom: 16px; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 40px; margin-bottom: 12px; outline: none; font-size: 14px; transition: 0.2s; }
+        input:focus, select:focus, textarea:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+        button { background: #4f46e5; color: white; border: none; border-radius: 40px; padding: 12px; cursor: pointer; width: 100%; font-weight: 600; transition: 0.2s; }
+        button:hover { background: #4338ca; }
+        button:disabled { background: #94a3b8; cursor: not-allowed; }
+        .total-cost { background: #eef2ff; padding: 12px; border-radius: 40px; text-align: center; margin-bottom: 16px; font-weight: 700; }
+        .user-ad { background: #f1f5f9; padding: 12px; border-radius: 16px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+        .user-ad .ad-status { font-size: 11px; padding: 2px 10px; border-radius: 40px; font-weight: 600; }
+        .ad-status-pending { background: #fef3c7; color: #d97706; }
+        .ad-status-active { background: #d1fae5; color: #059669; }
+        .ad-status-rejected { background: #fee2e2; color: #dc2626; }
+        .btn-delete-ad { background: #ef4444; color: white; border: none; border-radius: 40px; padding: 4px 12px; cursor: pointer; font-size: 12px; transition: 0.2s; }
+        .btn-delete-ad:hover { background: #dc2626; }
+        .dark-mode { background: #0f172a; }
+        .dark-mode .card { background: #1e293b; }
+        .dark-mode h1 { color: #f1f5f9; }
+        .dark-mode .back-btn { background: #334155; color: #e2e8f0; }
+        .dark-mode .back-btn:hover { background: #475569; }
+        .dark-mode .bank-details, .dark-mode .user-ad { background: #0f172a; border: 1px solid #334155; color: #e2e8f0; }
+        .dark-mode .dimension-note { background: #422006; color: #fde047; }
+        .dark-mode input, .dark-mode select, .dark-mode textarea { background: #334155; border-color: #475569; color: white; }
+        .dark-mode input::placeholder, .dark-mode textarea::placeholder { color: #94a3b8; }
+        .dark-mode .total-cost { background: #0f172a; border: 1px solid #334155; color: #e2e8f0; }
+        .dark-mode .ad-status-pending { background: #78350f; color: #fbbf24; }
+        .dark-mode .ad-status-active { background: #064e3b; color: #6ee7b7; }
+        .dark-mode .ad-status-rejected { background: #7f1d1d; color: #fca5a5; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 8px 20px; border-radius: 40px; font-size: 14px; z-index: 2000; }
+        .location-badge { display: inline-block; background: #4f46e5; color: white; padding: 2px 10px; border-radius: 40px; font-size: 11px; }
+        .dark-mode .location-badge { background: #4f46e5; }
+        .file-preview { margin: 8px 0 12px 0; display: none; }
+        .file-preview img { max-width: 100%; max-height: 150px; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .dark-mode .file-preview img { border-color: #475569; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1><i class="fas fa-bullhorn" style="color:#4f46e5;"></i> Advertise Your School</h1>
+            <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        <div class="dimension-note"><i class="fas fa-image"></i> <strong>Image Requirements:</strong> 800×100 pixels for best display</div>
+        <div class="bank-details"><i class="fas fa-university"></i> <strong>Payment Details (Bank Transfer)</strong><br>Account Name: Ahmed Busoye Sanni<br>Bank: Access Bank<br>Account Number: 0774808675</div>
+        
+        <select id="location">
+            <option value="dashboard">📊 Dashboard Banner - ₦500/day</option>
+            <option value="qna">💬 Q&A Board - ₦300/day</option>
+            <option value="news">📰 News & Updates - ₦200/day</option>
+            <option value="library">📚 Library - ₦200/day</option>
+            <option value="jobs">💼 Job Vacancies - ₦300/day</option>
+            <option value="career">🎓 Career (IT Courses) - ₦200/day</option>
+            <option value="chat">💬 Chat - ₦800/day</option>
+        </select>
+        
+        <input type="number" id="days" placeholder="Number of days" min="1" value="7">
+        
+        <input type="file" id="adImage" accept="image/*">
+        <div class="file-preview" id="filePreview">
+            <img id="previewImage" src="" alt="Image preview">
+        </div>
+        
+        <input type="text" id="link" placeholder="Website/Campaign Link (optional)">
+        <input type="text" id="caption" placeholder="Caption/Slogan (optional)">
+        
+        <div class="total-cost">Total Cost: ₦<span id="totalCost">0</span></div>
+        <button id="submitAd"><i class="fas fa-paper-plane"></i> Submit Ad Request</button>
+        
+        <div style="margin-top: 20px;">
+            <h3 style="font-size: 16px; margin-bottom: 12px; color: #1e293b;">Your Ad Requests</h3>
+            <div id="userAds"><p style="color: #94a3b8; text-align: center; padding: 20px;">Loading your ads...</p></div>
+        </div>
+    </div>
+</div>
+
+<script>
+const API_BASE = window.location.origin + '/api/';
+    let currentUser = null;
+    const prices = { 
+        dashboard: 500, 
+        qna: 300, 
+        news: 200, 
+        library: 200, 
+        jobs: 300, 
+        career: 200, 
+        chat: 800 
+    };
+
+    function escapeHtml(str) { 
+        if (!str) return ""; 
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); 
+    }
+    
+    function showToast(msg, isError = false) { 
+        const t = document.createElement("div"); 
+        t.className = "toast"; 
+        t.innerText = msg; 
+        if (isError) t.style.background = "#dc2626"; 
+        document.body.appendChild(t); 
+        setTimeout(() => t.remove(), 3000); 
+    }
+
+    async function checkAuth() {
+        const token = localStorage.getItem('busahmed_token');
+        if (!token) { 
+            window.location.href = 'login.html'; 
+            return null; 
+        }
+        try {
+            const response = await fetch(API_BASE + 'profile.php?token=' + encodeURIComponent(token));
+            if (!response.ok) { 
+                localStorage.clear(); 
+                window.location.href = 'login.html'; 
+                return null; 
+            }
+            return await response.json();
+        } catch(err) { 
+            console.error('Auth error:', err);
+            window.location.href = 'login.html'; 
+            return null; 
+        }
+    }
+
+    async function goBack() {
+        const user = await checkAuth();
+        if (user) {
+            if (user.role === 'student') window.location.href = 'dashboard-student.html';
+            else if (user.role === 'teacher') window.location.href = 'dashboard-teacher.html';
+            else if (user.role === 'owner') window.location.href = 'dashboard-owner.html';
+            else if (user.role === 'admin') window.location.href = 'dashboard-admin.html';
+            else window.location.href = 'login.html';
+        } else {
+            window.location.href = 'login.html';
+        }
+    }
+
+    function updateCost() { 
+        const loc = document.getElementById("location").value; 
+        const days = parseInt(document.getElementById("days").value) || 1; 
+        document.getElementById("totalCost").innerText = (prices[loc] || 200) * days; 
+    }
+
+    // Image preview
+    document.getElementById('adImage').addEventListener('change', function(e) {
+        const file = this.files[0];
+        const preview = document.getElementById('filePreview');
+        const previewImg = document.getElementById('previewImage');
+        
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.style.display = 'none';
+            previewImg.src = '';
+        }
+    });
+
+    async function loadUserAds() {
+        const token = localStorage.getItem('busahmed_token');
+        const container = document.getElementById('userAds');
+        container.innerHTML = '<p style="color: #94a3b8; text-align: center; padding: 20px;">Loading...</p>';
+        
+        try {
+            const response = await fetch(API_BASE + 'my-ads.php?token=' + encodeURIComponent(token));
+            const ads = await response.json();
+            
+            if (!ads || ads.length === 0) {
+                container.innerHTML = '<p style="color: #94a3b8; text-align: center; padding: 20px;">No ad requests yet</p>';
+                return;
+            }
+            
+            let html = "";
+            ads.forEach(ad => {
+                const locName = { 
+                    dashboard:'Dashboard', 
+                    qna:'Q&A', 
+                    news:'News', 
+                    library:'Library', 
+                    jobs:'Jobs', 
+                    career:'Career', 
+                    chat:'Chat' 
+                }[ad.location] || ad.location;
+                
+                const statusClass = ad.status === 'pending' ? 'ad-status-pending' : 
+                                   ad.status === 'active' ? 'ad-status-active' : 
+                                   ad.status === 'rejected' ? 'ad-status-rejected' : '';
+                const statusLabel = ad.status === 'pending' ? '⏳ Pending' : 
+                                   ad.status === 'active' ? '✅ Active' : 
+                                   ad.status === 'rejected' ? '❌ Rejected' : ad.status || 'Unknown';
+                
+                html += `<div class="user-ad">
+                            <div>
+                                <strong>${escapeHtml(ad.caption || locName)}</strong><br>
+                                📍 <span class="location-badge">${escapeHtml(locName)}</span>
+                                ${ad.status ? ` <span class="ad-status ${statusClass}">${statusLabel}</span>` : ''}
+                                ${ad.expiry_date ? `<br>Expires: ${new Date(ad.expiry_date).toLocaleDateString()}` : ''}
+                                ${ad.views ? `<br>👁️ ${ad.views} views` : ''}
+                            </div>
+                            ${ad.status === 'pending' || ad.status === 'active' ? 
+                                `<button class="btn-delete-ad" data-id="${ad.id}"><i class="fas fa-trash"></i> Delete</button>` : ''
+                            }
+                        </div>`;
+            });
+            container.innerHTML = html;
+            
+            document.querySelectorAll(".btn-delete-ad").forEach(btn => {
+                btn.onclick = async () => {
+                    const id = parseInt(btn.dataset.id);
+                    if (confirm("Delete this ad request?")) {
+                        const token = localStorage.getItem('busahmed_token');
+                        try {
+                            const response = await fetch(API_BASE + 'delete-my-ad.php?token=' + encodeURIComponent(token), {
+                                method: 'POST', 
+                                headers: { 'Content-Type': 'application/json' }, 
+                                body: JSON.stringify({ ad_id: id })
+                            });
+                            const data = await response.json();
+                            if (data.success) {
+                                showToast("Ad deleted");
+                                loadUserAds();
+                            } else {
+                                showToast(data.error || "Failed to delete", true);
+                            }
+                        } catch(err) {
+                            showToast("Network error", true);
+                        }
+                    }
+                };
+            });
+            
+        } catch(err) { 
+            console.error('Load user ads error:', err);
+            container.innerHTML = '<p style="color: #dc2626; text-align: center; padding: 20px;">Error loading your ads</p>';
+        }
+    }
+
+    function resizeImage(file, maxWidth, maxHeight, callback) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                let width = img.width, height = img.height;
+                if (width > maxWidth) { 
+                    height = (height * maxWidth) / width; 
+                    width = maxWidth; 
+                }
+                if (height > maxHeight) { 
+                    width = (width * maxHeight) / height; 
+                    height = maxHeight; 
+                }
+                const canvas = document.createElement('canvas'); 
+                canvas.width = width; 
+                canvas.height = height;
+                canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                callback(canvas.toDataURL('image/jpeg', 0.8));
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    async function init() {
+        currentUser = await checkAuth();
+        if (!currentUser || (currentUser.role !== 'student' && currentUser.role !== 'teacher' && currentUser.role !== 'owner')) { 
+            showToast('Only students, teachers, and school owners can advertise', true);
+            setTimeout(() => {
+                if (currentUser && currentUser.role === 'admin') {
+                    window.location.href = 'dashboard-admin.html';
+                } else {
+                    window.location.href = 'login.html';
+                }
+            }, 2000);
+            return; 
+        }
+        
+        updateCost();
+        await loadUserAds();
+        
+        document.getElementById("location").onchange = updateCost;
+        document.getElementById("days").oninput = updateCost;
+        document.getElementById("backBtn").onclick = goBack;
+        
+        document.getElementById("submitAd").onclick = function() {
+            const file = document.getElementById("adImage").files[0];
+            if (!file) { 
+                showToast("Please select an image", true); 
+                return; 
+            }
+            
+            const btn = this;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            
+            const loc = document.getElementById("location").value;
+            const days = parseInt(document.getElementById("days").value) || 1;
+            const link = document.getElementById("link").value.trim();
+            const caption = document.getElementById("caption").value.trim();
+            const totalCost = (prices[loc] || 200) * days;
+            
+            resizeImage(file, 800, 600, async (resized) => {
+                const token = localStorage.getItem('busahmed_token');
+                
+                try {
+                    const response = await fetch(API_BASE + 'ad-request.php?token=' + encodeURIComponent(token), {
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            location: loc, 
+                            days: days, 
+                            image_url: resized, 
+                            link: link, 
+                            caption: caption, 
+                            total_cost: totalCost 
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showToast("✅ " + data.message);
+                        document.getElementById("adImage").value = "";
+                        document.getElementById("filePreview").style.display = "none";
+                        document.getElementById("previewImage").src = "";
+                        document.getElementById("link").value = "";
+                        document.getElementById("caption").value = "";
+                        updateCost();
+                        loadUserAds();
+                    } else {
+                        showToast(data.error || "Failed to submit ad request", true);
+                    }
+                } catch(err) {
+                    console.error('Submit ad error:', err);
+                    showToast("Network error: " + err.message, true);
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Ad Request';
+                }
+            });
+        };
+        
+        if (localStorage.getItem("busahmed_dark_mode") === "true") {
+            document.body.classList.add("dark-mode");
+        }
+    }
+    
+    init();
+</script>
+</body>
+</html>

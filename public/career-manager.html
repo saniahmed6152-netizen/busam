@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BUSAHMED | Career Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA Meta Tags -->
+<!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="/icons/icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/icons/icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="/icons/icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/icons/icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/icons/icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/icons/icon-167x167.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="/icons/icon-180x180.png" sizes="180x180">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-square70x70logo" content="/icons/icon-72x72.png">
+    <meta name="msapplication-square150x150logo" content="/icons/icon-144x144.png">
+    <meta name="msapplication-wide310x150logo" content="/icons/icon-384x384.png">
+    <meta name="msapplication-square310x310logo" content="/icons/icon-512x512.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #1e1b4b, #4f46e5); min-height: 100vh; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .card { background: white; border-radius: 32px; padding: 24px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        h1 { font-size: 24px; color: #1e1b4b; display: flex; align-items: center; gap: 10px; }
+        .back-btn { background: #e2e8f0; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .back-btn:hover { background: #cbd5e1; }
+        .form-box { background: #f1f5f9; border-radius: 20px; padding: 16px; margin-bottom: 20px; }
+        .form-box h3 { margin-bottom: 12px; color: #1e293b; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 40px; margin-bottom: 8px; outline: none; font-size: 14px; transition: 0.2s; }
+        input:focus, select:focus, textarea:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+        .tabs { display: flex; gap: 16px; margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; flex-wrap: wrap; }
+        .tab { padding: 10px 0; cursor: pointer; font-weight: 600; transition: 0.2s; color: #64748b; position: relative; }
+        .tab.active { color: #4f46e5; border-bottom: 3px solid #4f46e5; }
+        .tab-badge { background: #ef4444; color: white; border-radius: 50%; padding: 1px 8px; font-size: 10px; margin-left: 6px; display: inline-block; font-weight: 700; }
+        .course-item, .application-item { background: #f8fafc; border-radius: 20px; padding: 14px 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; transition: 0.2s; border-left: 4px solid #4f46e5; }
+        .course-item:hover, .application-item:hover { background: #eef2ff; transform: scale(1.01); }
+        .course-info, .app-info { flex: 1; min-width: 150px; }
+        .course-title, .app-name { font-weight: 700; font-size: 15px; }
+        .course-details, .app-details { font-size: 13px; color: #64748b; margin-top: 2px; }
+        .btn-group { display: flex; gap: 4px; flex-wrap: wrap; }
+        .btn-sm { padding: 5px 14px; border: none; border-radius: 40px; cursor: pointer; font-size: 12px; font-weight: 500; transition: 0.2s; }
+        .btn-sm:hover { transform: scale(1.05); }
+        .btn-delete { background: #ef4444; color: white; }
+        .btn-delete:hover { background: #dc2626; }
+        .btn-view { background: #4f46e5; color: white; }
+        .btn-view:hover { background: #4338ca; }
+        .btn-reply { background: #10b981; color: white; }
+        .btn-reply:hover { background: #059669; }
+        .btn-approve { background: #10b981; color: white; }
+        .btn-approve:hover { background: #059669; }
+        .btn-reject { background: #ef4444; color: white; }
+        .btn-reject:hover { background: #dc2626; }
+        .btn-add { background: #4f46e5; color: white; border: none; border-radius: 40px; padding: 12px; width: 100%; cursor: pointer; font-weight: 600; font-size: 15px; transition: 0.2s; }
+        .btn-add:hover { background: #4338ca; }
+        .btn-add:disabled { background: #94a3b8; cursor: not-allowed; }
+        .status-badge { display: inline-block; padding: 2px 10px; border-radius: 40px; font-size: 10px; font-weight: 600; }
+        .status-pending { background: #fef3c7; color: #d97706; }
+        .status-approved { background: #d1fae5; color: #059669; }
+        .status-rejected { background: #fee2e2; color: #dc2626; }
+        .empty-state { text-align: center; padding: 40px 20px; color: #94a3b8; }
+        .empty-state i { font-size: 40px; display: block; margin-bottom: 12px; opacity: 0.5; }
+        .dark-mode { background: #0f172a; }
+        .dark-mode .card { background: #1e293b; }
+        .dark-mode h1 { color: #f1f5f9; }
+        .dark-mode .form-box { background: #0f172a; border: 1px solid #334155; }
+        .dark-mode .form-box h3 { color: #e2e8f0; }
+        .dark-mode .course-item, .dark-mode .application-item { background: #0f172a; border: 1px solid #334155; color: #e2e8f0; border-left-color: #4f46e5; }
+        .dark-mode .course-item:hover, .dark-mode .application-item:hover { background: #1e293b; }
+        .dark-mode .back-btn { background: #334155; color: #e2e8f0; }
+        .dark-mode .back-btn:hover { background: #475569; }
+        .dark-mode input, .dark-mode select, .dark-mode textarea { background: #334155; border-color: #475569; color: white; }
+        .dark-mode input::placeholder, .dark-mode textarea::placeholder { color: #94a3b8; }
+        .dark-mode .course-details, .dark-mode .app-details { color: #94a3b8; }
+        .dark-mode .tab { color: #94a3b8; }
+        .dark-mode .tab.active { color: #a5b4fc; border-bottom-color: #a5b4fc; }
+        .dark-mode .empty-state { color: #64748b; }
+        .dark-mode .status-pending { background: #78350f; color: #fbbf24; }
+        .dark-mode .status-approved { background: #064e3b; color: #6ee7b7; }
+        .dark-mode .status-rejected { background: #7f1d1d; color: #fca5a5; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 10px 24px; border-radius: 40px; font-size: 14px; z-index: 2000; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; border-radius: 32px; max-width: 500px; width: 100%; padding: 24px; max-height: 90vh; overflow-y: auto; }
+        .dark-mode .modal-content { background: #1e293b; color: #e2e8f0; }
+        .modal-content textarea { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 20px; margin-bottom: 12px; outline: none; min-height: 100px; resize: vertical; font-family: inherit; }
+        .dark-mode .modal-content textarea { background: #334155; border-color: #475569; color: white; }
+        .modal-content .btn-send { background: #4f46e5; color: white; border: none; border-radius: 40px; padding: 12px; cursor: pointer; width: 100%; font-weight: 600; transition: 0.2s; }
+        .modal-content .btn-send:hover { background: #4338ca; }
+        .modal-content .btn-send:disabled { background: #94a3b8; cursor: not-allowed; }
+        .modal-content .btn-cancel { background: #e2e8f0; color: #1e293b; border: none; border-radius: 40px; padding: 12px; cursor: pointer; width: 100%; font-weight: 600; margin-top: 8px; transition: 0.2s; }
+        .modal-content .btn-cancel:hover { background: #cbd5e1; }
+        .dark-mode .modal-content .btn-cancel { background: #334155; color: #e2e8f0; }
+        .dark-mode .modal-content .btn-cancel:hover { background: #475569; }
+        .modal-content .application-full { white-space: pre-wrap; background: #f8fafc; padding: 16px; border-radius: 16px; margin: 12px 0; font-size: 14px; max-height: 300px; overflow-y: auto; font-family: monospace; line-height: 1.6; }
+        .dark-mode .modal-content .application-full { background: #0f172a; border: 1px solid #334155; }
+        .modal-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .modal-actions button { flex: 1; min-width: 100px; }
+        .loading-spinner { text-align: center; padding: 40px; color: #94a3b8; }
+        .loading-spinner i { font-size: 30px; display: block; margin-bottom: 12px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .file-input-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%; }
+        .file-input-wrapper input[type="file"] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+        .file-input-wrapper .file-label { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; background: #e2e8f0; border: 2px dashed #cbd5e1; border-radius: 40px; cursor: pointer; transition: 0.2s; color: #64748b; }
+        .file-input-wrapper .file-label:hover { background: #eef2ff; border-color: #4f46e5; }
+        .dark-mode .file-input-wrapper .file-label { background: #334155; border-color: #475569; color: #94a3b8; }
+        .dark-mode .file-input-wrapper .file-label:hover { background: #1e293b; border-color: #4f46e5; }
+        .clickable-name { cursor: pointer; color: #4f46e5; text-decoration: underline; }
+        .clickable-name:hover { color: #4338ca; }
+        .dark-mode .clickable-name { color: #a5b4fc; }
+        .dark-mode .clickable-name:hover { color: #c7d2fe; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1><i class="fas fa-briefcase" style="color:#4f46e5;"></i> Career Manager</h1>
+            <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="courses"><i class="fas fa-graduation-cap"></i> Courses</div>
+            <div class="tab" data-tab="applications"><i class="fas fa-inbox"></i> Applications <span id="appBadge" class="tab-badge" style="display:none;">0</span></div>
+        </div>
+        
+        <!-- Courses Tab -->
+        <div id="coursesTab">
+            <div class="form-box">
+                <h3><i class="fas fa-plus-circle"></i> Add New Course</h3>
+                <input type="text" id="courseTitle" placeholder="Course Title *">
+                <input type="text" id="courseInstructor" placeholder="Instructor Name *">
+                <textarea id="courseDesc" rows="2" placeholder="Description"></textarea>
+                <div class="form-row">
+                    <input type="text" id="courseDuration" placeholder="Duration (e.g., 8 weeks)">
+                    <input type="text" id="coursePrice" placeholder="Price (e.g., ₦50,000 or Free)">
+                </div>
+                <select id="courseType">
+                    <option value="free">Free</option>
+                    <option value="paid">Paid</option>
+                </select>
+                <div class="file-input-wrapper">
+                    <div class="file-label" id="imageLabel">
+                        <i class="fas fa-image"></i>
+                        <span>Click to upload course image</span>
+                        <span id="imageName" style="font-weight:500; color:#1e293b;"></span>
+                    </div>
+                    <input type="file" id="courseImage" accept="image/*">
+                </div>
+                <button class="btn-add" id="addCourseBtn"><i class="fas fa-plus"></i> Add Course</button>
+            </div>
+            <div id="coursesList">
+                <div class="loading-spinner"><i class="fas fa-spinner"></i> Loading courses...</div>
+            </div>
+        </div>
+        
+        <!-- Applications Tab -->
+        <div id="applicationsTab" style="display:none;">
+            <div id="applicationsList">
+                <div class="loading-spinner"><i class="fas fa-spinner"></i> Loading applications...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reply Modal -->
+<div class="modal" id="replyModal">
+    <div class="modal-content">
+        <h3 style="margin-bottom:8px;"><i class="fas fa-reply" style="color:#4f46e5;"></i> Reply to Applicant</h3>
+        <p style="color:#64748b; font-size:14px; margin-bottom:12px;">
+            Replying to <strong id="replyApplicantName"></strong> about <strong id="replyCourseTitle"></strong>
+        </p>
+        <textarea id="replyMessage" placeholder="Type your reply message here..."></textarea>
+        <button class="btn-send" id="sendReplyBtn"><i class="fas fa-paper-plane"></i> Send Reply</button>
+        <button class="btn-cancel" onclick="closeReplyModal()">Cancel</button>
+    </div>
+</div>
+
+<!-- View Application Modal -->
+<div class="modal" id="viewApplicationModal">
+    <div class="modal-content">
+        <h3 style="margin-bottom:8px;"><i class="fas fa-file-alt" style="color:#4f46e5;"></i> Application Details</h3>
+        <div id="applicationFullContent" class="application-full"></div>
+        <div class="modal-actions">
+            <button class="btn-approve" id="viewApproveBtn"><i class="fas fa-check"></i> Approve</button>
+            <button class="btn-reject" id="viewRejectBtn"><i class="fas fa-times"></i> Reject</button>
+            <button class="btn-reply" id="viewReplyBtn"><i class="fas fa-reply"></i> Reply</button>
+        </div>
+        <button class="btn-cancel" onclick="closeViewApplicationModal()">Close</button>
+    </div>
+</div>
+
+<!-- Reject Modal -->
+<div class="modal" id="rejectModal">
+    <div class="modal-content">
+        <h3 style="margin-bottom:8px;"><i class="fas fa-times-circle" style="color:#ef4444;"></i> Reject Application</h3>
+        <p style="color:#64748b; font-size:14px; margin-bottom:12px;">Provide a reason for rejection (optional)</p>
+        <textarea id="rejectNotes" placeholder="Reason for rejection..."></textarea>
+        <button class="btn-send" id="confirmRejectBtn" style="background:#ef4444;"><i class="fas fa-check"></i> Confirm Reject</button>
+        <button class="btn-cancel" onclick="closeRejectModal()">Cancel</button>
+    </div>
+</div>
+
+<script>
+const API_BASE = window.location.origin + '/api/';
+    let currentUser = null;
+    let allApplications = [];
+    let currentApplication = null;
+    let replyData = { appId: null, applicantName: '', courseTitle: '' };
+    let appIdMap = {};
+
+    function getToken() {
+        return localStorage.getItem('busahmed_token');
+    }
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return String(str).replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+
+    function showToast(msg, isError = false) {
+        const t = document.createElement("div");
+        t.className = "toast";
+        t.innerText = msg;
+        if (isError) t.style.background = "#dc2626";
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    }
+
+    function resizeImage(file, maxWidth, callback) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                let width = img.width;
+                let height = img.height;
+                if (width > maxWidth) {
+                    height = (height * maxWidth) / width;
+                    width = maxWidth;
+                }
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                callback(canvas.toDataURL('image/jpeg', 0.8));
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function viewUserProfile(userId) {
+        window.location.href = 'view-profile.html?id=' + userId;
+    }
+
+    async function checkAuth() {
+        const token = getToken();
+        if (!token) {
+            window.location.href = 'login.html';
+            return null;
+        }
+        try {
+            const response = await fetch(API_BASE + 'profile.php?token=' + encodeURIComponent(token));
+            if (!response.ok) {
+                localStorage.clear();
+                window.location.href = 'login.html';
+                return null;
+            }
+            currentUser = await response.json();
+            
+            // Check if user has permission to manage careers
+            const isFullAdmin = currentUser.role === 'admin';
+            const isAppointedAndAccepted = currentUser.is_appointed_admin == 1 && currentUser.admin_appointment_status === 'accepted';
+            const canManageCareers = currentUser.can_manage_careers == 1;
+            
+            if (!isFullAdmin && !(isAppointedAndAccepted && canManageCareers)) {
+                showToast('You do not have permission to manage careers', true);
+                setTimeout(() => {
+                    if (currentUser.role === 'student') window.location.href = 'dashboard-student.html';
+                    else if (currentUser.role === 'teacher') window.location.href = 'dashboard-teacher.html';
+                    else if (currentUser.role === 'owner') window.location.href = 'dashboard-owner.html';
+                    else window.location.href = 'login.html';
+                }, 2000);
+                return null;
+            }
+            
+            return currentUser;
+        } catch(err) {
+            console.error("Auth error:", err);
+            window.location.href = 'login.html';
+            return null;
+        }
+    }
+
+    function goBack() {
+        if (currentUser) {
+            if (currentUser.role === 'student') window.location.href = 'dashboard-student.html';
+            else if (currentUser.role === 'teacher') window.location.href = 'dashboard-teacher.html';
+            else if (currentUser.role === 'owner') window.location.href = 'dashboard-owner.html';
+            else if (currentUser.role === 'admin') window.location.href = 'dashboard-admin.html';
+            else window.location.href = 'login.html';
+        } else {
+            window.location.href = 'login.html';
+        }
+    }
+
+    // ==================== COURSES ====================
+    async function loadCourses() {
+        const token = getToken();
+        if (!token) return;
+        const container = document.getElementById("coursesList");
+        container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i> Loading courses...</div>';
+        
+        try {
+            const response = await fetch(API_BASE + 'admin-courses.php?token=' + encodeURIComponent(token));
+            const courses = await response.json();
+            renderCourses(courses);
+        } catch(err) {
+            console.error('Load courses error:', err);
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i> Error loading courses</div>';
+        }
+    }
+
+    function renderCourses(courses) {
+        const container = document.getElementById("coursesList");
+        if (!courses || courses.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-graduation-cap"></i>
+                    No courses added yet.<br>
+                    Use the form above to add a new course.
+                </div>
+            `;
+            return;
+        }
+        let html = "";
+        courses.forEach(c => {
+            html += `
+                <div class="course-item">
+                    <div class="course-info">
+                        <div class="course-title">${escapeHtml(c.title)}</div>
+                        <div class="course-details">
+                            👨‍🏫 ${escapeHtml(c.instructor)} • 
+                            ⏱ ${escapeHtml(c.duration || 'N/A')} • 
+                            💰 ${escapeHtml(c.price || (c.type === 'free' ? 'Free' : 'Paid'))} • 
+                            📥 ${c.enrolled || 0} enrolled
+                        </div>
+                    </div>
+                    <button class="btn-sm btn-delete" data-id="${c.id}"><i class="fas fa-trash"></i> Delete</button>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+        
+        document.querySelectorAll(".btn-delete").forEach(btn => {
+            btn.onclick = async () => {
+                const id = parseInt(btn.dataset.id);
+                if (!confirm("Delete this course permanently?")) return;
+                const token = getToken();
+                const response = await fetch(API_BASE + 'delete-course.php?token=' + encodeURIComponent(token), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showToast("Course deleted");
+                    loadCourses();
+                } else {
+                    showToast(data.error || "Failed to delete", true);
+                }
+            };
+        });
+    }
+
+    // ==================== APPLICATIONS ====================
+    async function loadApplications() {
+        const token = getToken();
+        if (!token) return;
+        const container = document.getElementById("applicationsList");
+        container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i> Loading applications...</div>';
+        
+        try {
+            const response = await fetch(API_BASE + 'admin-course-applications.php?token=' + encodeURIComponent(token));
+            const data = await response.json();
+            
+            if (data.success) {
+                const apps = data.applications || [];
+                allApplications = apps;
+                appIdMap = {};
+                apps.forEach(app => {
+                    appIdMap[app.id] = app;
+                });
+                renderApplications(apps);
+                updateBadge(apps);
+            } else {
+                console.error('API Error:', data.error);
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i>${escapeHtml(data.error || 'Failed to load applications')}</div>`;
+            }
+        } catch(err) {
+            console.error('Load applications error:', err);
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i> Error loading applications. Please try again.</div>';
+        }
+    }
+
+    async function getApplicationById(appId) {
+        if (appIdMap[appId]) return appIdMap[appId];
+        const found = allApplications.find(a => a.id === appId);
+        if (found) {
+            appIdMap[appId] = found;
+            return found;
+        }
+        try {
+            const token = getToken();
+            const response = await fetch(API_BASE + 'admin-course-applications.php?token=' + encodeURIComponent(token));
+            const data = await response.json();
+            if (data.success) {
+                const apps = data.applications || [];
+                apps.forEach(app => {
+                    appIdMap[app.id] = app;
+                });
+                allApplications = apps;
+                return appIdMap[appId] || null;
+            }
+        } catch(err) {
+            console.error('Error fetching application:', err);
+        }
+        return null;
+    }
+
+    function updateBadge(apps) {
+        const badge = document.getElementById('appBadge');
+        const pendingCount = apps ? apps.filter(a => a.status === 'pending').length : 0;
+        if (pendingCount > 0) {
+            badge.textContent = pendingCount;
+            badge.style.display = 'inline-block';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+
+    function renderApplications(apps) {
+        const container = document.getElementById("applicationsList");
+        if (!apps || apps.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    No course applications yet.<br>
+                    When users apply for courses, they will appear here.
+                </div>
+            `;
+            return;
+        }
+        
+        let html = "";
+        apps.forEach(app => {
+            const statusClass = {
+                pending: 'status-pending',
+                approved: 'status-approved',
+                rejected: 'status-rejected'
+            }[app.status] || 'status-pending';
+            
+            const statusLabel = {
+                pending: '⏳ Pending',
+                approved: '✅ Approved',
+                rejected: '❌ Rejected'
+            }[app.status] || app.status;
+            
+            const applicantName = app.full_name || app.name || 'Unknown';
+            const applicantEmail = app.email || 'N/A';
+            const applicantPhone = app.phone || 'N/A';
+            
+            html += `
+                <div class="application-item" id="app-${app.id}">
+                    <div class="app-info">
+                        <div class="app-name">
+                            <span class="clickable-name" onclick="viewUserProfile(${app.user_id})">${escapeHtml(applicantName)}</span>
+                            <span class="status-badge ${statusClass}">${statusLabel}</span>
+                        </div>
+                        <div class="app-details">
+                            <strong>Course:</strong> ${escapeHtml(app.course_title || 'N/A')} 
+                            by ${escapeHtml(app.course_instructor || 'N/A')}
+                        </div>
+                        <div class="app-details" style="font-size:12px;">
+                            📧 ${escapeHtml(applicantEmail)} 
+                            📱 ${escapeHtml(applicantPhone)}
+                        </div>
+                        <div class="app-details" style="font-size:11px; color:#94a3b8;">
+                            Applied: ${app.created_at ? new Date(app.created_at).toLocaleString() : 'N/A'}
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn-sm btn-view" data-id="${app.id}"><i class="fas fa-eye"></i> View</button>
+                        ${app.status === 'pending' ? `
+                            <button class="btn-sm btn-approve" data-id="${app.id}"><i class="fas fa-check"></i> Approve</button>
+                            <button class="btn-sm btn-reject" data-id="${app.id}"><i class="fas fa-times"></i> Reject</button>
+                        ` : ''}
+                        <button class="btn-sm btn-reply" data-id="${app.id}" data-name="${escapeHtml(applicantName)}" data-course="${escapeHtml(app.course_title || 'Course')}"><i class="fas fa-reply"></i> Reply</button>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+        
+        container.querySelectorAll('.btn-view').forEach(btn => {
+            btn.onclick = function() {
+                const id = parseInt(this.dataset.id);
+                viewApplication(id);
+            };
+        });
+        
+        container.querySelectorAll('.btn-approve').forEach(btn => {
+            btn.onclick = function() {
+                const id = parseInt(this.dataset.id);
+                approveApplication(id);
+            };
+        });
+        
+        container.querySelectorAll('.btn-reject').forEach(btn => {
+            btn.onclick = function() {
+                const id = parseInt(this.dataset.id);
+                openRejectModal(id);
+            };
+        });
+        
+        container.querySelectorAll('.btn-reply').forEach(btn => {
+            btn.onclick = function() {
+                const id = parseInt(this.dataset.id);
+                const name = this.dataset.name || 'Applicant';
+                const course = this.dataset.course || 'Course';
+                openReplyModal(id, name, course);
+            };
+        });
+    }
+
+    // ==================== VIEW APPLICATION ====================
+    async function viewApplication(appId) {
+        let app = appIdMap[appId];
+        if (!app) {
+            app = allApplications.find(a => a.id === appId);
+        }
+        if (!app) {
+            showToast('Fetching application data...', false);
+            app = await getApplicationById(appId);
+        }
+        if (!app) {
+            showToast('Application not found. Please refresh and try again.', true);
+            console.error('Application not found:', appId);
+            return;
+        }
+        
+        currentApplication = app;
+        
+        const applicantName = app.full_name || app.name || 'Unknown';
+        const applicantEmail = app.email || 'N/A';
+        const applicantPhone = app.phone || 'N/A';
+        
+        let content = '📚 COURSE APPLICATION\n\n';
+        content += `Course: ${app.course_title || 'N/A'}\n`;
+        content += `Instructor: ${app.course_instructor || 'N/A'}\n\n`;
+        content += 'Applicant Details:\n';
+        content += `Name: ${applicantName}\n`;
+        content += `Email: ${applicantEmail}\n`;
+        content += `Phone: ${applicantPhone}\n\n`;
+        if (app.reason) {
+            content += 'Reason for Applying:\n' + app.reason + '\n\n';
+        }
+        content += '---\n';
+        content += `Status: ${app.status || 'pending'}\n`;
+        content += `Applied on: ${app.created_at ? new Date(app.created_at).toLocaleString() : 'N/A'}`;
+        
+        document.getElementById('applicationFullContent').textContent = content;
+        document.getElementById('viewApplicationModal').classList.add('active');
+        
+        document.getElementById('viewApproveBtn').onclick = function() {
+            closeViewApplicationModal();
+            approveApplication(app.id);
+        };
+        
+        document.getElementById('viewRejectBtn').onclick = function() {
+            closeViewApplicationModal();
+            openRejectModal(app.id);
+        };
+        
+        document.getElementById('viewReplyBtn').onclick = function() {
+            closeViewApplicationModal();
+            openReplyModal(app.id, applicantName, app.course_title || 'Course');
+        };
+    }
+
+    function closeViewApplicationModal() {
+        document.getElementById('viewApplicationModal').classList.remove('active');
+    }
+
+    // ==================== APPROVE APPLICATION ====================
+    async function approveApplication(appId) {
+        if (!confirm('Approve this course application?')) return;
+        
+        const token = getToken();
+        try {
+            const response = await fetch(API_BASE + 'admin-course-applications.php?token=' + encodeURIComponent(token), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ application_id: appId, action: 'approve', admin_notes: '' })
+            });
+            const data = await response.json();
+            if (data.success) {
+                showToast('✅ Application approved!');
+                if (appIdMap[appId]) appIdMap[appId].status = 'approved';
+                loadApplications();
+            } else {
+                showToast(data.error || 'Failed to approve', true);
+            }
+        } catch(err) {
+            console.error('Approve error:', err);
+            showToast('Error approving application', true);
+        }
+    }
+
+    // ==================== REJECT APPLICATION ====================
+    function openRejectModal(appId) {
+        const app = appIdMap[appId] || allApplications.find(a => a.id === appId);
+        if (!app) {
+            showToast('Application not found', true);
+            return;
+        }
+        currentApplication = app;
+        document.getElementById('rejectNotes').value = '';
+        document.getElementById('rejectModal').classList.add('active');
+    }
+
+    function closeRejectModal() {
+        document.getElementById('rejectModal').classList.remove('active');
+        currentApplication = null;
+    }
+
+    document.getElementById('confirmRejectBtn').onclick = async function() {
+        if (!currentApplication) {
+            showToast('No application selected', true);
+            return;
+        }
+        const notes = document.getElementById('rejectNotes').value.trim();
+        const token = getToken();
+        try {
+            const response = await fetch(API_BASE + 'admin-course-applications.php?token=' + encodeURIComponent(token), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ application_id: currentApplication.id, action: 'reject', admin_notes: notes })
+            });
+            const data = await response.json();
+            if (data.success) {
+                showToast('Application rejected');
+                if (appIdMap[currentApplication.id]) appIdMap[currentApplication.id].status = 'rejected';
+                closeRejectModal();
+                loadApplications();
+            } else {
+                showToast(data.error || 'Failed to reject', true);
+            }
+        } catch(err) {
+            console.error('Reject error:', err);
+            showToast('Error rejecting application', true);
+        }
+    };
+
+    // ==================== REPLY MODAL ====================
+    function openReplyModal(appId, applicantName, courseTitle) {
+        replyData = { appId: appId, applicantName: applicantName || 'Applicant', courseTitle: courseTitle || 'Course' };
+        document.getElementById('replyApplicantName').textContent = replyData.applicantName;
+        document.getElementById('replyCourseTitle').textContent = replyData.courseTitle;
+        document.getElementById('replyMessage').value = '';
+        document.getElementById('replyModal').classList.add('active');
+        setTimeout(() => document.getElementById('replyMessage').focus(), 300);
+    }
+
+    function closeReplyModal() {
+        document.getElementById('replyModal').classList.remove('active');
+        replyData = { appId: null, applicantName: '', courseTitle: '' };
+    }
+
+    document.getElementById('sendReplyBtn').onclick = async function() {
+        const reply = document.getElementById('replyMessage').value.trim();
+        if (!reply) {
+            showToast('Please enter a reply message', true);
+            return;
+        }
+        if (!replyData.appId) {
+            showToast('No application selected', true);
+            return;
+        }
+        
+        const btn = this;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        
+        const token = getToken();
+        try {
+            let app = appIdMap[replyData.appId] || allApplications.find(a => a.id === replyData.appId);
+            if (!app) {
+                showToast('Application not found. Please refresh and try again.', true);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Reply';
+                return;
+            }
+            if (!app.user_id) {
+                showToast('User ID not found for this application', true);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Reply';
+                return;
+            }
+            
+            const convResponse = await fetch(API_BASE + 'chat-conversations.php?token=' + encodeURIComponent(token), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: app.user_id })
+            });
+            const convData = await convResponse.json();
+            if (!convData.conversation_id) {
+                showToast('Failed to create conversation', true);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Reply';
+                return;
+            }
+            
+            const convId = convData.conversation_id;
+            const replyMessage = "📝 Reply to your course application:\n\n" + reply + "\n\n---\nFrom: Admin";
+            
+            const msgResponse = await fetch(API_BASE + 'chat-messages.php?token=' + encodeURIComponent(token), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ conversation_id: convId, message_type: 'text', message: replyMessage })
+            });
+            const msgData = await msgResponse.json();
+            
+            if (msgData.id) {
+                showToast('✅ Reply sent successfully!');
+                closeReplyModal();
+                loadApplications();
+            } else {
+                showToast('Failed to send reply', true);
+            }
+        } catch(err) {
+            console.error('Reply error:', err);
+            showToast('Network error: ' + err.message, true);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Reply';
+        }
+    };
+
+    // ==================== ADD COURSE ====================
+    document.getElementById("addCourseBtn").onclick = function() {
+        const title = document.getElementById("courseTitle").value.trim();
+        const instructor = document.getElementById("courseInstructor").value.trim();
+        const desc = document.getElementById("courseDesc").value.trim();
+        const duration = document.getElementById("courseDuration").value.trim();
+        const type = document.getElementById("courseType").value;
+        const price = document.getElementById("coursePrice").value.trim();
+        
+        if (!title || !instructor) {
+            showToast("Title and instructor are required", true);
+            document.getElementById("courseTitle").focus();
+            return;
+        }
+        
+        const file = document.getElementById("courseImage").files[0];
+        const btn = this;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+        
+        const process = async (img) => {
+            const token = getToken();
+            try {
+                const response = await fetch(API_BASE + 'admin-add-course.php?token=' + encodeURIComponent(token), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, instructor, description: desc, duration, type, price, image: img })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showToast("✅ Course added successfully!");
+                    document.getElementById("courseTitle").value = "";
+                    document.getElementById("courseInstructor").value = "";
+                    document.getElementById("courseDesc").value = "";
+                    document.getElementById("courseDuration").value = "";
+                    document.getElementById("coursePrice").value = "";
+                    document.getElementById("courseImage").value = "";
+                    document.getElementById("imageName").textContent = "";
+                    document.querySelector("#imageLabel span:not(#imageName)").textContent = "Click to upload course image";
+                    loadCourses();
+                } else {
+                    showToast(data.error || "Failed to add course", true);
+                }
+            } catch(err) {
+                console.error('Add course error:', err);
+                showToast('Network error: ' + err.message, true);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-plus"></i> Add Course';
+            }
+        };
+        
+        if (file) {
+            resizeImage(file, 800, process);
+        } else {
+            process(null);
+        }
+    };
+
+    // ==================== FILE INPUT HANDLER ====================
+    document.getElementById('courseImage').addEventListener('change', function(e) {
+        const file = this.files[0];
+        const nameDisplay = document.getElementById('imageName');
+        const label = document.querySelector("#imageLabel span:not(#imageName)");
+        if (file) {
+            nameDisplay.textContent = file.name;
+            label.textContent = 'Selected:';
+        } else {
+            nameDisplay.textContent = '';
+            label.textContent = 'Click to upload course image';
+        }
+    });
+
+    // ==================== ENTER KEY SUPPORT ====================
+    document.getElementById("courseInstructor").addEventListener("keypress", function(e) {
+        if (e.key === "Enter") document.getElementById("addCourseBtn").click();
+    });
+
+    // ==================== MODAL CLOSE ON OUTSIDE CLICK ====================
+    document.getElementById('replyModal').addEventListener('click', function(e) {
+        if (e.target === this) closeReplyModal();
+    });
+    document.getElementById('viewApplicationModal').addEventListener('click', function(e) {
+        if (e.target === this) closeViewApplicationModal();
+    });
+    document.getElementById('rejectModal').addEventListener('click', function(e) {
+        if (e.target === this) closeRejectModal();
+    });
+
+    // ==================== ESC KEY SUPPORT ====================
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            if (document.getElementById('replyModal').classList.contains('active')) closeReplyModal();
+            if (document.getElementById('viewApplicationModal').classList.contains('active')) closeViewApplicationModal();
+            if (document.getElementById('rejectModal').classList.contains('active')) closeRejectModal();
+        }
+    });
+
+    // ==================== INIT ====================
+    async function init() {
+        await checkAuth();
+        if (!currentUser) return;
+        
+        await loadCourses();
+        await loadApplications();
+        
+        document.getElementById("backBtn").onclick = goBack;
+        
+        document.querySelectorAll(".tab").forEach(tab => {
+            tab.onclick = () => {
+                document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+                tab.classList.add("active");
+                const show = tab.dataset.tab;
+                document.getElementById("coursesTab").style.display = show === "courses" ? "block" : "none";
+                document.getElementById("applicationsTab").style.display = show === "applications" ? "block" : "none";
+                if (show === "applications") loadApplications();
+            };
+        });
+        
+        if (localStorage.getItem("busahmed_dark_mode") === "true") {
+            document.body.classList.add("dark-mode");
+        }
+    }
+    
+    window.viewApplication = viewApplication;
+    window.closeViewApplicationModal = closeViewApplicationModal;
+    window.openReplyModal = openReplyModal;
+    window.closeReplyModal = closeReplyModal;
+    window.openRejectModal = openRejectModal;
+    window.closeRejectModal = closeRejectModal;
+    window.approveApplication = approveApplication;
+    window.viewUserProfile = viewUserProfile;
+    
+    init();
+</script>
+</body>
+</html>

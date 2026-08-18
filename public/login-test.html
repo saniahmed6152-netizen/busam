@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BUSAHMED - Simple Login Test</title>
+    <style>
+        body { font-family: Arial; padding: 50px; text-align: center; background: linear-gradient(135deg, #1e1b4b, #4f46e5); min-height: 100vh; }
+        .box { background: white; max-width: 400px; margin: 0 auto; padding: 30px; border-radius: 30px; }
+        input, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 40px; border: 1px solid #ddd; }
+        button { background: #4f46e5; color: white; font-weight: bold; cursor: pointer; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+<div class="box">
+    <h1>BUSAHMED Login</h1>
+    <input type="text" id="email" placeholder="Email" value="admin@busahmed.com">
+    <input type="password" id="password" placeholder="Password" value="admin123">
+    <button onclick="login()">Login</button>
+    <div id="result"></div>
+</div>
+
+<script>
+    async function login() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const resultDiv = document.getElementById('result');
+        
+        resultDiv.innerHTML = "Logging in...";
+        
+        try {
+            const response = await fetch('/api/login-simple.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ identifier: email, password: password })
+            });
+            
+            const data = await response.json();
+            console.log("Response:", data);
+            resultDiv.innerHTML = JSON.stringify(data, null, 2);
+            
+            if (data.success) {
+                localStorage.setItem('busahmed_token', data.token);
+                localStorage.setItem('busahmed_role', data.role);
+                resultDiv.innerHTML += "<br><span class='success'>✅ Login successful! Redirecting...</span>";
+                setTimeout(() => {
+                    window.location.href = 'dashboard-test.html';
+                }, 1500);
+            } else {
+                resultDiv.innerHTML += "<br><span class='error'>❌ " + data.error + "</span>";
+            }
+        } catch(err) {
+            resultDiv.innerHTML = "<span class='error'>Error: " + err.message + "</span>";
+        }
+    }
+</script>
+</body>
+</html>

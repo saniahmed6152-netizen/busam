@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BUSAHMED | News Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="/icons/icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/icons/icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="/icons/icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/icons/icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/icons/icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/icons/icon-167x167.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="/icons/icon-180x180.png" sizes="180x180">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-square70x70logo" content="/icons/icon-72x72.png">
+    <meta name="msapplication-square150x150logo" content="/icons/icon-144x144.png">
+    <meta name="msapplication-wide310x150logo" content="/icons/icon-384x384.png">
+    <meta name="msapplication-square310x310logo" content="/icons/icon-512x512.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #1e1b4b, #4f46e5); min-height: 100vh; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .card { background: white; border-radius: 32px; padding: 24px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        h1 { font-size: 24px; color: #1e1b4b; display: flex; align-items: center; gap: 10px; }
+        .back-btn { background: #e2e8f0; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .back-btn:hover { background: #cbd5e1; }
+        .form-box { background: #f1f5f9; border-radius: 20px; padding: 16px; margin-bottom: 20px; }
+        .form-box h3 { margin-bottom: 12px; color: #1e293b; }
+        input, textarea { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 40px; margin-bottom: 12px; outline: none; font-size: 14px; transition: 0.2s; }
+        input:focus, textarea:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+        textarea { border-radius: 20px; min-height: 80px; resize: vertical; font-family: inherit; }
+        .news-item { background: #f8fafc; border-radius: 20px; padding: 14px 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; border-left: 4px solid #4f46e5; transition: 0.2s; }
+        .news-item:hover { background: #eef2ff; transform: scale(1.01); }
+        .news-info { flex: 1; min-width: 150px; }
+        .news-title { font-weight: 700; font-size: 15px; }
+        .news-meta { font-size: 13px; color: #64748b; margin-top: 2px; }
+        .btn-delete { background: #ef4444; color: white; border: none; border-radius: 40px; padding: 4px 12px; cursor: pointer; font-size: 12px; transition: 0.2s; }
+        .btn-delete:hover { background: #dc2626; }
+        .btn-add { background: #4f46e5; color: white; border: none; border-radius: 40px; padding: 12px; width: 100%; cursor: pointer; font-weight: 600; font-size: 15px; transition: 0.2s; }
+        .btn-add:hover { background: #4338ca; }
+        .btn-add:disabled { background: #94a3b8; cursor: not-allowed; }
+        .file-input-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%; }
+        .file-input-wrapper input[type="file"] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+        .file-input-wrapper .file-label { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; background: #e2e8f0; border: 2px dashed #cbd5e1; border-radius: 40px; cursor: pointer; transition: 0.2s; color: #64748b; }
+        .file-input-wrapper .file-label:hover { background: #eef2ff; border-color: #4f46e5; }
+        .dark-mode .file-input-wrapper .file-label { background: #334155; border-color: #475569; color: #94a3b8; }
+        .dark-mode .file-input-wrapper .file-label:hover { background: #1e293b; border-color: #4f46e5; }
+        .dark-mode { background: #0f172a; }
+        .dark-mode .card { background: #1e293b; }
+        .dark-mode h1 { color: #f1f5f9; }
+        .dark-mode .form-box { background: #0f172a; border: 1px solid #334155; }
+        .dark-mode .form-box h3 { color: #e2e8f0; }
+        .dark-mode .news-item { background: #0f172a; border: 1px solid #334155; color: #e2e8f0; border-left-color: #4f46e5; }
+        .dark-mode .news-item:hover { background: #1e293b; }
+        .dark-mode .back-btn { background: #334155; color: #e2e8f0; }
+        .dark-mode .back-btn:hover { background: #475569; }
+        .dark-mode input, .dark-mode textarea { background: #334155; border-color: #475569; color: white; }
+        .dark-mode input::placeholder, .dark-mode textarea::placeholder { color: #94a3b8; }
+        .dark-mode .news-meta { color: #94a3b8; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 8px 20px; border-radius: 40px; font-size: 14px; z-index: 2000; }
+        .empty-state { text-align: center; padding: 40px 20px; color: #94a3b8; }
+        .empty-state i { font-size: 40px; display: block; margin-bottom: 12px; opacity: 0.5; }
+        .loading-spinner { text-align: center; padding: 40px; color: #94a3b8; }
+        .loading-spinner i { font-size: 30px; display: block; margin-bottom: 12px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .dark-mode .empty-state { color: #64748b; }
+        .dark-mode .loading-spinner { color: #64748b; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1><i class="fas fa-newspaper" style="color:#4f46e5;"></i> News Manager</h1>
+            <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        <div class="form-box">
+            <h3>📢 Publish News</h3>
+            <input type="text" id="newsTitle" placeholder="Title *">
+            <textarea id="newsContent" rows="2" placeholder="Short summary *"></textarea>
+            <textarea id="newsFullContent" rows="4" placeholder="Full article (optional)"></textarea>
+            <div class="file-input-wrapper">
+                <div class="file-label" id="imageLabel">
+                    <i class="fas fa-image"></i>
+                    <span>Click to upload news image</span>
+                    <span id="imageName" style="font-weight:500; color:#1e293b;"></span>
+                </div>
+                <input type="file" id="newsImage" accept="image/*">
+            </div>
+            <button class="btn-add" id="publishBtn"><i class="fas fa-plus"></i> Publish News</button>
+        </div>
+        <div id="newsList">
+            <div class="loading-spinner"><i class="fas fa-spinner"></i> Loading news...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+const API_BASE = window.location.origin + '/api/';
+    let currentUser = null;
+
+    function getToken() {
+        return localStorage.getItem('busahmed_token');
+    }
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+
+    function showToast(msg, isError = false) {
+        const t = document.createElement("div");
+        t.className = "toast";
+        t.innerText = msg;
+        if (isError) t.style.background = "#dc2626";
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    }
+
+    function resizeImage(file, maxWidth, callback) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                let width = img.width;
+                let height = img.height;
+                if (width > maxWidth) { height = (height * maxWidth) / width; width = maxWidth; }
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                callback(canvas.toDataURL('image/jpeg', 0.8));
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function goBack() {
+        if (currentUser) {
+            if (currentUser.role === 'student') window.location.href = 'dashboard-student.html';
+            else if (currentUser.role === 'teacher') window.location.href = 'dashboard-teacher.html';
+            else if (currentUser.role === 'owner') window.location.href = 'dashboard-owner.html';
+            else if (currentUser.role === 'admin') window.location.href = 'dashboard-admin.html';
+            else window.location.href = 'login.html';
+        } else {
+            window.location.href = 'login.html';
+        }
+    }
+
+    async function checkAuth() {
+        const token = getToken();
+        console.log('🔍 Token:', token ? token.substring(0, 30) + '...' : 'NO TOKEN');
+        
+        if (!token) {
+            console.log('❌ No token, redirecting to login');
+            window.location.href = 'login.html';
+            return null;
+        }
+        
+        try {
+            const response = await fetch(API_BASE + 'profile.php?token=' + encodeURIComponent(token));
+            console.log('📡 Profile response status:', response.status);
+            
+            if (!response.ok) {
+                console.log('❌ Profile fetch failed');
+                localStorage.clear();
+                window.location.href = 'login.html';
+                return null;
+            }
+            
+            currentUser = await response.json();
+            console.log('👤 User loaded:', currentUser.name);
+            console.log('📊 Permissions:', {
+                is_appointed_admin: currentUser.is_appointed_admin,
+                admin_appointment_status: currentUser.admin_appointment_status,
+                can_manage_news: currentUser.can_manage_news,
+                can_manage_jobs: currentUser.can_manage_jobs,
+                can_manage_careers: currentUser.can_manage_careers,
+                can_manage_library: currentUser.can_manage_library
+            });
+            
+            // Check if user has permission to manage news
+            const isFullAdmin = currentUser.role === 'admin';
+            const isAppointedAndAccepted = currentUser.is_appointed_admin == 1 && currentUser.admin_appointment_status === 'accepted';
+            const canManageNews = currentUser.can_manage_news == 1;
+            
+            console.log('🔑 Permission check:', {
+                isFullAdmin,
+                isAppointedAndAccepted,
+                canManageNews,
+                hasPermission: isFullAdmin || (isAppointedAndAccepted && canManageNews)
+            });
+            
+            if (!isFullAdmin && !(isAppointedAndAccepted && canManageNews)) {
+                console.log('❌ No permission to manage news');
+                showToast('You do not have permission to manage news', true);
+                setTimeout(() => {
+                    if (currentUser.role === 'student') window.location.href = 'dashboard-student.html';
+                    else if (currentUser.role === 'teacher') window.location.href = 'dashboard-teacher.html';
+                    else if (currentUser.role === 'owner') window.location.href = 'dashboard-owner.html';
+                    else window.location.href = 'login.html';
+                }, 2000);
+                return null;
+            }
+            
+            console.log('✅ Permission granted to manage news');
+            return currentUser;
+        } catch(err) {
+            console.error("Auth error:", err);
+            window.location.href = 'login.html';
+            return null;
+        }
+    }
+
+    async function loadNews() {
+        const token = getToken();
+        if (!token) return;
+        const container = document.getElementById("newsList");
+        container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i> Loading news...</div>';
+        
+        try {
+            console.log('📡 Fetching news from:', API_BASE + 'admin-news.php?token=' + encodeURIComponent(token));
+            const response = await fetch(API_BASE + 'admin-news.php?token=' + encodeURIComponent(token));
+            console.log('📡 News response status:', response.status);
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('❌ News fetch error:', errorText);
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i> Error loading news: ' + response.status + '</div>';
+                return;
+            }
+            
+            const news = await response.json();
+            console.log('📰 News loaded:', news.length);
+            renderNews(news);
+        } catch(err) {
+            console.error('Load news error:', err);
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i> Error loading news: ' + err.message + '</div>';
+        }
+    }
+
+    function renderNews(news) {
+        const container = document.getElementById("newsList");
+        if (!news || news.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-newspaper"></i>
+                    No news published yet.<br>
+                    Use the form above to publish news.
+                </div>
+            `;
+            return;
+        }
+        
+        let html = "";
+        news.forEach(n => {
+            html += `
+                <div class="news-item">
+                    <div class="news-info">
+                        <div class="news-title">${escapeHtml(n.title)}</div>
+                        <div class="news-meta">📅 ${new Date(n.created_at).toLocaleDateString()}</div>
+                    </div>
+                    <button class="btn-delete" data-id="${n.id}"><i class="fas fa-trash"></i> Delete</button>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+        
+        document.querySelectorAll(".btn-delete").forEach(btn => {
+            btn.onclick = async () => {
+                const id = parseInt(btn.dataset.id);
+                if (!confirm("Delete this news permanently?")) return;
+                const token = getToken();
+                try {
+                    const response = await fetch(API_BASE + 'admin-delete-news.php?token=' + encodeURIComponent(token), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        showToast("News deleted");
+                        loadNews();
+                    } else {
+                        showToast(data.error || "Failed to delete", true);
+                    }
+                } catch(err) {
+                    showToast("Error deleting news", true);
+                }
+            };
+        });
+    }
+
+    document.getElementById("publishBtn").onclick = function() {
+        const title = document.getElementById("newsTitle").value.trim();
+        const content = document.getElementById("newsContent").value.trim();
+        if (!title || !content) {
+            showToast("Title and summary are required", true);
+            document.getElementById("newsTitle").focus();
+            return;
+        }
+        const full = document.getElementById("newsFullContent").value.trim() || content;
+        const file = document.getElementById("newsImage").files[0];
+        const btn = this;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing...';
+        
+        const process = async (img) => {
+            const token = getToken();
+            try {
+                const response = await fetch(API_BASE + 'admin-add-news.php?token=' + encodeURIComponent(token), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, content, full_content: full, image: img })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showToast("✅ News published!");
+                    document.getElementById("newsTitle").value = "";
+                    document.getElementById("newsContent").value = "";
+                    document.getElementById("newsFullContent").value = "";
+                    document.getElementById("newsImage").value = "";
+                    document.getElementById("imageName").textContent = "";
+                    document.querySelector("#imageLabel span:not(#imageName)").textContent = "Click to upload news image";
+                    loadNews();
+                } else {
+                    showToast(data.error || "Failed to publish", true);
+                }
+            } catch(err) {
+                console.error('Publish error:', err);
+                showToast('Network error: ' + err.message, true);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-plus"></i> Publish News';
+            }
+        };
+        if (file) {
+            resizeImage(file, 800, process);
+        } else {
+            process(null);
+        }
+    };
+
+    // File input handler
+    document.getElementById('newsImage').addEventListener('change', function(e) {
+        const file = this.files[0];
+        const nameDisplay = document.getElementById('imageName');
+        const label = document.querySelector("#imageLabel span:not(#imageName)");
+        if (file) {
+            nameDisplay.textContent = file.name;
+            label.textContent = 'Selected:';
+        } else {
+            nameDisplay.textContent = '';
+            label.textContent = 'Click to upload news image';
+        }
+    });
+
+    async function init() {
+        console.log('🚀 Starting News Manager...');
+        const user = await checkAuth();
+        if (!user) {
+            console.log('❌ Auth failed');
+            return;
+        }
+        console.log('✅ Auth successful, loading news...');
+        await loadNews();
+        document.getElementById("backBtn").onclick = goBack;
+        if (localStorage.getItem("busahmed_dark_mode") === "true") document.body.classList.add("dark-mode");
+    }
+    init();
+</script>
+</body>
+</html>

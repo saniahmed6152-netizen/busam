@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BUSAHMED | Library</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA Meta Tags -->
+<!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="/icons/icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/icons/icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="/icons/icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/icons/icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/icons/icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/icons/icon-167x167.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="/icons/icon-180x180.png" sizes="180x180">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-square70x70logo" content="/icons/icon-72x72.png">
+    <meta name="msapplication-square150x150logo" content="/icons/icon-144x144.png">
+    <meta name="msapplication-wide310x150logo" content="/icons/icon-384x384.png">
+    <meta name="msapplication-square310x310logo" content="/icons/icon-512x512.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #1e1b4b, #4f46e5); min-height: 100vh; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .card { background: white; border-radius: 32px; padding: 24px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        h1 { font-size: 24px; color: #1e1b4b; display: flex; align-items: center; gap: 10px; }
+        .back-btn { background: #e2e8f0; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .back-btn:hover { background: #cbd5e1; }
+        .ad-space { margin: 0 0 16px 0; border-radius: 20px; overflow: hidden; height: 80px; display: flex; align-items: center; justify-content: center; position: relative; background: #f1f5f9; }
+        .search-box { width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 40px; margin-bottom: 16px; font-size: 14px; outline: none; transition: 0.2s; }
+        .search-box:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+        .book-card { background: #f8fafc; border-radius: 20px; padding: 16px; margin-bottom: 12px; display: flex; gap: 16px; border: 1px solid #e2e8f0; transition: 0.2s; cursor: pointer; }
+        .book-card:hover { transform: scale(1.01); background: #eef2ff; }
+        .book-cover { width: 80px; height: 110px; border-radius: 8px; object-fit: cover; background: #e2e8f0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 30px; }
+        .book-info { flex: 1; min-width: 0; }
+        .book-title { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
+        .book-meta { font-size: 12px; color: #64748b; }
+        .book-actions { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; }
+        .download-btn { background: #10b981; color: white; border: none; border-radius: 40px; padding: 6px 16px; cursor: pointer; font-weight: 500; transition: 0.2s; }
+        .download-btn:hover { background: #059669; }
+        .buy-btn { background: #f59e0b; color: white; border: none; border-radius: 40px; padding: 6px 16px; cursor: pointer; font-weight: 500; transition: 0.2s; }
+        .buy-btn:hover { background: #d97706; }
+        .dark-mode { background: #0f172a; }
+        .dark-mode .card { background: #1e293b; }
+        .dark-mode h1 { color: #f1f5f9; }
+        .dark-mode .book-card { background: #1e293b; border-color: #334155; color: #e2e8f0; }
+        .dark-mode .book-card:hover { background: #334155; }
+        .dark-mode .back-btn { background: #334155; color: #e2e8f0; }
+        .dark-mode .back-btn:hover { background: #475569; }
+        .dark-mode .ad-space { background: #0f172a; }
+        .dark-mode .search-box { background: #334155; border-color: #475569; color: white; }
+        .dark-mode .search-box::placeholder { color: #94a3b8; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 8px 20px; border-radius: 40px; font-size: 14px; z-index: 2000; }
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; border-radius: 32px; max-width: 450px; width: 90%; padding: 24px; max-height: 90vh; overflow-y: auto; }
+        .dark-mode .modal-content { background: #1e293b; color: #e2e8f0; }
+        .modal-content .book-detail-cover { width: 100%; max-height: 300px; object-fit: contain; border-radius: 12px; margin-bottom: 16px; background: #f8fafc; }
+        .modal-content .book-detail-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; color: #1e1b4b; }
+        .dark-mode .modal-content .book-detail-title { color: #f1f5f9; }
+        .modal-content .book-detail-author { font-size: 14px; color: #64748b; margin-bottom: 12px; }
+        .modal-content .book-detail-bio { font-size: 14px; line-height: 1.8; color: #1e293b; margin-bottom: 16px; }
+        .dark-mode .modal-content .book-detail-bio { color: #e2e8f0; }
+        .modal-content .book-detail-meta { font-size: 13px; color: #64748b; margin-bottom: 12px; }
+        .modal-content .btn-close-modal { background: #e2e8f0; color: #1e293b; border: none; border-radius: 40px; padding: 10px; cursor: pointer; width: 100%; font-weight: 600; margin-top: 8px; }
+        .dark-mode .modal-content .btn-close-modal { background: #334155; color: #e2e8f0; }
+        .modal-content .btn-download-modal { background: #10b981; color: white; border: none; border-radius: 40px; padding: 10px; cursor: pointer; width: 100%; font-weight: 600; }
+        .modal-content .btn-download-modal:hover { background: #059669; }
+        .modal-content .btn-buy-modal { background: #f59e0b; color: white; border: none; border-radius: 40px; padding: 10px; cursor: pointer; width: 100%; font-weight: 600; }
+        .modal-content .btn-buy-modal:hover { background: #d97706; }
+        .modal-content input, .modal-content .payment-info { width: 100%; margin-top: 12px; padding: 12px; border: 1px solid #e2e8f0; border-radius: 40px; outline: none; }
+        .dark-mode .modal-content input { background: #334155; border-color: #475569; color: white; }
+        .modal-content .payment-info { background: #f1f5f9; font-size: 13px; border: none; }
+        .dark-mode .modal-content .payment-info { background: #0f172a; border: 1px solid #334155; }
+        .empty-state { text-align: center; padding: 40px 20px; color: #94a3b8; }
+        .empty-state i { font-size: 40px; display: block; margin-bottom: 12px; opacity: 0.5; }
+        .loading-spinner { text-align: center; padding: 40px; color: #94a3b8; }
+        .loading-spinner i { font-size: 30px; display: block; margin-bottom: 12px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .dark-mode .empty-state { color: #64748b; }
+        .dark-mode .loading-spinner { color: #64748b; }
+        .debug-info { 
+            background: #f1f5f9; 
+            padding: 8px 12px; 
+            border-radius: 8px; 
+            font-size: 12px; 
+            margin-bottom: 12px;
+            color: #1e293b;
+            display: none;
+        }
+        .dark-mode .debug-info { background: #0f172a; color: #94a3b8; border: 1px solid #334155; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1><i class="fas fa-book" style="color:#4f46e5;"></i> Library</h1>
+            <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        <div id="debugInfo" class="debug-info">🔍 Debug: Loading...</div>
+        <div id="adContainer" class="ad-space">📢 Loading ad...</div>
+        <input type="text" id="searchBox" class="search-box" placeholder="Search books by title, author, or category...">
+        <div id="booksList">
+            <div class="loading-spinner"><i class="fas fa-spinner"></i> Loading books...</div>
+        </div>
+    </div>
+</div>
+
+<!-- Book Detail Modal -->
+<div class="modal" id="bookModal">
+    <div class="modal-content">
+        <div id="bookDetailContent"></div>
+        <button class="btn-close-modal" onclick="closeBookModal()">Close</button>
+    </div>
+</div>
+
+<script>
+const API_BASE = window.location.origin + '/api/';
+    let currentUser = null;
+    let allBooks = [];
+    let adInterval = null;
+
+    function showToast(msg, isError = false) {
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.innerText = msg;
+        if (isError) toast.style.background = "#dc2626";
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+
+    function updateDebug(msg, isError = false) {
+        const el = document.getElementById('debugInfo');
+        el.style.display = 'block';
+        el.innerHTML = msg;
+        if (isError) {
+            el.style.background = '#fee2e2';
+            el.style.color = '#dc2626';
+        } else {
+            el.style.background = '#d1fae5';
+            el.style.color = '#059669';
+        }
+        setTimeout(() => {
+            el.style.display = 'none';
+        }, 8000);
+    }
+
+    // ==================== AD HELPER ====================
+    function renderAd(containerId, location, intervalTime = 10000) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        if (adInterval) {
+            clearInterval(adInterval);
+            adInterval = null;
+        }
+        
+        container.innerHTML = "📢 Loading ad...";
+        container.style.cssText = `
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 80px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            cursor: default;
+            color: #94a3b8;
+            font-size: 14px;
+        `;
+        
+        fetch(`${API_BASE}ads.php?location=${location}`)
+            .then(response => response.json())
+            .then(ads => {
+                if (!ads || ads.length === 0) {
+                    container.innerHTML = "📢 Ad space - Promote your school";
+                    container.style.cssText = `
+                        background: #f1f5f9;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 80px;
+                        border-radius: 20px;
+                        overflow: hidden;
+                        position: relative;
+                        cursor: default;
+                        color: #94a3b8;
+                        font-size: 14px;
+                    `;
+                    return;
+                }
+                
+                let idx = 0;
+                
+                function showAd() {
+                    const ad = ads[idx % ads.length];
+                    const imageUrl = ad.image_url || 'https://via.placeholder.com/800x100/4f46e5/ffffff?text=Ad';
+                    const linkUrl = ad.link || '#';
+                    
+                    container.innerHTML = `
+                        <img src="${imageUrl}" 
+                             style="width:100%; height:80px; object-fit:cover; display:block;" 
+                             onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:80px;background:#1e293b;color:#94a3b8;font-size:14px;\\'>📢 Ad</div>'">
+                        <div style="position:absolute; bottom:4px; right:8px; background:rgba(0,0,0,0.6); color:white; font-size:10px; padding:2px 10px; border-radius:20px;">
+                            ${ad.caption || "Sponsored"} | 👁️ ${ad.views || 0}
+                        </div>
+                    `;
+                    container.style.cssText = `
+                        background: transparent;
+                        display: block;
+                        height: 80px;
+                        border-radius: 20px;
+                        overflow: hidden;
+                        position: relative;
+                        cursor: pointer;
+                        padding: 0;
+                    `;
+                    container.onclick = function(e) {
+                        e.preventDefault();
+                        if (linkUrl && linkUrl !== '#') {
+                            window.open(linkUrl, "_blank");
+                        }
+                    };
+                    idx++;
+                }
+                
+                showAd();
+                
+                if (ads.length > 1) {
+                    adInterval = setInterval(showAd, intervalTime);
+                }
+            })
+            .catch(err => {
+                console.error("Ad error:", err);
+                container.innerHTML = "📢 Ad unavailable";
+                container.style.cssText = `
+                    background: #f1f5f9;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 80px;
+                    border-radius: 20px;
+                    overflow: hidden;
+                    position: relative;
+                    cursor: default;
+                    color: #94a3b8;
+                    font-size: 14px;
+                `;
+            });
+    }
+    // =============================================
+
+    async function getCurrentUser() {
+        const token = localStorage.getItem('busahmed_token');
+        console.log('🔑 Token:', token ? token.substring(0, 30) + '...' : 'NO TOKEN');
+        
+        if (!token) {
+            updateDebug('❌ No token found', true);
+            return null;
+        }
+        
+        try {
+            const res = await fetch(`${API_BASE}profile.php?token=` + encodeURIComponent(token));
+            console.log('📡 Profile response status:', res.status);
+            
+            if (!res.ok) {
+                updateDebug('❌ Profile API error: ' + res.status, true);
+                return null;
+            }
+            
+            const data = await res.json();
+            console.log('👤 User data:', data);
+            
+            if (data.error) {
+                updateDebug('❌ ' + data.error, true);
+                return null;
+            }
+            
+            updateDebug('✅ User: ' + data.name + ' (Role: ' + data.role + ')');
+            return data;
+        } catch (err) {
+            console.error('Get user error:', err);
+            updateDebug('❌ Error: ' + err.message, true);
+            return null;
+        }
+    }
+
+    async function loadBooks() {
+        const container = document.getElementById("booksList");
+        container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i> Loading books...</div>';
+        
+        try {
+            const res = await fetch(`${API_BASE}books.php`);
+            const data = await res.json();
+            
+            if (data.error) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i>${escapeHtml(data.error)}</div>`;
+                return;
+            }
+            
+            allBooks = data;
+            console.log('✅ Books loaded:', allBooks.length);
+            renderBooks();
+        } catch (err) {
+            console.error("Error loading books:", err);
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i>Error loading books. Please try again.</div>';
+        }
+    }
+
+    function renderBooks() {
+        const searchTerm = document.getElementById("searchBox").value.toLowerCase();
+        const filtered = allBooks.filter(b => 
+            b.title.toLowerCase().includes(searchTerm) || 
+            b.author.toLowerCase().includes(searchTerm) ||
+            b.category.toLowerCase().includes(searchTerm)
+        );
+        
+        if (filtered.length === 0) {
+            document.getElementById("booksList").innerHTML = `<div class="empty-state"><i class="fas fa-search"></i>No books found${searchTerm ? ' matching "' + escapeHtml(searchTerm) + '"' : ''}</div>`;
+            return;
+        }
+        
+        let html = "";
+        filtered.forEach(book => {
+            const coverHtml = book.cover ? 
+                `<img src="${book.cover}" class="book-cover">` : 
+                `<div class="book-cover"><i class="fas fa-book"></i></div>`;
+            
+            html += `
+                <div class="book-card" onclick="openBookDetail(${book.id})">
+                    ${coverHtml}
+                    <div class="book-info">
+                        <div class="book-title">${escapeHtml(book.title)}</div>
+                        <div class="book-meta">By ${escapeHtml(book.author)} | ${escapeHtml(book.category)}</div>
+                        <div class="book-meta">📥 ${book.downloads || 0} downloads</div>
+                        <div class="book-actions">
+                            ${book.is_free ? 
+                                `<button class="download-btn" onclick="event.stopPropagation();downloadBook('${book.pdf_url}', '${escapeHtml(book.title)}', ${book.id})">📥 Free Download</button>` : 
+                                `<button class="buy-btn" onclick="event.stopPropagation();openBuyModal(${book.id}, '${escapeHtml(book.title)}', ${book.price})">💰 Buy ₦${book.price}</button>`
+                            }
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        document.getElementById("booksList").innerHTML = html;
+    }
+
+    // ==================== BOOK DETAIL MODAL ====================
+    function openBookDetail(bookId) {
+        const id = typeof bookId === 'string' ? parseInt(bookId) : bookId;
+        
+        let book = allBooks.find(b => b.id === id);
+        if (!book) {
+            book = allBooks.find(b => b.id == id);
+        }
+        if (!book) {
+            book = allBooks.find(b => String(b.id) === String(id));
+        }
+        
+        if (!book) {
+            showToast('Book not found. Please refresh the page.', true);
+            return;
+        }
+        
+        const modal = document.getElementById('bookModal');
+        const coverHtml = book.cover ? 
+            `<img src="${book.cover}" class="book-detail-cover">` : 
+            `<div class="book-detail-cover" style="display:flex;align-items:center;justify-content:center;background:#e2e8f0;color:#94a3b8;font-size:48px;"><i class="fas fa-book"></i></div>`;
+        
+        let actionButtons = '';
+        if (book.is_free) {
+            actionButtons = `<button class="btn-download-modal" onclick="downloadBook('${book.pdf_url}', '${escapeHtml(book.title)}', ${book.id}); closeBookModal();">📥 Free Download</button>`;
+        } else {
+            actionButtons = `<button class="btn-buy-modal" onclick="closeBookModal(); openBuyModal(${book.id}, '${escapeHtml(book.title)}', ${book.price})">💰 Buy ₦${book.price}</button>`;
+        }
+        
+        document.getElementById('bookDetailContent').innerHTML = `
+            ${coverHtml}
+            <div class="book-detail-title">${escapeHtml(book.title)}</div>
+            <div class="book-detail-author">By ${escapeHtml(book.author)} | ${escapeHtml(book.category)}</div>
+            <div class="book-detail-meta">📥 ${book.downloads || 0} downloads | ${book.is_free ? 'Free' : '💰 ₦' + book.price}</div>
+            <div class="book-detail-bio">${escapeHtml(book.bio || 'No description available.')}</div>
+            ${actionButtons}
+        `;
+        
+        modal.classList.add('active');
+    }
+
+    function closeBookModal() {
+        document.getElementById('bookModal').classList.remove('active');
+    }
+
+    document.getElementById('bookModal').addEventListener('click', function(e) {
+        if (e.target === this) closeBookModal();
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && document.getElementById('bookModal').classList.contains('active')) {
+            closeBookModal();
+        }
+    });
+
+    // ==================== DOWNLOAD BOOK ====================
+    async function downloadBook(url, title, bookId) {
+        try {
+            const res = await fetch(`${API_BASE}increment-download.php?book_id=${bookId}`);
+            const data = await res.json();
+            
+            if (data.success && url && url !== "#") {
+                window.open(url, "_blank");
+                showToast(`📥 Downloading ${title}...`);
+                await loadBooks();
+            } else {
+                showToast("Book file not available", true);
+            }
+        } catch(err) {
+            showToast("Error downloading book", true);
+        }
+    }
+
+    // ==================== BUY BOOK ====================
+    function openBuyModal(bookId, title, price) {
+        const modal = document.createElement("div");
+        modal.className = "modal active";
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h3>💰 Purchase Book</h3>
+                <p style="margin:12px 0; font-weight:600; font-size:18px;">${escapeHtml(title)}</p>
+                <p style="margin:12px 0; background:#f1f5f9; padding:12px; border-radius:16px; font-size:16px; text-align:center;">
+                    <strong>Price: ₦${price}</strong>
+                </p>
+                <div class="payment-info">
+                    <strong>Bank Transfer Only</strong><br>
+                    Access Bank | 0774808675 | Ahmed Busoye Sanni
+                </div>
+                <input type="text" id="transId" placeholder="Transaction ID">
+                <input type="file" id="paymentProof" accept="image/*">
+                <button class="btn-buy-modal" id="confirmPayBtn">Confirm Payment & Download</button>
+                <button class="btn-close-modal" onclick="this.closest('.modal').remove()">Cancel</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        
+        document.getElementById("confirmPayBtn").onclick = async () => {
+            const transId = document.getElementById("transId").value.trim();
+            const proof = document.getElementById("paymentProof").files[0];
+            if (!transId || !proof) {
+                showToast("Provide transaction ID and payment proof", true);
+                return;
+            }
+            const token = localStorage.getItem('busahmed_token');
+            if (!token) {
+                showToast("Please login first", true);
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const res = await fetch(`${API_BASE}purchase-book.php`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify({ book_id: bookId, transaction_id: transId, proof: e.target.result })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        modal.remove();
+                        showToast("✅ Payment confirmed! Downloading book...");
+                        await fetch(`${API_BASE}increment-download.php?book_id=${bookId}`);
+                        setTimeout(() => {
+                            window.open(data.book_url, "_blank");
+                            loadBooks();
+                        }, 1000);
+                    } else {
+                        showToast(data.error || "Payment confirmation failed", true);
+                    }
+                } catch (err) {
+                    showToast("Network error", true);
+                }
+            };
+            reader.readAsDataURL(proof);
+        };
+    }
+
+    // ==================== BACK BUTTON - FIXED ====================
+    async function goBack() {
+        console.log('🔙 Back button clicked');
+        const debugDiv = document.getElementById('debugInfo');
+        debugDiv.style.display = 'block';
+        debugDiv.innerHTML = '🔄 Going back...';
+        debugDiv.style.background = '#e2e8f0';
+        debugDiv.style.color = '#1e293b';
+        
+        try {
+            const token = localStorage.getItem('busahmed_token');
+            console.log('🔑 Token exists:', token ? 'YES' : 'NO');
+            
+            if (!token) {
+                console.log('❌ No token, redirecting to login');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // First, try to get user from localStorage
+            const storedRole = localStorage.getItem('busahmed_role');
+            const storedUserId = localStorage.getItem('busahmed_user_id');
+            const storedName = localStorage.getItem('busahmed_user_name');
+            
+            console.log('📦 Stored in localStorage:', { role: storedRole, user_id: storedUserId, name: storedName });
+            
+            // If we have the role in localStorage, use it directly
+            if (storedRole) {
+                console.log('✅ Using stored role:', storedRole);
+                const roleMap = {
+                    'student': 'dashboard-student.html',
+                    'teacher': 'dashboard-teacher.html',
+                    'admin': 'dashboard-admin.html',
+                    'owner': 'dashboard-owner.html'
+                };
+                const dashboard = roleMap[storedRole] || 'login.html';
+                console.log('🔄 Redirecting to:', dashboard);
+                window.location.href = dashboard;
+                return;
+            }
+            
+            // Fallback: fetch from API
+            console.log('📡 Fetching profile from API...');
+            const res = await fetch(`${API_BASE}profile.php?token=` + encodeURIComponent(token));
+            console.log('📡 Response status:', res.status);
+            
+            if (!res.ok) {
+                console.log('❌ API error:', res.status);
+                // Try to use localStorage role as fallback
+                if (storedRole) {
+                    const roleMap = {
+                        'student': 'dashboard-student.html',
+                        'teacher': 'dashboard-teacher.html',
+                        'admin': 'dashboard-admin.html',
+                        'owner': 'dashboard-owner.html'
+                    };
+                    window.location.href = roleMap[storedRole] || 'login.html';
+                    return;
+                }
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const user = await res.json();
+            console.log('👤 User data from API:', user);
+            
+            if (user.error) {
+                console.log('❌ API returned error:', user.error);
+                if (storedRole) {
+                    const roleMap = {
+                        'student': 'dashboard-student.html',
+                        'teacher': 'dashboard-teacher.html',
+                        'admin': 'dashboard-admin.html',
+                        'owner': 'dashboard-owner.html'
+                    };
+                    window.location.href = roleMap[storedRole] || 'login.html';
+                    return;
+                }
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Redirect based on user role
+            const roleMap = {
+                'student': 'dashboard-student.html',
+                'teacher': 'dashboard-teacher.html',
+                'admin': 'dashboard-admin.html',
+                'owner': 'dashboard-owner.html'
+            };
+            
+            const dashboard = roleMap[user.role] || 'login.html';
+            console.log('🔄 Redirecting to:', dashboard);
+            window.location.href = dashboard;
+            
+        } catch (err) {
+            console.error("Back button error:", err);
+            debugDiv.innerHTML = '❌ Error: ' + err.message;
+            debugDiv.style.background = '#fee2e2';
+            debugDiv.style.color = '#dc2626';
+            
+            // Fallback: try to use localStorage role
+            const storedRole = localStorage.getItem('busahmed_role');
+            if (storedRole) {
+                const roleMap = {
+                    'student': 'dashboard-student.html',
+                    'teacher': 'dashboard-teacher.html',
+                    'admin': 'dashboard-admin.html',
+                    'owner': 'dashboard-owner.html'
+                };
+                window.location.href = roleMap[storedRole] || 'login.html';
+                return;
+            }
+            window.location.href = 'login.html';
+        }
+    }
+
+    // ==================== INIT ====================
+    async function init() {
+        console.log('🚀 Library page initializing...');
+        currentUser = await getCurrentUser();
+        await loadBooks();
+        renderAd('adContainer', 'library', 10000);
+        document.getElementById("backBtn").onclick = goBack;
+        document.getElementById("searchBox").oninput = () => renderBooks();
+        if (localStorage.getItem("busahmed_dark_mode") === "true") document.body.classList.add("dark-mode");
+        
+        window.openBookDetail = openBookDetail;
+        window.closeBookModal = closeBookModal;
+        window.downloadBook = downloadBook;
+        window.openBuyModal = openBuyModal;
+    }
+    init();
+</script>
+</body>
+</html>

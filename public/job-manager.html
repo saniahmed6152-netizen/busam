@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BUSAHMED | Job Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA Meta Tags -->
+<!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="/icons/icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/icons/icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="/icons/icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/icons/icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/icons/icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/icons/icon-167x167.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="/icons/icon-180x180.png" sizes="180x180">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-square70x70logo" content="/icons/icon-72x72.png">
+    <meta name="msapplication-square150x150logo" content="/icons/icon-144x144.png">
+    <meta name="msapplication-wide310x150logo" content="/icons/icon-384x384.png">
+    <meta name="msapplication-square310x310logo" content="/icons/icon-512x512.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #1e1b4b, #4f46e5); min-height: 100vh; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .card { background: white; border-radius: 32px; padding: 24px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        h1 { font-size: 24px; color: #1e1b4b; display: flex; align-items: center; gap: 10px; }
+        .back-btn { background: #e2e8f0; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .back-btn:hover { background: #cbd5e1; }
+        .form-box { background: #f1f5f9; border-radius: 20px; padding: 16px; margin-bottom: 20px; }
+        .form-box h3 { margin-bottom: 12px; color: #1e293b; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 40px; margin-bottom: 8px; outline: none; font-size: 14px; transition: 0.2s; }
+        input:focus, select:focus, textarea:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+        .tabs { display: flex; gap: 16px; margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; flex-wrap: wrap; }
+        .tab { padding: 10px 0; cursor: pointer; font-weight: 600; transition: 0.2s; color: #64748b; position: relative; }
+        .tab.active { color: #4f46e5; border-bottom: 3px solid #4f46e5; }
+        .tab-badge { background: #ef4444; color: white; border-radius: 50%; padding: 1px 8px; font-size: 10px; margin-left: 6px; display: inline-block; font-weight: 700; }
+        .job-item, .application-item { background: #f8fafc; border-radius: 20px; padding: 14px 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; border-left: 4px solid #4f46e5; transition: 0.2s; }
+        .job-item:hover, .application-item:hover { background: #eef2ff; transform: scale(1.01); }
+        .job-info, .app-info { flex: 1; min-width: 150px; }
+        .job-title, .app-name { font-weight: 700; font-size: 15px; }
+        .job-details, .app-details { font-size: 13px; color: #64748b; margin-top: 2px; }
+        .btn-group { display: flex; gap: 4px; flex-wrap: wrap; }
+        .btn-sm { padding: 5px 14px; border: none; border-radius: 40px; cursor: pointer; font-size: 12px; font-weight: 500; transition: 0.2s; }
+        .btn-sm:hover { transform: scale(1.05); }
+        .btn-delete { background: #ef4444; color: white; }
+        .btn-delete:hover { background: #dc2626; }
+        .btn-view { background: #4f46e5; color: white; }
+        .btn-view:hover { background: #4338ca; }
+        .btn-reply { background: #10b981; color: white; }
+        .btn-reply:hover { background: #059669; }
+        .btn-mark-read { background: #f59e0b; color: white; }
+        .btn-mark-read:hover { background: #d97706; }
+        .btn-post { background: #4f46e5; color: white; border: none; border-radius: 40px; padding: 12px; width: 100%; cursor: pointer; font-weight: 600; font-size: 15px; transition: 0.2s; }
+        .btn-post:hover { background: #4338ca; }
+        .btn-post:disabled { background: #94a3b8; cursor: not-allowed; }
+        .status-badge { display: inline-block; padding: 2px 10px; border-radius: 40px; font-size: 10px; font-weight: 600; }
+        .status-unread { background: #fee2e2; color: #dc2626; }
+        .status-read { background: #d1fae5; color: #059669; }
+        .empty-state { text-align: center; padding: 40px 20px; color: #94a3b8; }
+        .empty-state i { font-size: 40px; display: block; margin-bottom: 12px; opacity: 0.5; }
+        .dark-mode { background: #0f172a; }
+        .dark-mode .card { background: #1e293b; }
+        .dark-mode h1 { color: #f1f5f9; }
+        .dark-mode .form-box { background: #0f172a; border: 1px solid #334155; }
+        .dark-mode .form-box h3 { color: #e2e8f0; }
+        .dark-mode .job-item, .dark-mode .application-item { background: #0f172a; border: 1px solid #334155; color: #e2e8f0; border-left-color: #4f46e5; }
+        .dark-mode .job-item:hover, .dark-mode .application-item:hover { background: #1e293b; }
+        .dark-mode .back-btn { background: #334155; color: #e2e8f0; }
+        .dark-mode .back-btn:hover { background: #475569; }
+        .dark-mode input, .dark-mode select, .dark-mode textarea { background: #334155; border-color: #475569; color: white; }
+        .dark-mode input::placeholder, .dark-mode textarea::placeholder { color: #94a3b8; }
+        .dark-mode .job-details, .dark-mode .app-details { color: #94a3b8; }
+        .dark-mode .tab { color: #94a3b8; }
+        .dark-mode .tab.active { color: #a5b4fc; border-bottom-color: #a5b4fc; }
+        .dark-mode .empty-state { color: #64748b; }
+        .dark-mode .status-unread { background: #7f1d1d; color: #fca5a5; }
+        .dark-mode .status-read { background: #064e3b; color: #6ee7b7; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 10px 24px; border-radius: 40px; font-size: 14px; z-index: 2000; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; border-radius: 32px; max-width: 500px; width: 100%; padding: 24px; max-height: 90vh; overflow-y: auto; }
+        .dark-mode .modal-content { background: #1e293b; color: #e2e8f0; }
+        .modal-content textarea { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 20px; margin-bottom: 12px; outline: none; min-height: 100px; resize: vertical; font-family: inherit; }
+        .dark-mode .modal-content textarea { background: #334155; border-color: #475569; color: white; }
+        .modal-content .btn-send { background: #4f46e5; color: white; border: none; border-radius: 40px; padding: 12px; cursor: pointer; width: 100%; font-weight: 600; transition: 0.2s; }
+        .modal-content .btn-send:hover { background: #4338ca; }
+        .modal-content .btn-send:disabled { background: #94a3b8; cursor: not-allowed; }
+        .modal-content .btn-cancel { background: #e2e8f0; color: #1e293b; border: none; border-radius: 40px; padding: 12px; cursor: pointer; width: 100%; font-weight: 600; margin-top: 8px; transition: 0.2s; }
+        .modal-content .btn-cancel:hover { background: #cbd5e1; }
+        .dark-mode .modal-content .btn-cancel { background: #334155; color: #e2e8f0; }
+        .dark-mode .modal-content .btn-cancel:hover { background: #475569; }
+        .modal-content .application-full { white-space: pre-wrap; background: #f8fafc; padding: 16px; border-radius: 16px; margin: 12px 0; font-size: 14px; max-height: 300px; overflow-y: auto; font-family: monospace; line-height: 1.6; }
+        .dark-mode .modal-content .application-full { background: #0f172a; border: 1px solid #334155; }
+        .modal-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .modal-actions button { flex: 1; min-width: 100px; }
+        .loading-spinner { text-align: center; padding: 40px; color: #94a3b8; }
+        .loading-spinner i { font-size: 30px; display: block; margin-bottom: 12px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1><i class="fas fa-briefcase" style="color:#4f46e5;"></i> Job Manager</h1>
+            <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="jobs"><i class="fas fa-list"></i> Jobs</div>
+            <div class="tab" data-tab="applications"><i class="fas fa-inbox"></i> Applications <span id="appBadge" class="tab-badge" style="display:none;">0</span></div>
+        </div>
+        
+        <!-- Jobs Tab -->
+        <div id="jobsTab">
+            <div class="form-box">
+                <h3><i class="fas fa-plus-circle"></i> Post New Job</h3>
+                <input type="text" id="jobOrg" placeholder="Organization Name *">
+                <input type="text" id="jobPos" placeholder="Position Title *">
+                <div class="form-row">
+                    <input type="text" id="jobPay" placeholder="Pay Range (e.g., ₦50k - ₦100k)">
+                    <input type="text" id="jobLoc" placeholder="Location (e.g., Lagos, Remote)">
+                </div>
+                <select id="jobType">
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Remote">Remote</option>
+                    <option value="Contract">Contract</option>
+                    <option value="Internship">Internship</option>
+                    <option value="Freelance">Freelance</option>
+                </select>
+                <button class="btn-post" id="postBtn"><i class="fas fa-plus"></i> Post Job</button>
+            </div>
+            <div id="jobsList">
+                <div class="loading-spinner"><i class="fas fa-spinner"></i> Loading jobs...</div>
+            </div>
+        </div>
+        
+        <!-- Applications Tab -->
+        <div id="applicationsTab" style="display:none;">
+            <div id="applicationsList">
+                <div class="loading-spinner"><i class="fas fa-spinner"></i> Loading applications...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reply Modal -->
+<div class="modal" id="replyModal">
+    <div class="modal-content">
+        <h3 style="margin-bottom:8px;"><i class="fas fa-reply" style="color:#4f46e5;"></i> Reply to Applicant</h3>
+        <p style="color:#64748b; font-size:14px; margin-bottom:12px;">
+            Replying to <strong id="replyApplicantName"></strong> about <strong id="replyJobTitle"></strong>
+        </p>
+        <textarea id="replyMessage" placeholder="Type your reply message here..."></textarea>
+        <button class="btn-send" id="sendReplyBtn"><i class="fas fa-paper-plane"></i> Send Reply</button>
+        <button class="btn-cancel" onclick="closeReplyModal()">Cancel</button>
+    </div>
+</div>
+
+<!-- View Application Modal -->
+<div class="modal" id="viewApplicationModal">
+    <div class="modal-content">
+        <h3 style="margin-bottom:8px;"><i class="fas fa-file-alt" style="color:#4f46e5;"></i> Application Details</h3>
+        <div id="applicationFullContent" class="application-full"></div>
+        <div class="modal-actions">
+            <button class="btn-reply" id="viewReplyBtn"><i class="fas fa-reply"></i> Reply</button>
+            <button class="btn-mark-read" id="viewMarkReadBtn"><i class="fas fa-check"></i> Mark Read</button>
+        </div>
+        <button class="btn-cancel" onclick="closeViewApplicationModal()">Close</button>
+    </div>
+</div>
+
+<script>
+const API_BASE = window.location.origin + '/api/';
+    let currentUser = null;
+    let allApplications = [];
+    let currentApplication = null;
+    let replyData = { messageId: null, applicantId: null, conversationId: null, applicantName: '', jobTitle: '' };
+
+    function getToken() {
+        return localStorage.getItem('busahmed_token');
+    }
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+
+    function showToast(msg, isError = false) {
+        const t = document.createElement("div");
+        t.className = "toast";
+        t.innerText = msg;
+        if (isError) t.style.background = "#dc2626";
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    }
+
+    function goBack() {
+        if (currentUser) {
+            if (currentUser.role === 'student') window.location.href = 'dashboard-student.html';
+            else if (currentUser.role === 'teacher') window.location.href = 'dashboard-teacher.html';
+            else if (currentUser.role === 'owner') window.location.href = 'dashboard-owner.html';
+            else if (currentUser.role === 'admin') window.location.href = 'dashboard-admin.html';
+            else window.location.href = 'login.html';
+        } else {
+            window.location.href = 'login.html';
+        }
+    }
+
+    async function checkAuth() {
+        const token = getToken();
+        console.log('🔍 Token:', token ? token.substring(0, 30) + '...' : 'NO TOKEN');
+        
+        if (!token) {
+            console.log('❌ No token, redirecting to login');
+            window.location.href = 'login.html';
+            return null;
+        }
+        
+        try {
+            const response = await fetch(API_BASE + 'profile.php?token=' + encodeURIComponent(token));
+            console.log('📡 Profile response status:', response.status);
+            
+            if (!response.ok) {
+                console.log('❌ Profile fetch failed');
+                localStorage.clear();
+                window.location.href = 'login.html';
+                return null;
+            }
+            
+            currentUser = await response.json();
+            console.log('👤 User loaded:', currentUser.name);
+            console.log('📊 Permissions:', {
+                is_appointed_admin: currentUser.is_appointed_admin,
+                admin_appointment_status: currentUser.admin_appointment_status,
+                can_manage_news: currentUser.can_manage_news,
+                can_manage_jobs: currentUser.can_manage_jobs,
+                can_manage_careers: currentUser.can_manage_careers,
+                can_manage_library: currentUser.can_manage_library
+            });
+            
+            // Check if user has permission to manage jobs
+            const isFullAdmin = currentUser.role === 'admin';
+            const isAppointedAndAccepted = currentUser.is_appointed_admin == 1 && currentUser.admin_appointment_status === 'accepted';
+            const canManageJobs = currentUser.can_manage_jobs == 1;
+            
+            console.log('🔑 Permission check:', {
+                isFullAdmin,
+                isAppointedAndAccepted,
+                canManageJobs,
+                hasPermission: isFullAdmin || (isAppointedAndAccepted && canManageJobs)
+            });
+            
+            if (!isFullAdmin && !(isAppointedAndAccepted && canManageJobs)) {
+                console.log('❌ No permission to manage jobs');
+                showToast('You do not have permission to manage jobs', true);
+                setTimeout(() => {
+                    if (currentUser.role === 'student') window.location.href = 'dashboard-student.html';
+                    else if (currentUser.role === 'teacher') window.location.href = 'dashboard-teacher.html';
+                    else if (currentUser.role === 'owner') window.location.href = 'dashboard-owner.html';
+                    else window.location.href = 'login.html';
+                }, 2000);
+                return null;
+            }
+            
+            console.log('✅ Permission granted to manage jobs');
+            return currentUser;
+        } catch(err) {
+            console.error("Auth error:", err);
+            window.location.href = 'login.html';
+            return null;
+        }
+    }
+
+    // ==================== JOBS ====================
+    async function loadJobs() {
+        const token = getToken();
+        if (!token) return;
+        const container = document.getElementById("jobsList");
+        container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i> Loading jobs...</div>';
+        
+        try {
+            console.log('📡 Fetching jobs from:', API_BASE + 'admin-jobs.php?token=' + encodeURIComponent(token));
+            const response = await fetch(API_BASE + 'admin-jobs.php?token=' + encodeURIComponent(token));
+            console.log('📡 Jobs response status:', response.status);
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('❌ Jobs fetch error:', errorText);
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i> Error loading jobs: ' + response.status + '</div>';
+                return;
+            }
+            
+            const jobs = await response.json();
+            console.log('💼 Jobs loaded:', jobs.length);
+            renderJobs(jobs);
+        } catch(err) {
+            console.error('Load jobs error:', err);
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i> Error loading jobs: ' + err.message + '</div>';
+        }
+    }
+
+    function renderJobs(jobs) {
+        const container = document.getElementById("jobsList");
+        if (!jobs || jobs.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-briefcase"></i>
+                    No jobs posted yet.<br>
+                    Use the form above to post a new job.
+                </div>
+            `;
+            return;
+        }
+        let html = "";
+        jobs.forEach(j => {
+            html += `
+                <div class="job-item">
+                    <div class="job-info">
+                        <div class="job-title">${escapeHtml(j.position)}</div>
+                        <div class="job-details">
+                            ${escapeHtml(j.organization)} • 
+                            ${escapeHtml(j.location || 'Not specified')} • 
+                            ${escapeHtml(j.type || 'Full-time')} • 
+                            💰 ${escapeHtml(j.pay_range || 'Not specified')}
+                            <br><small style="color:#94a3b8;">Posted: ${j.created_at ? new Date(j.created_at).toLocaleDateString() : 'Recently'}</small>
+                        </div>
+                    </div>
+                    <button class="btn-sm btn-delete" data-id="${j.id}"><i class="fas fa-trash"></i> Delete</button>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+        
+        document.querySelectorAll(".btn-delete").forEach(btn => {
+            btn.onclick = async () => {
+                const id = parseInt(btn.dataset.id);
+                if (!confirm("Delete this job permanently?")) return;
+                const token = getToken();
+                try {
+                    const response = await fetch(API_BASE + 'delete-job.php?token=' + encodeURIComponent(token), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        showToast("Job deleted");
+                        loadJobs();
+                    } else {
+                        showToast(data.error || "Failed to delete", true);
+                    }
+                } catch(err) {
+                    showToast("Error deleting job", true);
+                }
+            };
+        });
+    }
+
+    // ==================== APPLICATIONS ====================
+    async function loadApplications() {
+        const token = getToken();
+        if (!token) return;
+        const container = document.getElementById("applicationsList");
+        container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i> Loading applications...</div>';
+        
+        try {
+            const response = await fetch(API_BASE + 'job-applications.php?token=' + encodeURIComponent(token));
+            const data = await response.json();
+            
+            if (data.success) {
+                const apps = data.applications || [];
+                allApplications = apps;
+                renderApplications(apps);
+                updateBadge(apps);
+            } else {
+                console.error('API Error:', data.error);
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i>${escapeHtml(data.error || 'Failed to load applications')}</div>`;
+            }
+        } catch(err) {
+            console.error('Load applications error:', err);
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i> Error loading applications. Please try again.</div>';
+        }
+    }
+
+    function updateBadge(apps) {
+        const badge = document.getElementById('appBadge');
+        const unreadCount = apps ? apps.filter(a => !a.is_read).length : 0;
+        if (unreadCount > 0) {
+            badge.textContent = unreadCount;
+            badge.style.display = 'inline-block';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+
+    function renderApplications(apps) {
+        const container = document.getElementById("applicationsList");
+        if (!apps || apps.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    No job applications yet.<br>
+                    When users apply for jobs, they will appear here.
+                </div>
+            `;
+            return;
+        }
+        
+        let html = "";
+        apps.forEach(app => {
+            const details = app.details || {};
+            const statusClass = app.is_read ? 'status-read' : 'status-unread';
+            const statusText = app.is_read ? 'Read' : 'Unread';
+            
+            html += `
+                <div class="application-item" id="app-${app.message_id}">
+                    <div class="app-info">
+                        <div class="app-name">
+                            ${escapeHtml(details.applicant_name || app.applicant_name || 'Unknown')}
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                        </div>
+                        <div class="app-details">
+                            <strong>Position:</strong> ${escapeHtml(details.position || 'N/A')} 
+                            at ${escapeHtml(details.organization || 'N/A')}
+                        </div>
+                        <div class="app-details" style="font-size:12px;">
+                            📧 ${escapeHtml(details.applicant_email || app.applicant_email || 'N/A')} 
+                            📱 ${escapeHtml(details.applicant_phone || app.applicant_phone || 'N/A')}
+                        </div>
+                        <div class="app-details" style="font-size:11px; color:#94a3b8;">
+                            Applied: ${app.created_at ? new Date(app.created_at).toLocaleString() : 'N/A'}
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn-sm btn-view" onclick="viewApplication(${app.message_id})"><i class="fas fa-eye"></i> View</button>
+                        <button class="btn-sm btn-reply" onclick="openReplyModal(${app.message_id}, ${app.applicant_id}, ${app.conversation_id}, '${escapeHtml(details.applicant_name || app.applicant_name || 'Applicant')}', '${escapeHtml(details.position || 'Position')}')"><i class="fas fa-reply"></i> Reply</button>
+                        ${!app.is_read ? `<button class="btn-sm btn-mark-read" onclick="markAsRead(${app.message_id})"><i class="fas fa-check"></i> Read</button>` : ''}
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    // ==================== VIEW APPLICATION ====================
+    function viewApplication(messageId) {
+        const app = allApplications.find(a => a.message_id === messageId);
+        if (!app) {
+            showToast('Application not found', true);
+            return;
+        }
+        
+        currentApplication = app;
+        const details = app.details || {};
+        
+        let content = '📋 JOB APPLICATION\n\n';
+        content += `Position: ${details.position || 'N/A'}\n`;
+        content += `Organization: ${details.organization || 'N/A'}\n\n`;
+        content += 'Applicant Details:\n';
+        content += `Name: ${details.applicant_name || app.applicant_name || 'N/A'}\n`;
+        content += `Email: ${details.applicant_email || app.applicant_email || 'N/A'}\n`;
+        content += `Phone: ${details.applicant_phone || app.applicant_phone || 'N/A'}\n\n`;
+        if (details.cover_letter) {
+            content += 'Cover Letter:\n' + details.cover_letter + '\n\n';
+        }
+        content += '---\n';
+        content += `Applied on: ${app.created_at ? new Date(app.created_at).toLocaleString() : 'N/A'}\n`;
+        content += `From: ${details.from || 'User'}`;
+        
+        document.getElementById('applicationFullContent').textContent = content;
+        document.getElementById('viewApplicationModal').classList.add('active');
+        
+        document.getElementById('viewReplyBtn').onclick = function() {
+            closeViewApplicationModal();
+            openReplyModal(
+                app.message_id, 
+                app.applicant_id, 
+                app.conversation_id, 
+                details.applicant_name || app.applicant_name || 'Applicant',
+                details.position || 'Position'
+            );
+        };
+        
+        document.getElementById('viewMarkReadBtn').onclick = function() {
+            markAsRead(app.message_id);
+            closeViewApplicationModal();
+        };
+    }
+
+    function closeViewApplicationModal() {
+        document.getElementById('viewApplicationModal').classList.remove('active');
+    }
+
+    // ==================== REPLY MODAL ====================
+    function openReplyModal(messageId, applicantId, conversationId, applicantName, jobTitle) {
+        replyData = { messageId, applicantId, conversationId, applicantName, jobTitle };
+        document.getElementById('replyApplicantName').textContent = applicantName;
+        document.getElementById('replyJobTitle').textContent = jobTitle;
+        document.getElementById('replyMessage').value = '';
+        document.getElementById('replyModal').classList.add('active');
+        setTimeout(() => document.getElementById('replyMessage').focus(), 300);
+    }
+
+    function closeReplyModal() {
+        document.getElementById('replyModal').classList.remove('active');
+        replyData = { messageId: null, applicantId: null, conversationId: null, applicantName: '', jobTitle: '' };
+    }
+
+    document.getElementById('sendReplyBtn').onclick = async function() {
+        const reply = document.getElementById('replyMessage').value.trim();
+        if (!reply) {
+            showToast('Please enter a reply message', true);
+            return;
+        }
+        
+        const btn = this;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        
+        const token = getToken();
+        try {
+            const response = await fetch(API_BASE + 'job-applications.php?token=' + encodeURIComponent(token), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'reply',
+                    message_id: replyData.messageId,
+                    applicant_id: replyData.applicantId,
+                    conversation_id: replyData.conversationId,
+                    reply: reply
+                })
+            });
+            
+            const data = await response.json();
+            if (data.success) {
+                showToast('✅ Reply sent successfully!');
+                closeReplyModal();
+                loadApplications();
+            } else {
+                showToast(data.error || 'Failed to send reply', true);
+            }
+        } catch(err) {
+            console.error('Reply error:', err);
+            showToast('Network error: ' + err.message, true);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Reply';
+        }
+    };
+
+    // ==================== MARK AS READ ====================
+    async function markAsRead(messageId) {
+        const token = getToken();
+        try {
+            const response = await fetch(API_BASE + 'job-applications.php?token=' + encodeURIComponent(token), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'mark_read', message_id: messageId })
+            });
+            const data = await response.json();
+            if (data.success) {
+                showToast('Marked as read');
+                loadApplications();
+            } else {
+                showToast(data.error || 'Failed to mark as read', true);
+            }
+        } catch(err) {
+            console.error('Mark read error:', err);
+            showToast('Network error: ' + err.message, true);
+        }
+    }
+
+    // ==================== POST JOB ====================
+    document.getElementById("postBtn").onclick = async function() {
+        const org = document.getElementById("jobOrg").value.trim();
+        const pos = document.getElementById("jobPos").value.trim();
+        const pay = document.getElementById("jobPay").value.trim();
+        const loc = document.getElementById("jobLoc").value.trim();
+        const type = document.getElementById("jobType").value;
+        
+        if (!org || !pos) {
+            showToast("Organization and position are required", true);
+            document.getElementById("jobOrg").focus();
+            return;
+        }
+        
+        const btn = this;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Posting...';
+        
+        const token = getToken();
+        try {
+            const response = await fetch(API_BASE + 'admin-add-job.php?token=' + encodeURIComponent(token), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ organization: org, position: pos, pay_range: pay, location: loc, type: type })
+            });
+            const data = await response.json();
+            if (data.success) {
+                showToast("✅ Job posted successfully!");
+                document.getElementById("jobOrg").value = "";
+                document.getElementById("jobPos").value = "";
+                document.getElementById("jobPay").value = "";
+                document.getElementById("jobLoc").value = "";
+                loadJobs();
+            } else {
+                showToast(data.error || "Failed to post job", true);
+            }
+        } catch(err) {
+            console.error('Post job error:', err);
+            showToast('Network error: ' + err.message, true);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-plus"></i> Post Job';
+        }
+    };
+
+    // Enter key support
+    document.getElementById("jobPos").addEventListener("keypress", function(e) {
+        if (e.key === "Enter") document.getElementById("postBtn").click();
+    });
+
+    // Modal close on outside click
+    document.getElementById('replyModal').addEventListener('click', function(e) {
+        if (e.target === this) closeReplyModal();
+    });
+    document.getElementById('viewApplicationModal').addEventListener('click', function(e) {
+        if (e.target === this) closeViewApplicationModal();
+    });
+
+    // ESC key support
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            if (document.getElementById('replyModal').classList.contains('active')) closeReplyModal();
+            if (document.getElementById('viewApplicationModal').classList.contains('active')) closeViewApplicationModal();
+        }
+    });
+
+    // INIT
+    async function init() {
+        console.log('🚀 Starting Job Manager...');
+        const user = await checkAuth();
+        if (!user) {
+            console.log('❌ Auth failed');
+            return;
+        }
+        console.log('✅ Auth successful, loading jobs...');
+        await loadJobs();
+        await loadApplications();
+        
+        document.getElementById("backBtn").onclick = goBack;
+        
+        document.querySelectorAll(".tab").forEach(tab => {
+            tab.onclick = () => {
+                document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+                tab.classList.add("active");
+                const show = tab.dataset.tab;
+                document.getElementById("jobsTab").style.display = show === "jobs" ? "block" : "none";
+                document.getElementById("applicationsTab").style.display = show === "applications" ? "block" : "none";
+                if (show === "applications") loadApplications();
+            };
+        });
+        
+        if (localStorage.getItem("busahmed_dark_mode") === "true") {
+            document.body.classList.add("dark-mode");
+        }
+    }
+    
+    window.viewApplication = viewApplication;
+    window.closeViewApplicationModal = closeViewApplicationModal;
+    window.openReplyModal = openReplyModal;
+    window.closeReplyModal = closeReplyModal;
+    window.markAsRead = markAsRead;
+    
+    init();
+</script>
+</body>
+</html>

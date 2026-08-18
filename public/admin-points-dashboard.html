@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BUSAHMED | Points Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA Meta Tags -->
+<!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="/icons/icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/icons/icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="/icons/icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/icons/icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/icons/icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/icons/icon-167x167.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="/icons/icon-180x180.png" sizes="180x180">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-square70x70logo" content="/icons/icon-72x72.png">
+    <meta name="msapplication-square150x150logo" content="/icons/icon-144x144.png">
+    <meta name="msapplication-wide310x150logo" content="/icons/icon-384x384.png">
+    <meta name="msapplication-square310x310logo" content="/icons/icon-512x512.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #1e1b4b, #4f46e5); min-height: 100vh; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .card { background: white; border-radius: 32px; padding: 24px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        h1 { font-size: 24px; color: #1e1b4b; display: flex; align-items: center; gap: 10px; }
+        .back-btn { background: #e2e8f0; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .back-btn:hover { background: #cbd5e1; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .stat-card { background: #f1f5f9; border-radius: 20px; padding: 16px; text-align: center; }
+        .stat-card .stat-number { font-size: 28px; font-weight: 700; color: #4f46e5; }
+        .stat-card .stat-label { font-size: 12px; color: #64748b; }
+        .tabs { display: flex; gap: 16px; margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; flex-wrap: wrap; }
+        .tab { padding: 8px 0; cursor: pointer; font-weight: 600; transition: 0.2s; color: #64748b; }
+        .tab.active { color: #4f46e5; border-bottom: 2px solid #4f46e5; }
+        .tab-badge { background: #ef4444; color: white; border-radius: 50%; padding: 1px 8px; font-size: 10px; margin-left: 6px; }
+        .leaderboard-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 16px; margin-bottom: 6px; background: #f8fafc; border: 1px solid #e2e8f0; }
+        .leaderboard-item:hover { background: #eef2ff; }
+        .leaderboard-item .position { width: 30px; font-weight: 700; color: #94a3b8; text-align: center; }
+        .leaderboard-item .position.top1 { color: #fbbf24; font-size: 18px; }
+        .leaderboard-item .position.top2 { color: #94a3b8; font-size: 16px; }
+        .leaderboard-item .position.top3 { color: #d97706; font-size: 14px; }
+        .leaderboard-item .avatar { width: 36px; height: 36px; border-radius: 50%; background: #cbd5e1; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; font-size: 16px; color: #475569; }
+        .leaderboard-item .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .leaderboard-item .info { flex: 1; min-width: 0; }
+        .leaderboard-item .info .name { font-weight: 600; font-size: 14px; }
+        .leaderboard-item .info .role { font-size: 11px; color: #64748b; }
+        .leaderboard-item .points { font-weight: 700; font-size: 16px; color: #4f46e5; }
+        .leaderboard-item .activities { font-size: 11px; color: #94a3b8; }
+        .winner-badge { background: #fbbf24; color: #1e293b; padding: 2px 10px; border-radius: 40px; font-size: 10px; font-weight: 700; }
+        .activity-breakdown { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+        .activity-tag { background: #eef2ff; padding: 4px 12px; border-radius: 40px; font-size: 12px; color: #4f46e5; }
+        .dark-mode { background: #0f172a; }
+        .dark-mode .card { background: #1e293b; }
+        .dark-mode h1 { color: #f1f5f9; }
+        .dark-mode .back-btn { background: #334155; color: #e2e8f0; }
+        .dark-mode .back-btn:hover { background: #475569; }
+        .dark-mode .stat-card { background: #0f172a; border: 1px solid #334155; color: #e2e8f0; }
+        .dark-mode .stat-card .stat-label { color: #94a3b8; }
+        .dark-mode .leaderboard-item { background: #0f172a; border-color: #334155; color: #e2e8f0; }
+        .dark-mode .leaderboard-item:hover { background: #1e293b; }
+        .dark-mode .leaderboard-item .info .role { color: #94a3b8; }
+        .dark-mode .leaderboard-item .points { color: #a5b4fc; }
+        .dark-mode .tab { color: #94a3b8; }
+        .dark-mode .tab.active { color: #a5b4fc; border-bottom-color: #a5b4fc; }
+        .dark-mode .activity-tag { background: #334155; color: #a5b4fc; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 8px 20px; border-radius: 40px; font-size: 14px; z-index: 2000; }
+        .loading-spinner { text-align: center; padding: 40px; color: #94a3b8; }
+        .loading-spinner i { font-size: 30px; display: block; margin-bottom: 12px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .empty-state { text-align: center; padding: 40px 20px; color: #94a3b8; }
+        .empty-state i { font-size: 40px; display: block; margin-bottom: 12px; opacity: 0.5; }
+        .log-item { padding: 8px 12px; border-radius: 12px; background: #f8fafc; margin-bottom: 4px; border-left: 3px solid #4f46e5; }
+        .log-item .log-user { font-weight: 600; }
+        .log-item .log-activity { font-size: 13px; color: #64748b; }
+        .log-item .log-points { font-weight: 700; color: #10b981; }
+        .log-item .log-time { font-size: 11px; color: #94a3b8; }
+        .dark-mode .log-item { background: #0f172a; border-color: #4f46e5; }
+        .dark-mode .log-item .log-activity { color: #94a3b8; }
+        .monthly-winner-card { background: #fef9c3; border-radius: 16px; padding: 12px 16px; margin-bottom: 8px; border-left: 4px solid #fbbf24; }
+        .monthly-winner-card .winner-name { font-weight: 700; }
+        .monthly-winner-card .winner-points { font-weight: 700; color: #4f46e5; }
+        .dark-mode .monthly-winner-card { background: #422006; border-color: #fbbf24; color: #fde047; }
+        .dark-mode .monthly-winner-card .winner-points { color: #a5b4fc; }
+        .search-box { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+        .search-box input { flex: 1; padding: 10px 16px; border: 1px solid #e2e8f0; border-radius: 40px; outline: none; min-width: 150px; }
+        .search-box input:focus { border-color: #4f46e5; }
+        .search-box button { padding: 10px 20px; background: #4f46e5; color: white; border: none; border-radius: 40px; cursor: pointer; font-weight: 600; }
+        .dark-mode .search-box input { background: #334155; border-color: #475569; color: white; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1><i class="fas fa-chart-line" style="color:#4f46e5;"></i> Points Dashboard</h1>
+            <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        
+        <div id="statsContainer">
+            <div class="loading-spinner"><i class="fas fa-spinner"></i> Loading stats...</div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="leaderboard">🏆 Top Users</div>
+            <div class="tab" data-tab="winners">🏅 Monthly Winners</div>
+            <div class="tab" data-tab="logs">📋 Activity Logs</div>
+        </div>
+        
+        <div id="leaderboardTab">
+            <div id="topUsersList">
+                <div class="loading-spinner"><i class="fas fa-spinner"></i> Loading...</div>
+            </div>
+        </div>
+        
+        <div id="winnersTab" style="display:none;">
+            <div id="winnersList">
+                <div class="loading-spinner"><i class="fas fa-spinner"></i> Loading winners...</div>
+            </div>
+        </div>
+        
+        <div id="logsTab" style="display:none;">
+            <div class="search-box">
+                <input type="text" id="logSearchInput" placeholder="Search by user or activity...">
+                <button id="searchLogsBtn"><i class="fas fa-search"></i> Search</button>
+            </div>
+            <div id="logsList">
+                <div class="loading-spinner"><i class="fas fa-spinner"></i> Loading logs...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const API_BASE = window.location.origin + '/api/';
+    let currentUser = null;
+    let currentMonth = new Date().getMonth() + 1;
+    let currentYear = new Date().getFullYear();
+
+    function showToast(msg, isError = false) {
+        const t = document.createElement("div");
+        t.className = "toast";
+        t.innerText = msg;
+        if (isError) t.style.background = "#dc2626";
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    }
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+
+    function getToken() {
+        return localStorage.getItem('busahmed_token');
+    }
+
+    async function checkAuth() {
+        const token = getToken();
+        if (!token) {
+            window.location.href = 'login.html';
+            return null;
+        }
+        try {
+            const response = await fetch(API_BASE + 'profile.php?token=' + encodeURIComponent(token));
+            if (!response.ok) {
+                localStorage.clear();
+                window.location.href = 'login.html';
+                return null;
+            }
+            currentUser = await response.json();
+            if (currentUser.role !== 'admin') {
+                window.location.href = 'login.html';
+                return null;
+            }
+            return currentUser;
+        } catch(err) {
+            console.error("Auth error:", err);
+            window.location.href = 'login.html';
+            return null;
+        }
+    }
+
+    function goBack() {
+        window.location.href = 'dashboard-admin.html';
+    }
+
+    function getRankEmoji(rank) {
+        if (rank === 1) return '🥇';
+        if (rank === 2) return '🥈';
+        if (rank === 3) return '🥉';
+        return '#';
+    }
+
+    function getPositionClass(rank) {
+        if (rank === 1) return 'top1';
+        if (rank === 2) return 'top2';
+        if (rank === 3) return 'top3';
+        return '';
+    }
+
+    // ==================== LOAD DASHBOARD STATS ====================
+    async function loadDashboardStats() {
+        const container = document.getElementById('statsContainer');
+        container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i> Loading stats...</div>';
+        
+        try {
+            const response = await fetch(API_BASE + 'admin-points-overview.php?token=' + encodeURIComponent(getToken()));
+            const data = await response.json();
+            
+            if (!data.success) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i>${escapeHtml(data.error)}</div>`;
+                return;
+            }
+            
+            // Stats grid
+            const monthName = data.current_month.month_name || 'Current';
+            container.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">${data.current_month.total_points}</div>
+                        <div class="stat-label">Total Points (${monthName})</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${data.current_month.total_activities}</div>
+                        <div class="stat-label">Activities (${monthName})</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${data.top_users ? data.top_users.length : 0}</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                    ${data.previous_month_winner ? `
+                        <div class="stat-card" style="background:#fef9c3;">
+                            <div class="stat-number" style="color:#d97706;">🏆</div>
+                            <div class="stat-label">Last Month Winner: ${escapeHtml(data.previous_month_winner.name)}</div>
+                        </div>
+                    ` : ''}
+                </div>
+                <div style="margin-bottom:16px;">
+                    <div class="activity-breakdown">
+                        ${data.activity_breakdown && data.activity_breakdown.length > 0 ? 
+                            data.activity_breakdown.map(a => 
+                                `<span class="activity-tag">${a.activity_type}: ${a.total_points} pts (${a.count})</span>`
+                            ).join('') : 
+                            '<span style="color:#94a3b8;">No activity breakdown available</span>'
+                        }
+                    </div>
+                </div>
+            `;
+            
+            // Load top users
+            renderTopUsers(data.top_users || []);
+            
+            // Load winners
+            await loadWinners();
+            
+            // Load logs
+            await loadLogs();
+            
+        } catch(err) {
+            console.error('Load stats error:', err);
+            container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i>Error loading stats</div>`;
+        }
+    }
+
+    // ==================== RENDER TOP USERS ====================
+    function renderTopUsers(users) {
+        const container = document.getElementById('topUsersList');
+        
+        if (!users || users.length === 0) {
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-users"></i>No users with points this month</div>';
+            return;
+        }
+        
+        let html = '';
+        users.forEach((item, index) => {
+            const rank = index + 1;
+            const rankEmoji = getRankEmoji(rank);
+            const posClass = getPositionClass(rank);
+            const avatarHtml = item.avatar ? `<img src="${item.avatar}">` : `<i class="fas fa-user"></i>`;
+            const verifiedBadge = item.verified ? '<i class="fas fa-check-circle" style="color:#10b981;font-size:12px;margin-left:4px;"></i>' : '';
+            
+            html += `
+                <div class="leaderboard-item">
+                    <div class="position ${posClass}">${rankEmoji}</div>
+                    <div class="avatar">${avatarHtml}</div>
+                    <div class="info">
+                        <div class="name">${escapeHtml(item.name)} ${verifiedBadge}</div>
+                        <div class="role">${item.role}</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div class="points">${item.points || 0}</div>
+                        <div class="activities">${item.activities || 0} activities</div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = html;
+    }
+
+    // ==================== LOAD WINNERS ====================
+    async function loadWinners() {
+        const container = document.getElementById('winnersList');
+        container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i> Loading winners...</div>';
+        
+        try {
+            const response = await fetch(API_BASE + 'monthly-winners.php?token=' + encodeURIComponent(getToken()));
+            const data = await response.json();
+            
+            if (!data.success) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i>${escapeHtml(data.error)}</div>`;
+                return;
+            }
+            
+            if (!data.winners || data.winners.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-trophy"></i>No monthly winners yet</div>';
+                return;
+            }
+            
+            let html = '';
+            data.winners.forEach(winner => {
+                const monthName = new Date(winner.year, winner.month - 1).toLocaleString('default', { month: 'long' });
+                const avatarHtml = winner.avatar ? `<img src="${winner.avatar}">` : `<i class="fas fa-user"></i>`;
+                
+                html += `
+                    <div class="monthly-winner-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <div class="avatar" style="width:36px; height:36px; border-radius:50%; background:#cbd5e1; display:flex; align-items:center; justify-content:center; overflow:hidden;">${avatarHtml}</div>
+                                <div>
+                                    <div class="winner-name">${escapeHtml(winner.user_name)}</div>
+                                    <div style="font-size:12px; color:#64748b;">${monthName} ${winner.year}</div>
+                                </div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div class="winner-points">🏆 ${winner.points} points</div>
+                                <div style="font-size:11px; color:#94a3b8;">${winner.activity_count || 0} activities</div>
+                            </div>
+                        </div>
+                        ${winner.all_users && winner.all_users.length > 0 && data.is_admin ? `
+                            <div style="margin-top:8px; font-size:12px; color:#64748b;">
+                                Top 10:
+                                ${winner.all_users.map((u, i) => 
+                                    `<span>${i+1}. ${escapeHtml(u.user_name)} (${u.points} pts)</span>`
+                                ).join(' | ')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            
+        } catch(err) {
+            console.error('Load winners error:', err);
+            container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i>Error loading winners</div>`;
+        }
+    }
+
+    // ==================== LOAD LOGS ====================
+    async function loadLogs(search = '') {
+        const container = document.getElementById('logsList');
+        container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i> Loading logs...</div>';
+        
+        try {
+            let url = `${API_BASE}admin-activity-logs.php?token=${encodeURIComponent(getToken())}&limit=100`;
+            if (search) {
+                url += `&search=${encodeURIComponent(search)}`;
+            }
+            
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            if (!data.success) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i>${escapeHtml(data.error)}</div>`;
+                return;
+            }
+            
+            if (!data.logs || data.logs.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-list"></i>No activity logs found</div>';
+                return;
+            }
+            
+            let html = `<div style="font-size:12px; color:#94a3b8; margin-bottom:8px;">Total: ${data.total} logs</div>`;
+            data.logs.forEach(log => {
+                const time = new Date(log.created_at).toLocaleString();
+                const avatarHtml = log.user_avatar ? `<img src="${log.user_avatar}">` : `<i class="fas fa-user"></i>`;
+                const pointsColor = log.points > 0 ? '#10b981' : '#94a3b8';
+                
+                html += `
+                    <div class="log-item">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
+                            <div>
+                                <span class="log-user">${escapeHtml(log.user_name)}</span>
+                                <span class="log-activity">• ${log.activity_type}</span>
+                                <span class="log-points" style="color:${pointsColor};">+${log.points} pts</span>
+                            </div>
+                            <span class="log-time">${time}</span>
+                        </div>
+                        ${log.extra_data ? `<div style="font-size:12px; color:#94a3b8; margin-top:4px;">${escapeHtml(log.extra_data)}</div>` : ''}
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            
+        } catch(err) {
+            console.error('Load logs error:', err);
+            container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i>Error loading logs</div>`;
+        }
+    }
+
+    // ==================== TAB SWITCHING ====================
+    function setupTabs() {
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.onclick = () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                const show = tab.dataset.tab;
+                document.getElementById('leaderboardTab').style.display = show === 'leaderboard' ? 'block' : 'none';
+                document.getElementById('winnersTab').style.display = show === 'winners' ? 'block' : 'none';
+                document.getElementById('logsTab').style.display = show === 'logs' ? 'block' : 'none';
+                
+                // Refresh data when switching tabs
+                if (show === 'winners') {
+                    loadWinners();
+                } else if (show === 'logs') {
+                    loadLogs();
+                }
+            };
+        });
+    }
+
+    // ==================== INIT ====================
+    async function init() {
+        await checkAuth();
+        if (!currentUser) return;
+        
+        document.getElementById('backBtn').onclick = goBack;
+        setupTabs();
+        await loadDashboardStats();
+        
+        document.getElementById('searchLogsBtn').onclick = () => {
+            const search = document.getElementById('logSearchInput').value.trim();
+            loadLogs(search);
+        };
+        
+        document.getElementById('logSearchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('searchLogsBtn').click();
+            }
+        });
+        
+        if (localStorage.getItem("busahmed_dark_mode") === "true") document.body.classList.add("dark-mode");
+    }
+    
+    init();
+</script>
+</body>
+</html>

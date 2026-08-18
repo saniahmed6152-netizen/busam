@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BUSAHMED | Chats</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        
+        /* ==================== LIGHT MODE (DEFAULT) ==================== */
+        body { 
+            background: #f0f2f5; 
+            min-height: 100vh; 
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 100%;
+            background: #f0f2f5;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ==================== HEADER ==================== */
+        .app-header {
+            background: #ffffff;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e2e8f0;
+            flex-shrink: 0;
+            min-height: 60px;
+            z-index: 10;
+        }
+        .app-header .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .app-header .header-left .back-btn {
+            background: #e2e8f0;
+            border: none;
+            border-radius: 40px;
+            padding: 6px 14px;
+            color: #1e293b;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .app-header .header-left .back-btn:hover { background: #cbd5e1; }
+        .app-header h1 {
+            font-size: 20px;
+            color: #1e1b4b;
+            font-weight: 700;
+        }
+        .app-header h1 i { color: #4f46e5; margin-right: 8px; }
+        .app-header .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .app-header .header-actions .new-chat-btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .app-header .header-actions .new-chat-btn:hover { background: #4338ca; transform: scale(1.05); }
+
+        /* ==================== AD SPACE ==================== */
+        .ad-space { 
+            height: 60px;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        /* ==================== CHAT LIST ==================== */
+        .chat-list-container {
+            flex: 1;
+            overflow-y: auto;
+            background: #ffffff;
+            padding: 4px 0;
+        }
+        .chat-list-container::-webkit-scrollbar { width: 4px; }
+        .chat-list-container::-webkit-scrollbar-track { background: transparent; }
+        .chat-list-container::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 10px; }
+
+        .chat-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: 0.15s;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .chat-item:hover { background: #f8fafc; }
+        .chat-item.active { background: #eef2ff; }
+        .chat-item .chat-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #64748b;
+            overflow: hidden;
+            flex-shrink: 0;
+            margin-right: 14px;
+        }
+        .chat-item .chat-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .chat-item .chat-info { flex: 1; min-width: 0; }
+        .chat-item .chat-info .chat-name {
+            font-weight: 600;
+            color: #0f172a;
+            font-size: 16px;
+        }
+        .chat-item .chat-info .chat-last-msg {
+            font-size: 14px;
+            color: #64748b;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 2px;
+        }
+        .chat-item .chat-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+            flex-shrink: 0;
+            margin-left: 8px;
+        }
+        .chat-item .chat-meta .chat-time {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+        .chat-item .chat-meta .unread-badge {
+            background: #4f46e5;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        /* ==================== CHAT WINDOW - FIXED ==================== */
+        .chat-window {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 100;
+            background: #f0f2f5;
+        }
+        .chat-window.active { display: flex; }
+
+        .chat-window-header {
+            background: #ffffff;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            flex-shrink: 0;
+            min-height: 60px;
+        }
+        .chat-window-header .back-to-list {
+            cursor: pointer;
+            font-size: 20px;
+            color: #1e293b;
+            margin-right: 12px;
+            padding: 4px 8px;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+        .chat-window-header .back-to-list:hover { background: #e2e8f0; }
+        .chat-window-header .chat-user-info {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+        .chat-window-header .chat-user-info .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            font-size: 18px;
+            color: #64748b;
+        }
+        .chat-window-header .chat-user-info .chat-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .chat-window-header .chat-user-info .user-name {
+            font-weight: 600;
+            color: #0f172a;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .chat-window-header .chat-user-info .user-name:hover { text-decoration: underline; }
+        .chat-window-header .chat-user-info .user-status {
+            font-size: 12px;
+            color: #64748b;
+        }
+        .chat-window-header .delete-chat-btn {
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            border-radius: 40px;
+            padding: 6px 14px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: 0.2s;
+            font-weight: 500;
+        }
+        .chat-window-header .delete-chat-btn:hover { background: #fecaca; }
+
+        /* ==================== MESSAGES - FIXED ==================== */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            background: #f0f2f5;
+            min-height: 0;
+            height: 100%;
+        }
+        .chat-messages::-webkit-scrollbar { width: 4px; }
+        .chat-messages::-webkit-scrollbar-track { background: transparent; }
+        .chat-messages::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 10px; }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 16px;
+            word-wrap: break-word;
+            position: relative;
+            animation: messageIn 0.2s ease;
+        }
+        @keyframes messageIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .message.sent {
+            align-self: flex-end;
+            background: #4f46e5;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        .message.received {
+            align-self: flex-start;
+            background: #ffffff;
+            color: #0f172a;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .message .sender-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #4f46e5;
+            margin-bottom: 4px;
+        }
+        .message.received .sender-name { color: #4f46e5; }
+        .message .message-text { font-size: 15px; line-height: 1.5; }
+        .message .message-time {
+            font-size: 10px;
+            opacity: 0.6;
+            margin-top: 4px;
+            display: block;
+            text-align: right;
+        }
+        .message img {
+            max-width: 200px;
+            border-radius: 12px;
+            margin-top: 4px;
+            cursor: pointer;
+        }
+        .message .file-attachment {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 4px;
+            transition: 0.2s;
+        }
+        .message.sent .file-attachment { background: rgba(255,255,255,0.15); }
+        .message.received .file-attachment { background: #f1f5f9; }
+        .message .file-attachment:hover { opacity: 0.8; }
+        .message .file-attachment i { font-size: 24px; }
+        .message .file-attachment .file-info { flex: 1; min-width: 0; }
+        .message .file-attachment .file-name { font-weight: 500; font-size: 14px; }
+        .message .file-attachment .file-size { font-size: 11px; opacity: 0.6; }
+
+        .message-actions {
+            display: inline-flex;
+            gap: 4px;
+            margin-left: 8px;
+            align-items: center;
+        }
+        .message-actions .delete-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: 0.2s;
+            opacity: 0.4;
+        }
+        .message-actions .delete-btn:hover { opacity: 1; background: rgba(0,0,0,0.05); }
+        .message.sent .message-actions .delete-btn { color: #e2e8f0; }
+        .message.received .message-actions .delete-btn.delete-me { color: #64748b; }
+        .message.received .message-actions .delete-btn.delete-everyone { color: #dc2626; }
+        .message.sent .message-actions .delete-btn.delete-me { color: #e2e8f0; }
+        .message.sent .message-actions .delete-btn.delete-everyone { color: #fca5a5; }
+
+        .no-messages {
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+        }
+        .no-messages i { font-size: 48px; display: block; margin-bottom: 16px; opacity: 0.3; }
+        .no-messages p { font-size: 16px; }
+
+        /* ==================== CHAT INPUT - FIXED ==================== */
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+            padding: 12px 16px;
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            align-items: center;
+            flex-shrink: 0;
+            min-height: 64px;
+            position: relative;
+            z-index: 10;
+        }
+        .chat-input-area .file-btn {
+            background: #f1f5f9;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+        .chat-input-area .file-btn:hover { background: #e2e8f0; color: #1e293b; }
+        .chat-input-area .file-btn input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .chat-input-area input[type="text"] {
+            flex: 1;
+            padding: 10px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 40px;
+            outline: none;
+            background: #f8fafc;
+            color: #0f172a;
+            font-size: 15px;
+            min-width: 60px;
+        }
+        .chat-input-area input[type="text"]:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+        .chat-input-area input[type="text"]::placeholder { color: #94a3b8; }
+        .chat-input-area .send-btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.2s;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chat-input-area .send-btn:hover { background: #4338ca; transform: scale(1.05); }
+        .chat-input-area .send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        /* ==================== MODAL ==================== */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            padding: 20px;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: #ffffff;
+            border-radius: 24px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h3 { color: #0f172a; font-size: 18px; }
+        .modal-header h3 i { color: #4f46e5; margin-right: 8px; }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: 0.2s;
+        }
+        .modal-close:hover { color: #1e293b; }
+        .modal-search {
+            padding: 12px 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .modal-search input {
+            width: 100%;
+            padding: 10px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 40px;
+            outline: none;
+            font-size: 14px;
+            background: #f8fafc;
+            color: #0f172a;
+        }
+        .modal-search input:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+        .modal-search input::placeholder { color: #94a3b8; }
+        .modal-users {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 20px 20px;
+        }
+        .modal-users::-webkit-scrollbar { width: 4px; }
+        .modal-users::-webkit-scrollbar-track { background: transparent; }
+        .modal-users::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 10px; }
+
+        .modal-user-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-bottom: 4px;
+        }
+        .modal-user-item:hover { background: #f8fafc; }
+        .modal-user-item .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #64748b;
+            overflow: hidden;
+            flex-shrink: 0;
+            margin-right: 12px;
+        }
+        .modal-user-item .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-user-item .user-details { flex: 1; min-width: 0; }
+        .modal-user-item .user-details .user-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: #0f172a;
+        }
+        .modal-user-item .user-details .user-role {
+            font-size: 13px;
+            color: #64748b;
+        }
+        .modal-user-item .start-chat-btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 6px 16px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .modal-user-item .start-chat-btn:hover { background: #4338ca; }
+        .no-users-found {
+            text-align: center;
+            padding: 40px 0;
+            color: #94a3b8;
+        }
+        .no-users-found i { font-size: 40px; display: block; margin-bottom: 12px; opacity: 0.5; }
+        .loading-users {
+            text-align: center;
+            padding: 40px 0;
+            color: #94a3b8;
+        }
+        .loading-users .spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #e2e8f0;
+            border-top: 3px solid #4f46e5;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* ==================== TOAST ==================== */
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 14px;
+            z-index: 9999;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 90%;
+            text-align: center;
+        }
+        .toast.error { background: #dc2626; color: white; }
+
+        /* ==================== DARK MODE ==================== */
+        .dark-mode body { background: #0f172a; }
+        .dark-mode .app-container { background: #0f172a; }
+        .dark-mode .app-header { background: #1e293b; border-color: #334155; }
+        .dark-mode .app-header h1 { color: #f1f5f9; }
+        .dark-mode .app-header .header-left .back-btn { background: #334155; color: #e2e8f0; }
+        .dark-mode .app-header .header-left .back-btn:hover { background: #475569; }
+        .dark-mode .ad-space { background: #1e293b; border-color: #334155; }
+        .dark-mode .chat-list-container { background: #0f172a; }
+        .dark-mode .chat-item { border-color: #1e293b; }
+        .dark-mode .chat-item:hover { background: #1e293b; }
+        .dark-mode .chat-item.active { background: #1e293b; }
+        .dark-mode .chat-item .chat-info .chat-name { color: #f1f5f9; }
+        .dark-mode .chat-item .chat-info .chat-last-msg { color: #94a3b8; }
+        .dark-mode .chat-item .chat-avatar { background: #334155; color: #94a3b8; }
+        .dark-mode .chat-window { background: #0f172a; }
+        .dark-mode .chat-window-header { background: #1e293b; border-color: #334155; }
+        .dark-mode .chat-window-header .back-to-list { color: #e2e8f0; }
+        .dark-mode .chat-window-header .back-to-list:hover { background: #334155; }
+        .dark-mode .chat-window-header .chat-user-info .user-name { color: #f1f5f9; }
+        .dark-mode .chat-window-header .delete-chat-btn { background: #7f1d1d; color: #fca5a5; }
+        .dark-mode .chat-window-header .delete-chat-btn:hover { background: #991b1b; }
+        .dark-mode .chat-messages { background: #0f172a; }
+        .dark-mode .message.received { background: #1e293b; color: #e2e8f0; box-shadow: none; }
+        .dark-mode .message.received .sender-name { color: #a5b4fc; }
+        .dark-mode .message .file-attachment { background: rgba(255,255,255,0.06); }
+        .dark-mode .message.received .file-attachment { background: #1e293b; }
+        .dark-mode .chat-input-area { background: #1e293b; border-color: #334155; }
+        .dark-mode .chat-input-area input[type="text"] { background: #0f172a; border-color: #334155; color: #f1f5f9; }
+        .dark-mode .chat-input-area input[type="text"]::placeholder { color: #64748b; }
+        .dark-mode .chat-input-area .file-btn { background: #334155; color: #94a3b8; }
+        .dark-mode .chat-input-area .file-btn:hover { background: #475569; color: #e2e8f0; }
+        .dark-mode .modal-content { background: #1e293b; }
+        .dark-mode .modal-header { border-color: #334155; }
+        .dark-mode .modal-header h3 { color: #f1f5f9; }
+        .dark-mode .modal-search { border-color: #334155; }
+        .dark-mode .modal-search input { background: #0f172a; border-color: #334155; color: #f1f5f9; }
+        .dark-mode .modal-user-item:hover { background: #1e293b; }
+        .dark-mode .modal-user-item .user-details .user-name { color: #f1f5f9; }
+        .dark-mode .modal-user-item .user-details .user-role { color: #94a3b8; }
+        .dark-mode .modal-user-item .user-avatar { background: #334155; color: #94a3b8; }
+        .dark-mode .no-users-found { color: #94a3b8; }
+        .dark-mode .loading-users { color: #94a3b8; }
+        .dark-mode .loading-users .spinner { border-color: #334155; border-top-color: #4f46e5; }
+        .dark-mode .no-messages { color: #64748b; }
+        .dark-mode .toast { background: #1e293b; color: #f1f5f9; }
+        .dark-mode .toast.error { background: #dc2626; }
+
+        /* ==================== RESPONSIVE - FIXED ==================== */
+        @media (max-width: 768px) {
+            .app-header { padding: 10px 12px; min-height: 56px; }
+            .app-header h1 { font-size: 18px; }
+            .app-header .header-actions .new-chat-btn { width: 36px; height: 36px; font-size: 16px; }
+            .app-header .header-left .back-btn { padding: 4px 12px; font-size: 13px; }
+            .ad-space { height: 50px; }
+            .chat-item { padding: 10px 14px; }
+            .chat-item .chat-avatar { width: 44px; height: 44px; font-size: 18px; margin-right: 12px; }
+            .chat-item .chat-info .chat-name { font-size: 15px; }
+            .chat-item .chat-info .chat-last-msg { font-size: 13px; }
+            .chat-window-header { padding: 10px 12px; min-height: 56px; }
+            .chat-window-header .chat-user-info .chat-avatar { width: 36px; height: 36px; font-size: 16px; }
+            .chat-window-header .chat-user-info .user-name { font-size: 15px; }
+            .chat-messages { padding: 12px 14px; }
+            .message { max-width: 90%; padding: 8px 12px; font-size: 14px; }
+            .message .message-text { font-size: 14px; }
+            .message img { max-width: 160px; }
+            .chat-input-area { padding: 10px 12px; min-height: 56px; gap: 8px; }
+            .chat-input-area input[type="text"] { font-size: 14px; padding: 8px 14px; }
+            .chat-input-area .send-btn { width: 38px; height: 38px; font-size: 16px; }
+            .chat-input-area .file-btn { width: 34px; height: 34px; font-size: 14px; }
+            .modal-content { max-width: 100%; margin: 10px; border-radius: 20px; }
+        }
+
+        @media (max-width: 480px) {
+            .app-header { padding: 8px 10px; min-height: 50px; }
+            .app-header h1 { font-size: 16px; }
+            .app-header h1 i { margin-right: 4px; }
+            .app-header .header-actions .new-chat-btn { width: 32px; height: 32px; font-size: 14px; }
+            .app-header .header-left .back-btn { padding: 4px 10px; font-size: 12px; }
+            .chat-item { padding: 8px 12px; }
+            .chat-item .chat-avatar { width: 38px; height: 38px; font-size: 15px; margin-right: 10px; }
+            .chat-item .chat-info .chat-name { font-size: 14px; }
+            .chat-item .chat-info .chat-last-msg { font-size: 12px; }
+            .chat-item .chat-meta .chat-time { font-size: 10px; }
+            .chat-item .chat-meta .unread-badge { font-size: 10px; padding: 1px 6px; min-width: 16px; }
+            .chat-window-header { padding: 8px 10px; min-height: 50px; }
+            .chat-window-header .back-to-list { font-size: 18px; margin-right: 8px; }
+            .chat-window-header .chat-user-info .chat-avatar { width: 32px; height: 32px; font-size: 14px; }
+            .chat-window-header .chat-user-info .user-name { font-size: 14px; }
+            .chat-window-header .chat-user-info .user-status { font-size: 11px; }
+            .chat-window-header .delete-chat-btn { font-size: 11px; padding: 4px 10px; }
+            .chat-messages { padding: 10px; }
+            .message { max-width: 95%; padding: 6px 10px; font-size: 13px; }
+            .message .message-text { font-size: 13px; }
+            .message img { max-width: 130px; }
+            .message .file-attachment { padding: 8px 12px; }
+            .message .file-attachment i { font-size: 20px; }
+            .message .file-attachment .file-name { font-size: 13px; }
+            .chat-input-area { 
+                padding: 8px 10px; 
+                min-height: 50px; 
+                gap: 6px;
+                background: #ffffff;
+                border-top: 1px solid #e2e8f0;
+                position: relative;
+                z-index: 10;
+            }
+            .chat-input-area input[type="text"] { 
+                font-size: 13px; 
+                padding: 8px 12px; 
+                min-height: 36px;
+            }
+            .chat-input-area .send-btn { 
+                width: 34px; 
+                height: 34px; 
+                font-size: 14px; 
+                min-height: 34px;
+                min-width: 34px;
+            }
+            .chat-input-area .file-btn { 
+                width: 30px; 
+                height: 30px; 
+                font-size: 13px; 
+                min-height: 30px;
+                min-width: 30px;
+            }
+            .modal-content { border-radius: 16px; margin: 8px; }
+            .modal-header { padding: 12px 16px; }
+            .modal-header h3 { font-size: 16px; }
+            .modal-search { padding: 10px 16px; }
+            .modal-search input { font-size: 13px; padding: 8px 14px; }
+            .modal-users { padding: 8px 16px 16px; }
+            .modal-user-item { padding: 8px 10px; }
+            .modal-user-item .user-avatar { width: 36px; height: 36px; font-size: 14px; margin-right: 10px; }
+            .modal-user-item .user-details .user-name { font-size: 14px; }
+            .modal-user-item .start-chat-btn { font-size: 11px; padding: 4px 12px; }
+            .toast { font-size: 13px; padding: 8px 16px; bottom: 70px; }
+        }
+
+        @media (max-width: 360px) {
+            .app-header h1 { font-size: 14px; }
+            .chat-item .chat-avatar { width: 34px; height: 34px; font-size: 13px; margin-right: 8px; }
+            .chat-item .chat-info .chat-name { font-size: 13px; }
+            .chat-item .chat-info .chat-last-msg { font-size: 11px; }
+            .message { font-size: 12px; padding: 6px 8px; }
+            .message .message-text { font-size: 12px; }
+            .chat-input-area input[type="text"] { font-size: 12px; padding: 6px 10px; min-height: 32px; }
+            .chat-input-area .send-btn { width: 30px; height: 30px; font-size: 12px; min-height: 30px; min-width: 30px; }
+            .chat-input-area .file-btn { width: 28px; height: 28px; font-size: 12px; min-height: 28px; min-width: 28px; }
+            .chat-window-header .chat-user-info .user-name { font-size: 13px; }
+        }
+
+        /* ==================== SCROLLBAR ==================== */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 10px; }
+        .dark-mode ::-webkit-scrollbar-thumb { background: #4f46e5; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- ===== HEADER ===== -->
+    <header class="app-header">
+        <div class="header-left">
+            <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Back</button>
+            <h1><i class="fas fa-comments"></i> Chats</h1>
+        </div>
+        <div class="header-actions">
+            <button class="new-chat-btn" onclick="openNewChatModal()" title="New Chat">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- ===== AD SPACE ===== -->
+    <div id="adContainer" class="ad-space">📢 Loading ad...</div>
+
+    <!-- ===== CHAT LIST ===== -->
+    <div id="chatListView" class="chat-list-container">
+        <div id="chatList"></div>
+    </div>
+
+    <!-- ===== CHAT WINDOW ===== -->
+    <div id="chatWindowView" class="chat-window">
+        <div class="chat-window-header">
+            <span class="back-to-list" onclick="closeChat()"><i class="fas fa-arrow-left"></i></span>
+            <div class="chat-user-info">
+                <div class="chat-avatar" id="chatWindowAvatar"><i class="fas fa-user"></i></div>
+                <div>
+                    <div class="user-name" id="chatWindowName" onclick="viewUserProfile()"></div>
+                    <div class="user-status" id="debugStatus">🟢 Online</div>
+                </div>
+            </div>
+            <button class="delete-chat-btn" onclick="deleteConversation()">
+                <i class="fas fa-trash-alt"></i> Delete
+            </button>
+        </div>
+        
+        <!-- ===== MESSAGES ===== -->
+        <div class="chat-messages" id="chatMessages">
+            <div class="no-messages">
+                <i class="fas fa-comment-dots"></i>
+                <p>No messages yet. Say hello!</p>
+            </div>
+        </div>
+        
+        <!-- ===== INPUT AREA - ALWAYS VISIBLE ===== -->
+        <div class="chat-input-area" id="chatInputArea">
+            <button class="file-btn" id="imageBtn" title="Send Image">
+                <i class="fas fa-image"></i>
+                <input type="file" id="imageInput" accept="image/*">
+            </button>
+            <button class="file-btn" id="fileBtn" title="Send File">
+                <i class="fas fa-paperclip"></i>
+                <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx,.zip,.rar">
+            </button>
+            <input type="text" id="messageInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendMessage()">
+            <button class="send-btn" onclick="sendMessage()" id="sendBtn">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== NEW CHAT MODAL ===== -->
+<div class="modal" id="newChatModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fas fa-user-plus"></i> New Chat</h3>
+            <button class="modal-close" onclick="closeNewChatModal()">&times;</button>
+        </div>
+        <div class="modal-search">
+            <input type="text" id="searchUsersInput" placeholder="Search users..." oninput="searchUsers()" autocomplete="off">
+        </div>
+        <div class="modal-users" id="modalUsersList">
+            <div class="loading-users">
+                <div class="spinner"></div>
+                <div style="margin-top:12px;">Loading users...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const API_BASE = window.location.origin + '/api/';
+    let currentUser = null;
+    let currentConversation = null;
+    let allConversations = [];
+    let messagePolling = null;
+    let allUsers = [];
+    let searchTimeout = null;
+    let usersLoaded = false;
+    let adInterval = null;
+
+    // ==================== UTILITY FUNCTIONS ====================
+    function showToast(msg, isError = false) {
+        const t = document.createElement("div");
+        t.className = "toast" + (isError ? " error" : "");
+        t.innerText = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    }
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+
+    function getToken() {
+        return localStorage.getItem('busahmed_token');
+    }
+
+    function viewUserProfile(userId) {
+        if (currentConversation) {
+            window.location.href = 'view-profile.html?id=' + (userId || currentConversation.otherUserId);
+        }
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 B';
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    function getUserRoleDisplay(user) {
+        const roleMap = {
+            'student': 'Student',
+            'teacher': 'Teacher',
+            'admin': 'Admin',
+            'owner': 'School Owner'
+        };
+        let role = roleMap[user.role] || user.role;
+        let detail = '';
+        if (user.role === 'student' && user.class) detail = ` • ${user.class}`;
+        else if (user.role === 'teacher' && user.subject) detail = ` • ${user.subject}`;
+        else if (user.role === 'owner' && user.school) detail = ` • ${user.school}`;
+        else if (user.role === 'admin') detail = ' • Administrator';
+        return { role, detail };
+    }
+
+    // ==================== AD HELPER ====================
+    function renderAd(containerId, location, intervalTime = 10000) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        if (adInterval) {
+            clearInterval(adInterval);
+            adInterval = null;
+        }
+        
+        container.innerHTML = "📢 Loading ad...";
+        container.style.cssText = `
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            color: #94a3b8;
+            font-size: 14px;
+            overflow: hidden;
+        `;
+        
+        if (document.body.classList.contains('dark-mode')) {
+            container.style.background = '#1e293b';
+        }
+        
+        fetch(`${API_BASE}ads.php?location=${location}`)
+            .then(response => response.json())
+            .then(ads => {
+                if (!ads || ads.length === 0) {
+                    container.innerHTML = "📢 Ad space - Promote your school";
+                    container.style.cssText = `
+                        height: 60px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        background: ${document.body.classList.contains('dark-mode') ? '#1e293b' : '#ffffff'};
+                        color: #94a3b8;
+                        font-size: 14px;
+                    `;
+                    return;
+                }
+                
+                let idx = 0;
+                
+                function showAd() {
+                    const ad = ads[idx % ads.length];
+                    let imageUrl = ad.image_url || 'https://via.placeholder.com/800x100/4f46e5/ffffff?text=Ad';
+                    
+                    if (imageUrl.startsWith('uploads/')) {
+                        imageUrl = window.location.origin + '/busahmed/' + imageUrl;
+                    } else if (!imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
+                        imageUrl = window.location.origin + '/busahmed/' + imageUrl.replace(/^\//, '');
+                    }
+                    
+                    const linkUrl = ad.link || '#';
+                    
+                    container.innerHTML = `
+                        <img src="${imageUrl}" 
+                             style="width:100%; height:60px; object-fit:cover; display:block;" 
+                             onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:60px;background:#1e293b;color:#94a3b8;font-size:14px;\\'>📢 Ad</div>'">
+                        <div style="position:absolute; bottom:2px; right:8px; background:rgba(0,0,0,0.6); color:white; font-size:9px; padding:2px 10px; border-radius:20px;">
+                            ${ad.caption || "Sponsored"} | 👁️ ${ad.views || 0}
+                        </div>
+                    `;
+                    container.style.cssText = `
+                        background: transparent;
+                        display: block;
+                        height: 60px;
+                        position: relative;
+                        cursor: pointer;
+                        overflow: hidden;
+                    `;
+                    container.onclick = function(e) {
+                        e.preventDefault();
+                        if (linkUrl && linkUrl !== '#') {
+                            window.open(linkUrl, "_blank");
+                        }
+                    };
+                    idx++;
+                }
+                
+                showAd();
+                
+                if (ads.length > 1) {
+                    adInterval = setInterval(showAd, intervalTime);
+                }
+            })
+            .catch(err => {
+                console.error("Ad error:", err);
+                container.innerHTML = "📢 Ad unavailable";
+                container.style.cssText = `
+                    height: 60px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: ${document.body.classList.contains('dark-mode') ? '#1e293b' : '#ffffff'};
+                    color: #94a3b8;
+                    font-size: 14px;
+                `;
+            });
+    }
+
+    // ==================== AUTH ====================
+    async function checkAuth() {
+        const token = getToken();
+        if (!token) {
+            window.location.href = 'login.html';
+            return null;
+        }
+        try {
+            const response = await fetch(API_BASE + 'profile.php?token=' + encodeURIComponent(token));
+            if (!response.ok) {
+                localStorage.clear();
+                window.location.href = 'login.html';
+                return null;
+            }
+            currentUser = await response.json();
+            return currentUser;
+        } catch(err) {
+            console.error("Auth error:", err);
+            window.location.href = 'login.html';
+            return null;
+        }
+    }
+
+    async function goBack() {
+        if (currentUser) {
+            if (currentUser.role === 'student') window.location.href = 'dashboard-student.html';
+            else if (currentUser.role === 'teacher') window.location.href = 'dashboard-teacher.html';
+            else if (currentUser.role === 'admin') window.location.href = 'dashboard-admin.html';
+            else if (currentUser.role === 'owner') window.location.href = 'dashboard-owner.html';
+            else window.location.href = 'login.html';
+        } else {
+            window.location.href = 'login.html';
+        }
+    }
+
+    // ==================== CONVERSATIONS ====================
+    async function loadConversations() {
+        const token = getToken();
+        if (!token) return;
+        try {
+            const response = await fetch(API_BASE + 'chat-conversations.php?token=' + encodeURIComponent(token));
+            allConversations = await response.json();
+            renderConversations();
+        } catch(err) {
+            console.error("Error loading conversations:", err);
+        }
+    }
+
+    function renderConversations() {
+        const list = document.getElementById('chatList');
+        if (!allConversations || allConversations.length === 0) {
+            list.innerHTML = `
+                <div style="text-align:center; padding:60px 20px; color:#94a3b8;">
+                    <i class="fas fa-comments" style="font-size:48px; display:block; margin-bottom:16px; opacity:0.3;"></i>
+                    <p style="font-size:16px;">No conversations yet</p>
+                    <p style="font-size:14px; margin-top:8px;">Click the <strong>+</strong> button to start a new chat!</p>
+                </div>
+            `;
+            return;
+        }
+        let html = '';
+        allConversations.forEach(conv => {
+            const unread = conv.unread_count || 0;
+            const avatarHtml = conv.other_user_avatar ? `<img src="${conv.other_user_avatar}">` : `<i class="fas fa-user"></i>`;
+            const lastMsg = conv.last_message ? escapeHtml(conv.last_message.substring(0, 40)) : 'No messages yet';
+            const time = conv.last_message_time ? new Date(conv.last_message_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '';
+            const isActive = currentConversation && currentConversation.id === conv.id;
+            html += `
+                <div class="chat-item ${isActive ? 'active' : ''}" onclick="openChat(${conv.id}, ${conv.other_user_id}, '${escapeHtml(conv.other_user_name)}', '${conv.other_user_avatar || ''}')">
+                    <div class="chat-avatar">${avatarHtml}</div>
+                    <div class="chat-info">
+                        <div class="chat-name">${escapeHtml(conv.other_user_name)}</div>
+                        <div class="chat-last-msg">${lastMsg}</div>
+                    </div>
+                    <div class="chat-meta">
+                        <span class="chat-time">${time}</span>
+                        ${unread > 0 ? `<span class="unread-badge">${unread}</span>` : ''}
+                    </div>
+                </div>
+            `;
+        });
+        list.innerHTML = html;
+    }
+
+    // ==================== CHAT WINDOW ====================
+    async function openChat(convId, otherUserId, otherName, otherAvatar) {
+        if (messagePolling) {
+            clearInterval(messagePolling);
+            messagePolling = null;
+        }
+        
+        currentConversation = { id: convId, otherUserId, otherName, otherAvatar };
+        
+        document.getElementById('chatListView').style.display = 'none';
+        document.getElementById('adContainer').style.display = 'none';
+        document.getElementById('chatWindowView').classList.add('active');
+        
+        const avatarEl = document.getElementById('chatWindowAvatar');
+        avatarEl.innerHTML = otherAvatar ? `<img src="${otherAvatar}" onclick="viewUserProfile(${otherUserId})" style="cursor:pointer;">` : `<i class="fas fa-user" onclick="viewUserProfile(${otherUserId})" style="cursor:pointer;"></i>`;
+        
+        document.getElementById('chatWindowName').innerHTML = `<span onclick="viewUserProfile(${otherUserId})">${escapeHtml(otherName)}</span>`;
+        document.getElementById('debugStatus').textContent = '🟢 Online';
+        
+        await loadMessages(convId);
+        messagePolling = setInterval(() => {
+            loadMessages(convId, true);
+        }, 3000);
+    }
+
+    function closeChat() {
+        document.getElementById('chatWindowView').classList.remove('active');
+        document.getElementById('chatListView').style.display = 'block';
+        document.getElementById('adContainer').style.display = 'flex';
+        if (messagePolling) {
+            clearInterval(messagePolling);
+            messagePolling = null;
+        }
+        currentConversation = null;
+        loadConversations();
+    }
+
+    // ==================== MESSAGES ====================
+    async function loadMessages(convId, silent = false) {
+        const token = getToken();
+        if (!token) return;
+        try {
+            const response = await fetch(API_BASE + 'chat-messages.php?token=' + encodeURIComponent(token) + '&conversation_id=' + convId);
+            const messages = await response.json();
+            renderMessages(messages);
+        } catch(err) {
+            if (!silent) {
+                console.error("Error loading messages:", err);
+                document.getElementById('debugStatus').textContent = '❌ Error';
+            }
+        }
+    }
+
+    function renderMessages(messages) {
+        const container = document.getElementById('chatMessages');
+        
+        if (!messages || messages.length === 0) {
+            container.innerHTML = `
+                <div class="no-messages">
+                    <i class="fas fa-comment-dots"></i>
+                    <p>No messages yet. Say hello!</p>
+                </div>
+            `;
+            return;
+        }
+        
+        let html = '';
+        messages.forEach(msg => {
+            const isSent = msg.sender_id == currentUser.id;
+            const isAdmin = currentUser.role === 'admin';
+            const canDeleteForEveryone = isSent || isAdmin;
+            const time = new Date(msg.created_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+            let content = '';
+            
+            if (msg.message_type === 'text') {
+                content = `<div class="message-text">${escapeHtml(msg.message)}</div>`;
+            } else if (msg.message_type === 'image') {
+                content = `
+                    <img src="${msg.media_url}" 
+                         onclick="window.open('${msg.media_url}','_blank')" 
+                         onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\\'color:#ef4444; font-size:13px;\\'>❌ Image failed to load</span>'">
+                `;
+            } else if (msg.message_type === 'file') {
+                const fileName = msg.message || 'File';
+                const fileSize = msg.media_duration || 0;
+                const fileExt = fileName.split('.').pop().toLowerCase();
+                let icon = 'fa-file';
+                if (['pdf'].includes(fileExt)) icon = 'fa-file-pdf';
+                else if (['doc', 'docx'].includes(fileExt)) icon = 'fa-file-word';
+                else if (['xls', 'xlsx'].includes(fileExt)) icon = 'fa-file-excel';
+                else if (['ppt', 'pptx'].includes(fileExt)) icon = 'fa-file-powerpoint';
+                else if (['zip', 'rar', '7z'].includes(fileExt)) icon = 'fa-file-archive';
+                else if (['txt'].includes(fileExt)) icon = 'fa-file-alt';
+                
+                content = `
+                    <div class="file-attachment" onclick="window.open('${msg.media_url}','_blank')">
+                        <i class="fas ${icon}"></i>
+                        <div class="file-info">
+                            <div class="file-name">${escapeHtml(fileName)}</div>
+                            <div class="file-size">${formatFileSize(fileSize)}</div>
+                        </div>
+                        <i class="fas fa-download"></i>
+                    </div>
+                `;
+            }
+            
+            const senderDisplay = isSent ? '' : `<div class="sender-name" onclick="viewUserProfile(${msg.sender_id})">${escapeHtml(msg.sender_name || 'User')}</div>`;
+            
+            html += `
+                <div class="message ${isSent ? 'sent' : 'received'}" id="msg-${msg.id}">
+                    ${senderDisplay}
+                    ${content}
+                    <span class="message-time">${time}</span>
+                    <div class="message-actions">
+                        <button class="delete-btn delete-me" onclick="deleteMessageForMe(${msg.id})" title="Delete for me">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                        ${canDeleteForEveryone ? `<button class="delete-btn delete-everyone" onclick="deleteMessageForEveryone(${msg.id})" title="Delete for everyone">
+                            <i class="fas fa-trash-alt"></i> <span style="font-size:9px;">all</span>
+                        </button>` : ''}
+                    </div>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = html;
+        container.scrollTop = container.scrollHeight;
+    }
+
+    // ==================== SEND MESSAGE ====================
+    async function sendMessage() {
+        const input = document.getElementById('messageInput');
+        const text = input.value.trim();
+        if (!text || !currentConversation) return;
+        
+        input.value = '';
+        input.disabled = true;
+        document.getElementById('sendBtn').disabled = true;
+        
+        try {
+            await sendMessageToServer(currentConversation.id, 'text', text);
+            await loadMessages(currentConversation.id);
+            loadConversations();
+        } catch(err) {
+            console.error('Error sending:', err);
+            showToast("Failed to send message", true);
+        } finally {
+            input.disabled = false;
+            document.getElementById('sendBtn').disabled = false;
+            input.focus();
+        }
+    }
+
+    async function sendMessageToServer(convId, type, message, mediaUrl = null, duration = null) {
+        const token = getToken();
+        if (!token) return false;
+        
+        try {
+            const response = await fetch(API_BASE + 'chat-messages.php?token=' + encodeURIComponent(token), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    conversation_id: convId,
+                    message_type: type,
+                    message: message,
+                    media_url: mediaUrl,
+                    media_duration: duration
+                })
+            });
+            
+            const data = await response.json();
+            return data.id ? true : false;
+        } catch(err) {
+            console.error("Error sending message:", err);
+            return false;
+        }
+    }
+
+    // ==================== IMAGE UPLOAD ====================
+    document.getElementById('imageInput').addEventListener('change', async function(e) {
+        const file = this.files[0];
+        if (!file || !currentConversation) {
+            this.value = '';
+            return;
+        }
+        
+        if (!file.type.startsWith('image/')) {
+            showToast('Please select an image file', true);
+            this.value = '';
+            return;
+        }
+        
+        if (file.size > 10 * 1024 * 1024) {
+            showToast('Image too large. Max 10MB', true);
+            this.value = '';
+            return;
+        }
+        
+        showToast('📤 Uploading image...');
+        
+        const formData = new FormData();
+        formData.append('image', file);
+        formData.append('type', 'image');
+        
+        const token = getToken();
+        try {
+            const response = await fetch(API_BASE + 'chat-upload.php?token=' + encodeURIComponent(token), {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.json();
+            
+            if (data.url) {
+                await sendMessageToServer(currentConversation.id, 'image', '📷 Image', data.url);
+                await loadMessages(currentConversation.id);
+                showToast('✅ Image sent!');
+            } else {
+                showToast(data.error || 'Failed to upload image', true);
+            }
+        } catch(err) {
+            console.error("Error uploading image:", err);
+            showToast("Failed to upload image: " + err.message, true);
+        }
+        this.value = '';
+    });
+
+    // ==================== FILE UPLOAD ====================
+    document.getElementById('fileInput').addEventListener('change', async function(e) {
+        const file = this.files[0];
+        if (!file || !currentConversation) {
+            this.value = '';
+            return;
+        }
+        
+        if (file.size > 50 * 1024 * 1024) {
+            showToast('File too large. Max 50MB', true);
+            this.value = '';
+            return;
+        }
+        
+        showToast('📤 Uploading file...');
+        
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('type', 'file');
+        
+        const token = getToken();
+        try {
+            const response = await fetch(API_BASE + 'chat-upload.php?token=' + encodeURIComponent(token), {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.json();
+            if (data.url) {
+                await sendMessageToServer(currentConversation.id, 'file', file.name, data.url, file.size);
+                await loadMessages(currentConversation.id);
+                showToast('✅ File sent!');
+            } else {
+                showToast(data.error || 'Failed to upload file', true);
+            }
+        } catch(err) {
+            console.error("Error uploading file:", err);
+            showToast("Failed to upload file: " + err.message, true);
+        }
+        this.value = '';
+    });
+
+    // ==================== DELETE MESSAGES ====================
+    async function deleteMessageForMe(msgId) {
+        if (!confirm('Delete this message for you? The other person will still see it.')) return;
+        
+        const token = getToken();
+        if (!token) {
+            showToast('Please login first', true);
+            return;
+        }
+        
+        try {
+            const response = await fetch(API_BASE + 'chat-messages.php?token=' + encodeURIComponent(token), {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    message_id: msgId,
+                    delete_for: 'me' 
+                })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                showToast(errorData.error || 'Failed to delete message', true);
+                return;
+            }
+            
+            const msgElement = document.getElementById('msg-' + msgId);
+            if (msgElement) {
+                msgElement.style.opacity = '0.3';
+                setTimeout(() => {
+                    msgElement.remove();
+                    if (document.getElementById('chatMessages').children.length === 0) {
+                        document.getElementById('chatMessages').innerHTML = `
+                            <div class="no-messages">
+                                <i class="fas fa-comment-dots"></i>
+                                <p>No messages yet. Say hello!</p>
+                            </div>
+                        `;
+                    }
+                }, 300);
+            }
+            
+            showToast('Message deleted for you');
+            
+        } catch(err) {
+            console.error('Delete error:', err);
+            showToast('Network error: ' + err.message, true);
+        }
+    }
+
+    async function deleteMessageForEveryone(msgId) {
+        if (!confirm('Delete this message for EVERYONE? This cannot be undone.')) return;
+        
+        const token = getToken();
+        if (!token) {
+            showToast('Please login first', true);
+            return;
+        }
+        
+        try {
+            const response = await fetch(API_BASE + 'chat-messages.php?token=' + encodeURIComponent(token), {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    message_id: msgId,
+                    delete_for: 'everyone' 
+                })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                showToast(errorData.error || 'Failed to delete message', true);
+                return;
+            }
+            
+            const msgElement = document.getElementById('msg-' + msgId);
+            if (msgElement) {
+                msgElement.style.opacity = '0.3';
+                setTimeout(() => {
+                    msgElement.remove();
+                    if (document.getElementById('chatMessages').children.length === 0) {
+                        document.getElementById('chatMessages').innerHTML = `
+                            <div class="no-messages">
+                                <i class="fas fa-comment-dots"></i>
+                                <p>No messages yet. Say hello!</p>
+                            </div>
+                        `;
+                    }
+                }, 300);
+            }
+            
+            showToast('Message deleted for everyone');
+            
+        } catch(err) {
+            console.error('Delete error:', err);
+            showToast('Network error: ' + err.message, true);
+        }
+    }
+
+    async function deleteConversation() {
+        if (!currentConversation) return;
+        if (!confirm('Delete this chat conversation for you? The other person will still have it.')) return;
+        
+        const token = getToken();
+        if (!token) {
+            showToast('Please login first', true);
+            return;
+        }
+        
+        try {
+            const response = await fetch(API_BASE + 'chat-conversations.php?token=' + encodeURIComponent(token), {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ conversation_id: currentConversation.id })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                showToast(errorData.error || 'Failed to delete conversation', true);
+                return;
+            }
+            
+            const data = await response.json();
+            showToast(data.message || 'Conversation deleted for you');
+            closeChat();
+            
+        } catch(err) {
+            console.error("Error deleting conversation:", err);
+            showToast("Network error: " + err.message, true);
+        }
+    }
+
+    // ==================== NEW CHAT MODAL ====================
+    function openNewChatModal() {
+        const modal = document.getElementById('newChatModal');
+        modal.classList.add('active');
+        document.getElementById('searchUsersInput').value = '';
+        document.getElementById('modalUsersList').innerHTML = `
+            <div class="loading-users">
+                <div class="spinner"></div>
+                <div style="margin-top:12px;">Loading users...</div>
+            </div>
+        `;
+        document.getElementById('searchUsersInput').focus();
+        if (!usersLoaded) {
+            loadAllUsers();
+        } else {
+            displayUsers(allUsers);
+        }
+    }
+
+    function closeNewChatModal() {
+        document.getElementById('newChatModal').classList.remove('active');
+    }
+
+    document.getElementById('newChatModal').addEventListener('click', function(e) {
+        if (e.target === this) closeNewChatModal();
+    });
+
+    async function loadAllUsers() {
+        const token = getToken();
+        if (!token) return;
+        try {
+            const response = await fetch(API_BASE + 'search-all-users.php?token=' + encodeURIComponent(token));
+            allUsers = await response.json();
+            usersLoaded = true;
+            displayUsers(allUsers);
+        } catch(err) {
+            console.error("Error loading users:", err);
+            document.getElementById('modalUsersList').innerHTML = `
+                <div class="no-users-found">
+                    <i class="fas fa-exclamation-triangle" style="font-size:24px; display:block; margin-bottom:8px; color:#ef4444;"></i>
+                    Failed to load users. Please try again.
+                    <button onclick="loadAllUsers()" style="margin-top:12px; background:#4f46e5; color:white; border:none; border-radius:40px; padding:8px 20px; cursor:pointer;">Retry</button>
+                </div>
+            `;
+        }
+    }
+
+    function displayUsers(users) {
+        const container = document.getElementById('modalUsersList');
+        if (!users || !Array.isArray(users) || users.length === 0) {
+            container.innerHTML = `
+                <div class="no-users-found">
+                    <i class="fas fa-users"></i>
+                    <p>No other users found</p>
+                </div>
+            `;
+            return;
+        }
+        let html = '';
+        users.forEach(u => {
+            const { role, detail } = getUserRoleDisplay(u);
+            const avatarHtml = u.avatar ? `<img src="${u.avatar}">` : `<i class="fas fa-user"></i>`;
+            html += `
+                <div class="modal-user-item">
+                    <div class="user-avatar">${avatarHtml}</div>
+                    <div class="user-details">
+                        <div class="user-name">${escapeHtml(u.name)}</div>
+                        <div class="user-role">${role}${detail}</div>
+                    </div>
+                    <button class="start-chat-btn" onclick="startChatWithUser(${u.id})">
+                        <i class="fas fa-comment"></i> Chat
+                    </button>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function searchUsers() {
+        if (searchTimeout) clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(async () => {
+            const query = document.getElementById('searchUsersInput').value.trim();
+            const container = document.getElementById('modalUsersList');
+            
+            if (!query || query.length < 1) {
+                displayUsers(allUsers);
+                return;
+            }
+            
+            container.innerHTML = `
+                <div class="loading-users">
+                    <div class="spinner"></div>
+                    <div style="margin-top:12px;">Searching...</div>
+                </div>
+            `;
+            
+            const token = getToken();
+            try {
+                const response = await fetch(API_BASE + 'search-all-users.php?q=' + encodeURIComponent(query) + '&token=' + encodeURIComponent(token));
+                const results = await response.json();
+                displayUsers(results);
+            } catch(err) {
+                console.error("Search error:", err);
+                container.innerHTML = `
+                    <div class="no-users-found">
+                        <i class="fas fa-exclamation-triangle" style="font-size:24px; display:block; margin-bottom:8px; color:#ef4444;"></i>
+                        Search failed. Please try again.
+                    </div>
+                `;
+            }
+        }, 300);
+    }
+
+    // ==================== START CHAT WITH USER ====================
+    async function startChatWithUser(userId) {
+        const token = getToken();
+        if (!token) {
+            showToast("Please login first", true);
+            return;
+        }
+        
+        try {
+            const response = await fetch(API_BASE + 'chat-conversations.php?token=' + encodeURIComponent(token), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: userId })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                showToast(errorData.error || "Failed to create conversation", true);
+                return;
+            }
+            
+            const data = await response.json();
+            
+            if (data.conversation_id) {
+                closeNewChatModal();
+                await loadConversations();
+                
+                let conv = allConversations.find(c => 
+                    (c.user1_id == userId || c.user2_id == userId)
+                );
+                
+                if (conv) {
+                    openChat(conv.id, conv.other_user_id, conv.other_user_name, conv.other_user_avatar);
+                } else {
+                    await loadConversations();
+                    conv = allConversations.find(c => 
+                        (c.user1_id == userId || c.user2_id == userId)
+                    );
+                    if (conv) {
+                        openChat(conv.id, conv.other_user_id, conv.other_user_name, conv.other_user_avatar);
+                    } else {
+                        showToast("Conversation created but couldn't open. Please try again.", true);
+                    }
+                }
+            }
+        } catch(err) {
+            console.error("Error starting chat:", err);
+            showToast("Failed to start chat", true);
+        }
+    }
+
+    // ==================== PUSH NOTIFICATION FOR CHAT ====================
+    async function notifyUserForMessage(message, senderName) {
+        const token = getToken();
+        if (!token) return;
+        
+        try {
+            await fetch(API_BASE + 'send-push.php?token=' + encodeURIComponent(token), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: currentUser.id,
+                    title: '💬 ' + senderName,
+                    body: message,
+                    url: '/chat.html',
+                    type: 'message',
+                    sender: senderName,
+                    message: message,
+                    message_id: Date.now()
+                })
+            });
+        } catch(err) {
+            console.error('Failed to send push notification:', err);
+        }
+    }
+
+    // ==================== DARK MODE DETECTION ====================
+    function checkDarkMode() {
+        if (localStorage.getItem('busahmed_dark_mode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+    }
+
+    // ==================== FOCUS INPUT ON MOBILE ====================
+    // Ensure input stays visible when keyboard opens
+    function handleInputFocus() {
+        const input = document.getElementById('messageInput');
+        if (input) {
+            setTimeout(() => {
+                input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        }
+    }
+
+    // ==================== INIT ====================
+    async function init() {
+        checkDarkMode();
+        await checkAuth();
+        if (!currentUser) return;
+        await loadConversations();
+        document.getElementById('backBtn').onclick = goBack;
+        
+        renderAd('adContainer', 'chat', 10000);
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('user_id');
+        if (userId) {
+            setTimeout(() => startChatWithUser(parseInt(userId)), 500);
+        }
+        
+        setInterval(() => {
+            if (!document.getElementById('chatWindowView').classList.contains('active')) {
+                loadConversations();
+            }
+        }, 10000);
+        
+        // Handle input focus on mobile
+        document.getElementById('messageInput').addEventListener('focus', handleInputFocus);
+        
+        // Listen for dark mode changes
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'busahmed_dark_mode') {
+                if (e.newValue === 'true') {
+                    document.body.classList.add('dark-mode');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                }
+                renderAd('adContainer', 'chat', 10000);
+            }
+        });
+    }
+    
+    // Expose functions globally
+    window.openChat = openChat;
+    window.closeChat = closeChat;
+    window.sendMessage = sendMessage;
+    window.deleteMessageForMe = deleteMessageForMe;
+    window.deleteMessageForEveryone = deleteMessageForEveryone;
+    window.deleteConversation = deleteConversation;
+    window.openNewChatModal = openNewChatModal;
+    window.closeNewChatModal = closeNewChatModal;
+    window.searchUsers = searchUsers;
+    window.loadAllUsers = loadAllUsers;
+    window.viewUserProfile = viewUserProfile;
+    window.startChatWithUser = startChatWithUser;
+    window.notifyUserForMessage = notifyUserForMessage;
+    
+    init();
+</script>
+</body>
+</html>

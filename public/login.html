@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUSAHMED | Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA Meta Tags -->
+<!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="/icons/icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/icons/icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="/icons/icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/icons/icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/icons/icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/icons/icon-167x167.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="/icons/icon-180x180.png" sizes="180x180">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-square70x70logo" content="/icons/icon-72x72.png">
+    <meta name="msapplication-square150x150logo" content="/icons/icon-144x144.png">
+    <meta name="msapplication-wide310x150logo" content="/icons/icon-384x384.png">
+    <meta name="msapplication-square310x310logo" content="/icons/icon-512x512.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, sans-serif; }
+        body { background: linear-gradient(135deg, #1e1b4b, #4f46e5); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .login-card { background: white; border-radius: 32px; padding: 32px; max-width: 400px; width: 100%; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2); }
+        .logo { text-align: center; margin-bottom: 24px; }
+        .logo i { font-size: 48px; color: #4f46e5; }
+        .logo h1 { font-size: 28px; margin-top: 8px; color: #1e1b4b; }
+        .input-group { margin-bottom: 16px; }
+        input { width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 40px; font-size: 16px; outline: none; }
+        input:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+        button { width: 100%; padding: 14px; background: #4f46e5; color: white; border: none; border-radius: 40px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        button:hover { background: #4338ca; }
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
+        .footer { text-align: center; margin-top: 24px; font-size: 14px; color: #64748b; }
+        .footer a { color: #4f46e5; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        .error-msg { background: #fee2e2; color: #dc2626; padding: 12px; border-radius: 40px; margin-bottom: 16px; display: none; }
+        .success-msg { background: #d1fae5; color: #059669; padding: 12px; border-radius: 40px; margin-bottom: 16px; display: none; }
+        .forgot-link { display: block; text-align: right; margin-bottom: 16px; font-size: 13px; }
+        .forgot-link a { color: #4f46e5; text-decoration: none; }
+        .forgot-link a:hover { text-decoration: underline; }
+        .dark-mode { background: #0f172a; }
+        .dark-mode .login-card { background: #1e293b; color: #e2e8f0; }
+        .dark-mode .logo h1 { color: #f1f5f9; }
+        .dark-mode input { background: #334155; border-color: #475569; color: white; }
+        .dark-mode input::placeholder { color: #94a3b8; }
+        .dark-mode .forgot-link a { color: #a5b4fc; }
+        .dark-mode .footer a { color: #a5b4fc; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 10px 24px; border-radius: 40px; font-size: 14px; z-index: 2000; }
+        .modal { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0,0,0,0.7); 
+            display: none; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 3000; 
+            padding: 20px;
+        }
+        .modal.active { display: flex; }
+        .modal-content { 
+            background: white; 
+            border-radius: 32px; 
+            max-width: 450px; 
+            width: 100%; 
+            padding: 24px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .dark-mode .modal-content { background: #1e293b; color: #e2e8f0; }
+        .modal-content h3 { margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+        .modal-content p { color: #64748b; font-size: 14px; margin-bottom: 16px; }
+        .modal-content input { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 40px; margin-bottom: 12px; outline: none; }
+        .dark-mode .modal-content input { background: #334155; border-color: #475569; color: white; }
+        .modal-content .btn-send { background: #4f46e5; color: white; border: none; border-radius: 40px; padding: 12px; cursor: pointer; width: 100%; font-weight: 600; transition: 0.2s; }
+        .modal-content .btn-send:hover { background: #4338ca; }
+        .modal-content .btn-send:disabled { opacity: 0.6; cursor: not-allowed; }
+        .modal-content .btn-cancel { background: #e2e8f0; color: #1e293b; border: none; border-radius: 40px; padding: 12px; cursor: pointer; width: 100%; font-weight: 600; margin-top: 8px; transition: 0.2s; }
+        .modal-content .btn-cancel:hover { background: #cbd5e1; }
+        .dark-mode .modal-content .btn-cancel { background: #334155; color: #e2e8f0; }
+        .dark-mode .modal-content .btn-cancel:hover { background: #475569; }
+        .modal-content .status-text { text-align: center; margin-top: 12px; font-size: 14px; display: none; }
+        .modal-content .status-text.success { display: block; color: #10b981; }
+        .modal-content .status-text.error { display: block; color: #dc2626; }
+        .modal-content .reset-link-display { 
+            background: #f1f5f9; 
+            padding: 12px; 
+            border-radius: 12px; 
+            word-break: break-all; 
+            font-size: 12px; 
+            margin: 12px 0;
+            border: 1px solid #e2e8f0;
+        }
+        .dark-mode .modal-content .reset-link-display { 
+            background: #0f172a; 
+            border-color: #334155; 
+        }
+        .modal-content .reset-link-display a { color: #4f46e5; }
+        .dark-mode .modal-content .reset-link-display a { color: #a5b4fc; }
+    </style>
+</head>
+<body>
+<div class="login-card">
+    <div class="logo">
+        <i class="fas fa-brain"></i>
+        <h1>BUSAHMED</h1>
+        <p style="color:#64748b; font-size:14px;">Solutions. Security. Innovation.</p>
+    </div>
+    <div id="errorMsg" class="error-msg"></div>
+    <div id="successMsg" class="success-msg"></div>
+    <div class="input-group"><input type="text" id="loginIdentifier" placeholder="Email or Phone" autocomplete="username"></div>
+    <div class="input-group"><input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password"></div>
+    <div class="forgot-link"><a href="#" onclick="openForgotPassword()">Forgot Password?</a></div>
+    <button id="loginBtn"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+    <div class="footer">Don't have an account? <a href="signup.html">Create Account</a></div>
+</div>
+
+<!-- Forgot Password Modal -->
+<div class="modal" id="forgotPasswordModal">
+    <div class="modal-content">
+        <h3><i class="fas fa-key" style="color:#4f46e5;"></i> Reset Password</h3>
+        <p>Enter your registered email address and we'll send you a password reset link.</p>
+        <input type="email" id="resetEmail" placeholder="Your Email Address">
+        <button class="btn-send" id="sendResetLinkBtn"><i class="fas fa-paper-plane"></i> Send Reset Link</button>
+        <button class="btn-cancel" onclick="closeForgotPassword()">Cancel</button>
+        <div class="status-text" id="resetStatus"></div>
+    </div>
+</div>
+
+<script>
+const API_BASE = window.location.origin + '/api/';
+    
+    function showError(msg) {
+        const errDiv = document.getElementById("errorMsg");
+        errDiv.innerText = msg;
+        errDiv.style.display = "block";
+        setTimeout(() => errDiv.style.display = "none", 5000);
+    }
+
+    function showSuccess(msg) {
+        const sucDiv = document.getElementById("successMsg");
+        sucDiv.innerText = msg;
+        sucDiv.style.display = "block";
+        setTimeout(() => sucDiv.style.display = "none", 5000);
+    }
+
+    function showToast(msg, isError = false) {
+        const t = document.createElement("div");
+        t.className = "toast";
+        t.innerText = msg;
+        if (isError) t.style.background = "#dc2626";
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    }
+
+    // ==================== LOGIN ====================
+    document.getElementById("loginBtn").onclick = async function() {
+        const identifier = document.getElementById("loginIdentifier").value.trim();
+        const password = document.getElementById("loginPassword").value;
+        
+        if (!identifier || !password) {
+            showError("Please enter email/phone and password");
+            return;
+        }
+        
+        const btn = this;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+        
+        try {
+            const response = await fetch(API_BASE + 'login.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ identifier, password })
+            });
+            
+            if (!response.ok) {
+                throw new Error('HTTP ' + response.status);
+            }
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                localStorage.setItem('busahmed_token', data.token);
+                localStorage.setItem('busahmed_role', data.role);
+                localStorage.setItem('busahmed_user_id', data.user_id);
+                localStorage.setItem('busahmed_user_name', data.name);
+                localStorage.setItem('busahmed_is_appointed_admin', data.is_appointed_admin || 0);
+                
+                if (data.permissions) {
+                    localStorage.setItem('busahmed_can_manage_news', data.permissions.can_manage_news || 0);
+                    localStorage.setItem('busahmed_can_manage_jobs', data.permissions.can_manage_jobs || 0);
+                    localStorage.setItem('busahmed_can_manage_careers', data.permissions.can_manage_careers || 0);
+                    localStorage.setItem('busahmed_can_manage_library', data.permissions.can_manage_library || 0);
+                }
+                
+                showToast('Welcome back, ' + data.name + '! 🎉');
+                
+                setTimeout(() => {
+                    if (data.role === 'student') window.location.href = "dashboard-student.html";
+                    else if (data.role === 'teacher') window.location.href = "dashboard-teacher.html";
+                    else if (data.role === 'admin') window.location.href = "dashboard-admin.html";
+                    else if (data.role === 'owner') window.location.href = "dashboard-owner.html";
+                    else window.location.href = "login.html";
+                }, 500);
+            } else {
+                showError(data.error || 'Invalid credentials');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+            }
+        } catch(err) {
+            console.error("Login error:", err);
+            showError('Network error: ' + err.message);
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+        }
+    };
+
+    // Enter key support
+    document.getElementById("loginPassword").addEventListener("keypress", function(e) {
+        if (e.key === "Enter") document.getElementById("loginBtn").click();
+    });
+    document.getElementById("loginIdentifier").addEventListener("keypress", function(e) {
+        if (e.key === "Enter") document.getElementById("loginBtn").click();
+    });
+
+    // ==================== FORGOT PASSWORD ====================
+    function openForgotPassword() {
+        document.getElementById('forgotPasswordModal').classList.add('active');
+        document.getElementById('resetEmail').value = '';
+        document.getElementById('resetStatus').className = 'status-text';
+        document.getElementById('resetStatus').textContent = '';
+        document.getElementById('sendResetLinkBtn').disabled = false;
+        document.getElementById('sendResetLinkBtn').innerHTML = '<i class="fas fa-paper-plane"></i> Send Reset Link';
+        setTimeout(() => document.getElementById('resetEmail').focus(), 300);
+    }
+
+    function closeForgotPassword() {
+        document.getElementById('forgotPasswordModal').classList.remove('active');
+    }
+
+    // Close modal on outside click
+    document.getElementById('forgotPasswordModal').addEventListener('click', function(e) {
+        if (e.target === this) closeForgotPassword();
+    });
+
+    // Close modal on ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && document.getElementById('forgotPasswordModal').classList.contains('active')) {
+            closeForgotPassword();
+        }
+    });
+
+    document.getElementById('sendResetLinkBtn').onclick = async function() {
+        const email = document.getElementById('resetEmail').value.trim();
+        const statusDiv = document.getElementById('resetStatus');
+        
+        if (!email) {
+            statusDiv.className = 'status-text error';
+            statusDiv.textContent = 'Please enter your email address';
+            return;
+        }
+        
+        if (!email.includes('@') || !email.includes('.')) {
+            statusDiv.className = 'status-text error';
+            statusDiv.textContent = 'Please enter a valid email address';
+            return;
+        }
+        
+        const btn = this;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        statusDiv.className = 'status-text';
+        statusDiv.textContent = '';
+        
+        try {
+            const response = await fetch(API_BASE + 'forgot-password.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                if (data.debug && data.reset_link) {
+                    statusDiv.className = 'status-text success';
+                    statusDiv.innerHTML = `
+                        ✅ ${data.message}<br><br>
+                        <div class="reset-link-display">
+                            <strong>🔗 Reset Link:</strong><br>
+                            <a href="${data.reset_link}" target="_blank" style="color: #4f46e5; word-break: break-all; text-decoration: underline;">${data.reset_link}</a>
+                        </div>
+                        <span style="font-size:13px; color:#64748b;">💡 Click the link or copy and paste it in your browser.</span>
+                        ${data.mail_error ? `<br><br><span style="font-size:12px; color:#dc2626;">⚠️ Email error: ${data.mail_error}</span>` : ''}
+                    `;
+                    
+                    try {
+                        await navigator.clipboard.writeText(data.reset_link);
+                        showToast('✅ Reset link copied to clipboard!');
+                    } catch (clipErr) {
+                        showToast('📋 Please copy the link manually');
+                    }
+                    
+                    setTimeout(() => {
+                        closeForgotPassword();
+                    }, 15000);
+                } else {
+                    statusDiv.className = 'status-text success';
+                    statusDiv.textContent = data.message || '✅ Reset link sent successfully!';
+                    setTimeout(() => {
+                        closeForgotPassword();
+                    }, 3000);
+                }
+            } else {
+                statusDiv.className = 'status-text error';
+                statusDiv.textContent = data.error || '❌ Failed to send reset link';
+            }
+        } catch(err) {
+            console.error('Reset error:', err);
+            statusDiv.className = 'status-text error';
+            statusDiv.textContent = '❌ Network error: ' + err.message;
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Reset Link';
+        }
+    };
+
+    // ==================== DARK MODE ====================
+    if (localStorage.getItem("busahmed_dark_mode") === "true") {
+        document.body.classList.add("dark-mode");
+    }
+</script>
+</body>
+</html>

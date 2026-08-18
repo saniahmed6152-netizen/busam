@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BUSAHMED | Ad Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA Meta Tags -->
+<!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="/icons/icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/icons/icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="/icons/icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/icons/icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/icons/icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/icons/icon-167x167.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="/icons/icon-180x180.png" sizes="180x180">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-square70x70logo" content="/icons/icon-72x72.png">
+    <meta name="msapplication-square150x150logo" content="/icons/icon-144x144.png">
+    <meta name="msapplication-wide310x150logo" content="/icons/icon-384x384.png">
+    <meta name="msapplication-square310x310logo" content="/icons/icon-512x512.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #1e1b4b, #4f46e5); min-height: 100vh; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .card { background: white; border-radius: 32px; padding: 24px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        h1 { font-size: 24px; color: #1e1b4b; display: flex; align-items: center; gap: 10px; }
+        .back-btn { background: #e2e8f0; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .back-btn:hover { background: #cbd5e1; }
+        .tabs { display: flex; gap: 16px; margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; flex-wrap: wrap; }
+        .tab { padding: 8px 0; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .tab.active { color: #4f46e5; border-bottom: 2px solid #4f46e5; }
+        .request-card, .ad-card { background: #f8fafc; border-radius: 20px; padding: 16px; margin-bottom: 16px; border-left: 4px solid #f59e0b; transition: 0.2s; }
+        .request-card:hover, .ad-card:hover { transform: scale(1.01); background: #eef2ff; }
+        .ad-image { width: 100%; max-height: 150px; object-fit: cover; border-radius: 12px; margin: 8px 0; }
+        .btn-approve { background: #10b981; color: white; border: none; border-radius: 40px; padding: 6px 16px; margin-right: 8px; cursor: pointer; }
+        .btn-reject { background: #ef4444; color: white; border: none; border-radius: 40px; padding: 6px 16px; cursor: pointer; }
+        .btn-delete { background: #dc2626; color: white; border: none; border-radius: 40px; padding: 4px 12px; cursor: pointer; font-size: 12px; }
+        .date-badge { background: #e2e8f0; border-radius: 40px; padding: 2px 8px; font-size: 11px; display: inline-block; margin-right: 6px; }
+        .expiry-soon { color: #dc2626; font-weight: bold; }
+        .dark-mode { background: #0f172a; }
+        .dark-mode .card { background: #1e293b; }
+        .dark-mode h1 { color: #f1f5f9; }
+        .dark-mode .request-card, .dark-mode .ad-card { background: #1e293b; border-color: #f59e0b; color: #e2e8f0; }
+        .dark-mode .request-card:hover, .dark-mode .ad-card:hover { background: #334155; }
+        .dark-mode .back-btn { background: #334155; color: #e2e8f0; }
+        .dark-mode .back-btn:hover { background: #475569; }
+        .dark-mode .tab.active { color: #a5b4fc; border-bottom-color: #a5b4fc; }
+        .dark-mode .date-badge { background: #334155; color: #e2e8f0; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 8px 20px; border-radius: 40px; font-size: 14px; z-index: 2000; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1><i class="fas fa-ad" style="color:#4f46e5;"></i> Ad Manager</h1>
+            <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        <div class="tabs">
+            <div class="tab active" data-tab="pending">Pending Requests</div>
+            <div class="tab" data-tab="active">Active Ads</div>
+        </div>
+        <div id="pendingList"></div>
+        <div id="activeList" style="display:none;"></div>
+    </div>
+</div>
+
+<script>
+const API_BASE = window.location.origin + '/api/';
+    
+    function escapeHtml(str) { if (!str) return ""; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
+    function showToast(msg, isError = false) { const t = document.createElement("div"); t.className = "toast"; t.innerText = msg; if (isError) t.style.background = "#dc2626"; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+    function formatDate(dateStr) { return new Date(dateStr).toLocaleDateString('en-GB'); }
+    function getDaysRemaining(expiryDate) { return Math.ceil((new Date(expiryDate) - new Date()) / (1000 * 60 * 60 * 24)); }
+
+    async function checkAuth() {
+        const token = localStorage.getItem('busahmed_token');
+        if (!token) { window.location.href = 'login.html'; return null; }
+        try {
+            const response = await fetch(API_BASE + 'profile.php?token=' + encodeURIComponent(token));
+            if (!response.ok) { localStorage.clear(); window.location.href = 'login.html'; return null; }
+            const user = await response.json();
+            if (user.role !== 'admin') { window.location.href = 'login.html'; return null; }
+            return user;
+        } catch(err) { window.location.href = 'login.html'; return null; }
+    }
+
+    async function goBack() { window.location.href = 'dashboard-admin.html'; }
+
+    async function loadPending() {
+        const user = await checkAuth();
+        if (!user) return;
+        
+        const token = localStorage.getItem('busahmed_token');
+        try {
+            const response = await fetch(API_BASE + 'ad-requests.php?token=' + encodeURIComponent(token));
+            const requests = await response.json();
+            renderPending(requests);
+        } catch(err) { console.error(err); document.getElementById("pendingList").innerHTML = "<p>Error loading requests</p>"; }
+    }
+
+    function renderPending(pending) {
+        if (!pending || pending.length === 0) { 
+            document.getElementById("pendingList").innerHTML = "<p style='text-align:center; padding:40px;'>No pending ad requests</p>"; 
+            return; 
+        }
+        let html = "";
+        pending.forEach(req => {
+            const imageHtml = req.image_url ? 
+                `<img src="${req.image_url}" class="ad-image" onerror="this.style.display='none'">` : 
+                '<div style="color:#94a3b8; padding:8px;">No image</div>';
+            
+            html += `<div class="request-card">
+                        <div><strong>${escapeHtml(req.user_name)}</strong> (${escapeHtml(req.user_school || 'N/A')})</div>
+                        <div>📍 Location: <span style="background:#e2e8f0; padding:2px 10px; border-radius:40px; font-size:12px;">${escapeHtml(req.location)}</span> | Days: ${req.days} | Total: ₦${req.total_cost}</div>
+                        <div>Submitted: ${formatDate(req.created_at)}</div>
+                        ${imageHtml}
+                        ${req.link ? `<div>🔗 <a href="${req.link}" target="_blank">${escapeHtml(req.link)}</a></div>` : ''}
+                        ${req.caption ? `<div>📝 ${escapeHtml(req.caption)}</div>` : ''}
+                        <div style="margin-top:12px;">
+                            <button class="btn-approve" data-id="${req.id}">✓ Approve</button>
+                            <button class="btn-reject" data-id="${req.id}">✗ Reject</button>
+                        </div>
+                    </div>`;
+        });
+        document.getElementById("pendingList").innerHTML = html;
+        
+        document.querySelectorAll(".btn-approve").forEach(btn => {
+            btn.onclick = async () => {
+                const id = btn.dataset.id;
+                const token = localStorage.getItem('busahmed_token');
+                await fetch(API_BASE + 'approve-ad.php?token=' + encodeURIComponent(token), {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id })
+                });
+                showToast("Ad approved!");
+                loadPending();
+                loadActive();
+            };
+        });
+        
+        document.querySelectorAll(".btn-reject").forEach(btn => {
+            btn.onclick = async () => {
+                const id = btn.dataset.id;
+                const token = localStorage.getItem('busahmed_token');
+                await fetch(API_BASE + 'reject-ad.php?token=' + encodeURIComponent(token), {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id })
+                });
+                showToast("Ad rejected");
+                loadPending();
+            };
+        });
+    }
+
+    async function loadActive() {
+        const user = await checkAuth();
+        if (!user) return;
+        
+        const token = localStorage.getItem('busahmed_token');
+        try {
+            const response = await fetch(API_BASE + 'active-ads.php?token=' + encodeURIComponent(token));
+            const ads = await response.json();
+            renderActive(ads);
+        } catch(err) { console.error(err); document.getElementById("activeList").innerHTML = "<p>Error loading active ads</p>"; }
+    }
+
+    function renderActive(ads) {
+        if (!ads || ads.length === 0) { 
+            document.getElementById("activeList").innerHTML = "<p style='text-align:center; padding:40px;'>No active ads</p>"; 
+            return; 
+        }
+        let html = "";
+        ads.forEach(ad => {
+            let daysRemaining = getDaysRemaining(ad.expiry_date);
+            let expiryClass = daysRemaining <= 3 ? "expiry-soon" : "";
+            const imageHtml = ad.image_url ? 
+                `<img src="${ad.image_url}" class="ad-image" onerror="this.style.display='none'">` : 
+                '<div style="color:#94a3b8; padding:8px;">No image</div>';
+            
+            html += `<div class="ad-card">
+                        <div><strong>${escapeHtml(ad.user_name)}</strong> - ${escapeHtml(ad.location)}</div>
+                        <div><span class="date-badge">Approved: ${formatDate(ad.approved_date)}</span>
+                        <span class="date-badge ${expiryClass}">Expires: ${formatDate(ad.expiry_date)} (${daysRemaining} days left)</span></div>
+                        <div>Views: ${ad.views || 0}</div>
+                        ${imageHtml}
+                        ${ad.caption ? `<div>📝 ${escapeHtml(ad.caption)}</div>` : ''}
+                        <div style="margin-top:8px;"><button class="btn-delete" data-id="${ad.id}">Delete Ad</button></div>
+                    </div>`;
+        });
+        document.getElementById("activeList").innerHTML = html;
+        
+        document.querySelectorAll(".btn-delete").forEach(btn => {
+            btn.onclick = async () => {
+                const id = btn.dataset.id;
+                if (confirm("Delete this ad permanently?")) {
+                    const token = localStorage.getItem('busahmed_token');
+                    await fetch(API_BASE + 'delete-ad.php?token=' + encodeURIComponent(token), {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id })
+                    });
+                    showToast("Ad deleted");
+                    loadActive();
+                }
+            };
+        });
+    }
+
+    async function init() {
+        await loadPending();
+        await loadActive();
+        
+        document.querySelectorAll(".tab").forEach(tab => {
+            tab.onclick = () => {
+                document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+                tab.classList.add("active");
+                const show = tab.dataset.tab;
+                document.getElementById("pendingList").style.display = show === "pending" ? "block" : "none";
+                document.getElementById("activeList").style.display = show === "active" ? "block" : "none";
+            };
+        });
+        
+        document.getElementById("backBtn").onclick = goBack;
+        if (localStorage.getItem("busahmed_dark_mode") === "true") document.body.classList.add("dark-mode");
+    }
+    init();
+</script>
+</body>
+</html>

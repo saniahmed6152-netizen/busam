@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BUSAHMED | Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PWA Meta Tags -->
+<!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="/icons/icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/icons/icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="/icons/icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/icons/icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/icons/icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/icons/icon-167x167.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="/icons/icon-180x180.png" sizes="180x180">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-square70x70logo" content="/icons/icon-72x72.png">
+    <meta name="msapplication-square150x150logo" content="/icons/icon-144x144.png">
+    <meta name="msapplication-wide310x150logo" content="/icons/icon-384x384.png">
+    <meta name="msapplication-square310x310logo" content="/icons/icon-512x512.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #1e1b4b, #4f46e5); min-height: 100vh; padding: 24px 16px; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .dashboard-card { background: white; border-radius: 32px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #1e1b4b, #4f46e5); color: white; padding: 24px; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 8px; }
+        .badge { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 40px; font-size: 0.75rem; font-weight: 600; }
+        .profile-row { display: flex; align-items: center; gap: 16px; margin-top: 8px; }
+        .avatar { width: 56px; height: 56px; background: #cbd5e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; color: #475569; font-size: 28px; }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .user-info h2 { font-size: 1.25rem; font-weight: 700; }
+        .user-info p { font-size: 0.8rem; opacity: 0.8; margin-top: 4px; }
+        .user-stats { display: flex; gap: 20px; margin-top: 8px; flex-wrap: wrap; }
+        .user-stats .stat-item { display: flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 40px; font-size: 0.75rem; }
+        .user-stats .stat-item i { font-size: 12px; }
+        .user-stats .stat-number { font-weight: 700; }
+        .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-top: 16px; }
+        .stat-card { background: rgba(255,255,255,0.15); border-radius: 16px; padding: 12px; text-align: center; }
+        .stat-number { font-size: 24px; font-weight: 700; }
+        .stat-label { font-size: 11px; opacity: 0.8; }
+        .ad-space { margin: 16px 20px 0 20px; border-radius: 20px; overflow: hidden; height: 80px; display: flex; align-items: center; justify-content: center; position: relative; background: #f1f5f9; }
+        .menu-list { padding: 20px; }
+        .menu-item { background: #f8fafc; border-radius: 20px; padding: 14px 18px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s; border: 1px solid #e2e8f0; }
+        .menu-item:hover { background: #eef2ff; transform: scale(1.01); }
+        .menu-left { display: flex; align-items: center; gap: 14px; }
+        .menu-icon { width: 48px; height: 48px; background: #e0e7ff; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: #4f46e5; font-size: 1.4rem; }
+        .menu-title { font-weight: 700; color: #0f172a; }
+        .chevron { color: #94a3b8; }
+        .unread-badge { background: #ef4444; color: white; border-radius: 50%; padding: 2px 8px; font-size: 11px; font-weight: 600; margin-left: 4px; }
+        .dark-mode { background: #0f172a; }
+        .dark-mode .dashboard-card { background: #1e293b; }
+        .dark-mode .menu-item { background: #1e293b; border-color: #334155; }
+        .dark-mode .menu-title { color: #f1f5f9; }
+        .dark-mode .menu-icon { background: #334155; color: #a5b4fc; }
+        .dark-mode .ad-space { background: #0f172a; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 8px 20px; border-radius: 40px; font-size: 0.8rem; z-index: 2000; }
+        @media (max-width: 500px) {
+            .menu-item { padding: 12px 14px; }
+            .menu-icon { width: 40px; height: 40px; font-size: 1.2rem; }
+            .stats { gap: 8px; }
+            .stat-number { font-size: 18px; }
+            .user-stats { gap: 8px; }
+            .user-stats .stat-item { font-size: 0.7rem; padding: 2px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="dashboard-card">
+        <div class="header">
+            <div class="header-top">
+                <div><i class="fas fa-shield-alt" style="font-size:1.8rem;"></i> <span style="font-weight:800; font-size:1.4rem;">Admin Dashboard</span></div>
+                <div class="badge">Admin</div>
+            </div>
+            <div class="profile-row" id="profileInfo">Loading...</div>
+            <div class="stats" id="stats">
+                <div class="stat-card"><div class="stat-number" id="statUsers">--</div><div class="stat-label">Users</div></div>
+                <div class="stat-card"><div class="stat-number" id="statPendingQs">--</div><div class="stat-label">Pending Qs</div></div>
+                <div class="stat-card"><div class="stat-number" id="statAdRequests">--</div><div class="stat-label">Ad Requests</div></div>
+                <div class="stat-card"><div class="stat-number" id="statBooks">--</div><div class="stat-label">Books</div></div>
+            </div>
+        </div>
+        <div id="adContainer" class="ad-space">📢 Loading ad...</div>
+        <div class="menu-list" id="menuList"></div>
+    </div>
+</div>
+
+<script>
+const API_BASE = window.location.origin + '/api/';
+    let adInterval = null;
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+
+    function getToken() {
+        return localStorage.getItem('busahmed_token');
+    }
+
+    function showToast(msg, isError = false) {
+        const t = document.createElement("div");
+        t.className = "toast";
+        t.innerText = msg;
+        if (isError) t.style.background = "#dc2626";
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    }
+
+    // ==================== AD HELPER - FIXED ====================
+    function renderAd(containerId, location, intervalTime = 10000) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        if (adInterval) {
+            clearInterval(adInterval);
+            adInterval = null;
+        }
+        
+        container.innerHTML = "📢 Loading ad...";
+        container.style.cssText = `
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 80px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            cursor: default;
+            color: #94a3b8;
+            font-size: 14px;
+        `;
+        
+        fetch(`${API_BASE}ads.php?location=${location}`)
+            .then(response => response.json())
+            .then(ads => {
+                if (!ads || ads.length === 0) {
+                    container.innerHTML = "📢 Ad space - Promote your school";
+                    container.style.cssText = `
+                        background: #f1f5f9;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 80px;
+                        border-radius: 20px;
+                        overflow: hidden;
+                        position: relative;
+                        cursor: default;
+                        color: #94a3b8;
+                        font-size: 14px;
+                    `;
+                    return;
+                }
+                
+                let idx = 0;
+                
+                function showAd() {
+                    const ad = ads[idx % ads.length];
+                    
+                    // *** FIXED: Handle image URL properly ***
+                    let imageUrl = ad.image_url || 'https://via.placeholder.com/800x100/4f46e5/ffffff?text=Ad';
+                    
+                    if (!imageUrl || imageUrl === 'data:image/jpeg;base64,' || imageUrl === '') {
+                        imageUrl = 'https://via.placeholder.com/800x100/4f46e5/ffffff?text=Ad';
+                    } else if (imageUrl.startsWith('/busahmed/') || imageUrl.startsWith('/uploads/')) {
+                        imageUrl = window.location.origin + imageUrl;
+                    } else if (imageUrl.startsWith('uploads/')) {
+                        imageUrl = window.location.origin + '/busahmed/' + imageUrl;
+                    } else if (!imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
+                        const cleanUrl = imageUrl.replace(/^\//, '');
+                        imageUrl = window.location.origin + '/busahmed/' + cleanUrl;
+                    }
+                    
+                    console.log('📢 Displaying ad image:', imageUrl);
+                    
+                    const linkUrl = ad.link || '#';
+                    
+                    container.innerHTML = `
+                        <img src="${imageUrl}" 
+                             style="width:100%; height:80px; object-fit:cover; display:block;" 
+                             onerror="console.error('Image failed to load:', '${imageUrl}'); this.style.display='none';this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:80px;background:#1e293b;color:#94a3b8;font-size:14px;\\'>📢 Ad</div>'">
+                        <div style="position:absolute; bottom:4px; right:8px; background:rgba(0,0,0,0.6); color:white; font-size:10px; padding:2px 10px; border-radius:20px;">
+                            ${ad.caption || "Sponsored"} | 👁️ ${ad.views || 0}
+                        </div>
+                    `;
+                    container.style.cssText = `
+                        background: transparent;
+                        display: block;
+                        height: 80px;
+                        border-radius: 20px;
+                        overflow: hidden;
+                        position: relative;
+                        cursor: pointer;
+                        padding: 0;
+                    `;
+                    container.onclick = function(e) {
+                        e.preventDefault();
+                        if (linkUrl && linkUrl !== '#') {
+                            window.open(linkUrl, "_blank");
+                        }
+                    };
+                    idx++;
+                }
+                
+                showAd();
+                
+                if (ads.length > 1) {
+                    adInterval = setInterval(showAd, intervalTime);
+                }
+            })
+            .catch(err => {
+                console.error("Ad error:", err);
+                container.innerHTML = "📢 Ad unavailable";
+                container.style.cssText = `
+                    background: #f1f5f9;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 80px;
+                    border-radius: 20px;
+                    overflow: hidden;
+                    position: relative;
+                    cursor: default;
+                    color: #94a3b8;
+                    font-size: 14px;
+                `;
+            });
+    }
+    // =============================================
+
+    async function checkSuspension() {
+        const token = getToken();
+        if (!token) return;
+        try {
+            const response = await fetch(API_BASE + 'profile.php?token=' + encodeURIComponent(token));
+            if (!response.ok) {
+                localStorage.clear();
+                window.location.href = 'login.html';
+                return;
+            }
+            const user = await response.json();
+            if (user.suspended == 1) {
+                localStorage.clear();
+                showToast('Your account has been suspended. Please contact support.', true);
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return;
+            }
+        } catch(err) {
+            console.error('Suspension check error:', err);
+        }
+    }
+
+    async function loadDashboard() {
+        const token = getToken();
+        if (!token) {
+            window.location.href = 'login.html';
+            return;
+        }
+        
+        try {
+            const response = await fetch(API_BASE + 'profile.php?token=' + encodeURIComponent(token));
+            
+            if (!response.ok) {
+                localStorage.clear();
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const user = await response.json();
+            
+            if (user.role !== 'admin') {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            if (user.suspended == 1) {
+                localStorage.clear();
+                showToast('Your account has been suspended. Please contact support.', true);
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return;
+            }
+            
+            const avatarHtml = user.avatar ? `<img src="${user.avatar}">` : `<i class="fas fa-user"></i>`;
+            const followersCount = user.followers_count || 0;
+            const followingCount = user.following_count || 0;
+            
+            document.getElementById("profileInfo").innerHTML = `
+                <div class="avatar">${avatarHtml}</div>
+                <div class="user-info">
+                    <h2>${escapeHtml(user.name)}</h2>
+                    <p>Administrator</p>
+                    <div class="user-stats">
+                        <span class="stat-item"><i class="fas fa-users"></i> <span class="stat-number">${followersCount}</span> Followers</span>
+                        <span class="stat-item"><i class="fas fa-user-friends"></i> <span class="stat-number">${followingCount}</span> Following</span>
+                        <span class="stat-item"><i class="fas fa-star"></i> <span class="stat-number">${user.points || 0}</span> Points</span>
+                    </div>
+                </div>
+            `;
+            
+            await loadStats();
+            
+            const menuItems = [
+                { title: "Chat", icon: "fa-comments", link: "chat.html", hasBadge: true },
+                { title: "📢 Broadcast", icon: "fa-bullhorn", link: "broadcast.html" },
+                { title: "🏆 Points Dashboard", icon: "fa-chart-line", link: "admin-points-dashboard.html", highlight: true },
+                { title: "👑 Admin Appointments", icon: "fa-user-plus", link: "admin-appointments.html" },
+                { title: "👤 Manage Permissions", icon: "fa-user-cog", link: "manage-permissions.html" },
+                { title: "🎬 Upload Video", icon: "fa-video", link: "admin-upload-video.html" },
+                { title: "🎬 Video Manager", icon: "fa-film", link: "admin-videos.html" },
+                { title: "Pending Approvals", icon: "fa-clock", link: "pending-approvals.html" },
+                { title: "Manage & Verify Users", icon: "fa-users-cog", link: "manage-users.html" },
+                { title: "User Network", icon: "fa-globe", link: "network-admin.html" },
+                { title: "News Manager", icon: "fa-newspaper", link: "news-manager.html" },
+                { title: "Job Manager", icon: "fa-briefcase", link: "job-manager.html" },
+                { title: "Career Manager", icon: "fa-laptop-code", link: "career-manager.html" },
+                { title: "Library Manager", icon: "fa-book", link: "library-manager.html" },
+                { title: "Ad Requests", icon: "fa-ad", link: "ad-requests.html" },
+                { title: "My Profile", icon: "fa-user-circle", link: "profile.html" },
+                { title: "Settings", icon: "fa-cog", link: "settings.html" }
+            ];
+            
+            let menuHtml = "";
+            menuItems.forEach(item => {
+                const badgeHtml = item.hasBadge ? `<span class="unread-badge" id="unreadBadge" style="display:none;">0</span>` : '';
+                const highlightClass = item.highlight ? 'highlight-menu' : '';
+                menuHtml += `<div class="menu-item ${highlightClass}" data-link="${item.link}">
+                                <div class="menu-left">
+                                    <div class="menu-icon"><i class="fas ${item.icon}"></i></div>
+                                    <div class="menu-title">${escapeHtml(item.title)}${badgeHtml}</div>
+                                </div>
+                                <div class="chevron"><i class="fas fa-chevron-right"></i></div>
+                            </div>`;
+            });
+            document.getElementById("menuList").innerHTML = menuHtml;
+            
+            document.querySelectorAll(".menu-item").forEach(el => {
+                el.onclick = () => {
+                    window.location.href = el.dataset.link;
+                };
+            });
+            
+            await updateUnreadCount();
+            setInterval(updateUnreadCount, 15000);
+            
+            // Render ad with fixed function
+            renderAd('adContainer', 'dashboard', 10000);
+            
+            setInterval(checkSuspension, 30000);
+            
+        } catch(err) {
+            console.error("Dashboard error:", err);
+            document.getElementById("profileInfo").innerHTML = `
+                <div style="color:white; padding:20px; text-align:center;">
+                    <i class="fas fa-exclamation-triangle" style="font-size:32px; display:block; margin-bottom:12px;"></i>
+                    Error loading dashboard: ${escapeHtml(err.message)}
+                    <br><br>
+                    <button onclick="location.reload()" style="background:rgba(255,255,255,0.2); color:white; border:none; border-radius:40px; padding:8px 20px; cursor:pointer;">Retry</button>
+                    <button onclick="localStorage.clear(); window.location.href='login.html'" style="background:rgba(255,255,255,0.1); color:white; border:none; border-radius:40px; padding:8px 20px; cursor:pointer; margin-left:8px;">Logout</button>
+                </div>
+            `;
+        }
+    }
+    
+    async function loadStats() {
+        const token = getToken();
+        if (!token) return;
+        try {
+            const usersRes = await fetch(API_BASE + 'admin-users.php?token=' + encodeURIComponent(token));
+            const users = await usersRes.json();
+            document.getElementById('statUsers').textContent = users.length || 0;
+            
+            const pendingRes = await fetch(API_BASE + 'pending-questions.php?token=' + encodeURIComponent(token));
+            const pending = await pendingRes.json();
+            document.getElementById('statPendingQs').textContent = pending.length || 0;
+            
+            const adRes = await fetch(API_BASE + 'ad-requests.php?token=' + encodeURIComponent(token));
+            const ads = await adRes.json();
+            document.getElementById('statAdRequests').textContent = ads.length || 0;
+            
+            const booksRes = await fetch(API_BASE + 'admin-books.php?token=' + encodeURIComponent(token));
+            const books = await booksRes.json();
+            document.getElementById('statBooks').textContent = books.length || 0;
+        } catch(err) {
+            console.error('Error loading stats:', err);
+        }
+    }
+    
+    async function updateUnreadCount() {
+        const token = getToken();
+        if (!token) return;
+        try {
+            const response = await fetch(API_BASE + 'chat-unread-count.php?token=' + encodeURIComponent(token));
+            const data = await response.json();
+            const badge = document.getElementById('unreadBadge');
+            if (badge && data.unread_count > 0) {
+                badge.textContent = data.unread_count;
+                badge.style.display = 'inline';
+            } else if (badge) {
+                badge.style.display = 'none';
+            }
+        } catch(err) {
+            console.error("Error fetching unread count:", err);
+        }
+    }
+    
+    loadDashboard();
+    if (localStorage.getItem("busahmed_dark_mode") === "true") document.body.classList.add("dark-mode");
+</script>
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BUSAHMED | My Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+   <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BUSAHMED">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="/icons/icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="/icons/icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="/icons/icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="/icons/icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="/icons/icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/icons/icon-167x167.png" sizes="167x167">
+    <link rel="apple-touch-icon" href="/icons/icon-180x180.png" sizes="180x180">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-square70x70logo" content="/icons/icon-72x72.png">
+    <meta name="msapplication-square150x150logo" content="/icons/icon-144x144.png">
+    <meta name="msapplication-wide310x150logo" content="/icons/icon-384x384.png">
+    <meta name="msapplication-square310x310logo" content="/icons/icon-512x512.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #1e1b4b, #4f46e5); min-height: 100vh; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .card { background: white; border-radius: 32px; padding: 24px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        h1 { font-size: 24px; color: #1e1b4b; display: flex; align-items: center; gap: 10px; }
+        .back-btn { background: #e2e8f0; border: none; border-radius: 40px; padding: 8px 20px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .back-btn:hover { background: #cbd5e1; }
+        .avatar-container { text-align: center; margin-bottom: 20px; }
+        .avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; background: #cbd5e1; display: inline-flex; align-items: center; justify-content: center; font-size: 48px; color: #475569; overflow: hidden; }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .upload-btn { background: #4f46e5; color: white; border: none; border-radius: 40px; padding: 6px 20px; cursor: pointer; font-size: 13px; font-weight: 600; margin-top: 12px; transition: 0.2s; }
+        .upload-btn:hover { background: #4338ca; }
+        .upload-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 4px; color: #1e293b; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 40px; outline: none; font-size: 14px; transition: 0.2s; }
+        .form-group input:focus, .form-group textarea:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+        .form-group textarea { border-radius: 20px; min-height: 100px; resize: vertical; font-family: inherit; }
+        .save-btn { background: #4f46e5; color: white; border: none; border-radius: 40px; padding: 14px; cursor: pointer; font-weight: 600; width: 100%; font-size: 16px; transition: 0.2s; }
+        .save-btn:hover { background: #4338ca; }
+        .save-btn:disabled { background: #94a3b8; cursor: not-allowed; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+        
+        .points-section { 
+            background: linear-gradient(135deg, #eef2ff, #e0e7ff); 
+            border-radius: 20px; 
+            padding: 16px; 
+            margin-bottom: 20px;
+            border: 1px solid #c7d2fe;
+        }
+        .points-section .points-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+        .points-section .total-points { font-size: 28px; font-weight: 700; color: #4f46e5; }
+        .points-section .points-label { font-size: 13px; color: #4338ca; }
+        .points-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+        .points-stats .stat-item { background: white; border-radius: 16px; padding: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .points-stats .stat-item .stat-number { font-size: 20px; font-weight: 700; color: #4f46e5; }
+        .points-stats .stat-item .stat-label { font-size: 11px; color: #64748b; }
+        .leaderboard-link { 
+            display: inline-block; 
+            margin-top: 12px; 
+            background: #4f46e5; 
+            color: white; 
+            padding: 8px 20px; 
+            border-radius: 40px; 
+            text-decoration: none; 
+            font-size: 13px; 
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .leaderboard-link:hover { background: #4338ca; transform: scale(1.02); }
+        
+        .dark-mode .points-section { background: #1e293b; border-color: #4f46e5; }
+        .dark-mode .points-section .total-points { color: #a5b4fc; }
+        .dark-mode .points-section .points-label { color: #a5b4fc; }
+        .dark-mode .points-stats .stat-item { background: #0f172a; border: 1px solid #334155; }
+        .dark-mode .points-stats .stat-item .stat-number { color: #a5b4fc; }
+        .dark-mode .points-stats .stat-item .stat-label { color: #94a3b8; }
+        
+        .dark-mode { background: #0f172a; }
+        .dark-mode .card { background: #1e293b; }
+        .dark-mode h1 { color: #f1f5f9; }
+        .dark-mode .back-btn { background: #334155; color: #e2e8f0; }
+        .dark-mode .back-btn:hover { background: #475569; }
+        .dark-mode .form-group label { color: #e2e8f0; }
+        .dark-mode .form-group input, .dark-mode .form-group textarea { background: #334155; border-color: #475569; color: white; }
+        .dark-mode .form-group input::placeholder, .dark-mode .form-group textarea::placeholder { color: #94a3b8; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 8px 20px; border-radius: 40px; font-size: 14px; z-index: 2000; }
+        .hidden { display: none; }
+        .status-message { padding: 12px; border-radius: 20px; margin-bottom: 16px; display: none; }
+        .status-message.success { display: block; background: #d1fae5; color: #059669; border: 1px solid #10b981; }
+        .status-message.error { display: block; background: #fee2e2; color: #dc2626; border: 1px solid #ef4444; }
+        .dark-mode .status-message.success { background: #064e3b; color: #6ee7b7; border-color: #10b981; }
+        .dark-mode .status-message.error { background: #7f1d1d; color: #fca5a5; border-color: #ef4444; }
+        .upload-progress { display: none; text-align: center; margin-top: 8px; font-size: 13px; color: #4f46e5; }
+        .upload-progress i { margin-right: 8px; }
+        .dark-mode .upload-progress { color: #a5b4fc; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1><i class="fas fa-user-circle" style="color:#4f46e5;"></i> My Profile</h1>
+            <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        <div class="avatar-container">
+            <div class="avatar" id="avatarPreview"><i class="fas fa-user"></i></div>
+            <div>
+                <button class="upload-btn" id="uploadBtn"><i class="fas fa-camera"></i> Change Picture</button>
+                <input type="file" id="avatarInput" accept="image/*" class="hidden">
+                <div class="upload-progress" id="uploadProgress"><i class="fas fa-spinner fa-spin"></i> Uploading...</div>
+            </div>
+        </div>
+        <div id="statusMessage" class="status-message"></div>
+        
+        <!-- Points Section -->
+        <div class="points-section" id="pointsSection">
+            <div class="points-header">
+                <div>
+                    <div class="points-label"><i class="fas fa-star"></i> Total Points</div>
+                    <div class="total-points" id="totalPoints">0</div>
+                </div>
+                <a href="points-leaderboard.html" class="leaderboard-link">
+                    <i class="fas fa-trophy"></i> Leaderboard
+                </a>
+            </div>
+            <div class="points-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="monthlyPoints">0</div>
+                    <div class="stat-label">This Month</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="userRank">#0</div>
+                    <div class="stat-label">Monthly Rank</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="activityCount">0</div>
+                    <div class="stat-label">Activities</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="profileForm"></div>
+    </div>
+</div>
+
+<script>
+const API_BASE = window.location.origin + '/api/';
+    let currentUser = null;
+
+    function showToast(msg, isError = false) {
+        const t = document.createElement("div");
+        t.className = "toast";
+        t.innerText = msg;
+        if (isError) t.style.background = "#dc2626";
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    }
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+
+    function getToken() {
+        return localStorage.getItem('busahmed_token');
+    }
+
+    function resizeImage(file, maxWidth, callback) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                let width = img.width, height = img.height;
+                if (width > maxWidth) {
+                    height = (height * maxWidth) / width;
+                    width = maxWidth;
+                }
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                callback(canvas.toDataURL('image/jpeg', 0.8));
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function showStatus(message, isError = false) {
+        const el = document.getElementById('statusMessage');
+        el.textContent = message;
+        el.className = 'status-message ' + (isError ? 'error' : 'success');
+        setTimeout(() => {
+            el.className = 'status-message';
+        }, 5000);
+    }
+
+    async function checkAuth() {
+        const token = getToken();
+        if (!token) {
+            window.location.href = 'login.html';
+            return null;
+        }
+        try {
+            const response = await fetch(API_BASE + 'profile.php?token=' + encodeURIComponent(token));
+            if (!response.ok) {
+                localStorage.clear();
+                window.location.href = 'login.html';
+                return null;
+            }
+            return await response.json();
+        } catch(err) {
+            console.error("Auth error:", err);
+            window.location.href = 'login.html';
+            return null;
+        }
+    }
+
+    async function goBack() {
+        const user = await checkAuth();
+        if (user) {
+            if (user.role === 'student') window.location.href = 'dashboard-student.html';
+            else if (user.role === 'teacher') window.location.href = 'dashboard-teacher.html';
+            else if (user.role === 'admin') window.location.href = 'dashboard-admin.html';
+            else if (user.role === 'owner') window.location.href = 'dashboard-owner.html';
+            else window.location.href = 'login.html';
+        } else {
+            window.location.href = 'login.html';
+        }
+    }
+
+    async function loadUserPoints() {
+        const token = getToken();
+        if (!token) return;
+        try {
+            const response = await fetch(API_BASE + 'user-points.php?token=' + encodeURIComponent(token));
+            const data = await response.json();
+            
+            if (data.success) {
+                document.getElementById('totalPoints').textContent = data.total_points || 0;
+                document.getElementById('monthlyPoints').textContent = data.current_month?.points || 0;
+                document.getElementById('userRank').textContent = data.current_month?.rank ? '#' + data.current_month.rank : '#0';
+                document.getElementById('activityCount').textContent = data.current_month?.activity_count || 0;
+            }
+        } catch(err) {
+            console.error('Load points error:', err);
+        }
+    }
+
+    async function updateProfile(data) {
+        const token = getToken();
+        if (!token) return false;
+        try {
+            const response = await fetch(API_BASE + 'update-profile.php?token=' + encodeURIComponent(token), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            console.log('Update response:', result);
+            if (!result.success) {
+                showStatus('❌ ' + (result.error || 'Failed to update'), true);
+                return false;
+            }
+            return true;
+        } catch(err) {
+            console.error('Update profile error:', err);
+            showStatus('❌ Network error: ' + err.message, true);
+            return false;
+        }
+    }
+
+    async function renderProfile() {
+        const user = await checkAuth();
+        if (!user) return;
+        currentUser = user;
+
+        // Update avatar
+        const avatarHtml = user.avatar ? `<img src="${user.avatar}">` : `<i class="fas fa-user"></i>`;
+        document.getElementById("avatarPreview").innerHTML = avatarHtml;
+
+        // Load points
+        await loadUserPoints();
+
+        // Build form fields
+        let html = `
+            <div class="form-group">
+                <label>Full Name *</label>
+                <input type="text" id="profileName" value="${escapeHtml(user.name || '')}" placeholder="Full Name">
+            </div>
+            <div class="form-group">
+                <label>Email Address *</label>
+                <input type="email" id="profileEmail" value="${escapeHtml(user.email || '')}" placeholder="Email">
+            </div>
+            <div class="form-group">
+                <label>Phone Number *</label>
+                <input type="tel" id="profilePhone" value="${escapeHtml(user.phone || '')}" placeholder="Phone">
+            </div>
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" id="profileLocation" value="${escapeHtml(user.location || '')}" placeholder="Location">
+            </div>
+            <div class="form-group">
+                <label>Bio</label>
+                <textarea id="profileBio" rows="3" placeholder="Tell us about yourself...">${escapeHtml(user.bio || '')}</textarea>
+            </div>
+        `;
+
+        // Role-specific fields
+        if (user.role === 'student') {
+            html += `
+                <div class="form-group">
+                    <label>Class</label>
+                    <input type="text" id="profileClass" value="${escapeHtml(user.class || '')}" placeholder="Class (e.g., SS1)">
+                </div>
+            `;
+        } else if (user.role === 'teacher') {
+            html += `
+                <div class="form-group">
+                    <label>Subject Area</label>
+                    <input type="text" id="profileSubject" value="${escapeHtml(user.subject || '')}" placeholder="Subject Area">
+                </div>
+            `;
+        } else if (user.role === 'owner') {
+            html += `
+                <div class="form-group">
+                    <label>School Name</label>
+                    <input type="text" id="profileSchool" value="${escapeHtml(user.school || '')}" placeholder="School Name">
+                </div>
+            `;
+        }
+
+        html += `<button class="save-btn" id="saveProfile"><i class="fas fa-save"></i> Save Changes</button>`;
+        document.getElementById("profileForm").innerHTML = html;
+
+        // Save button handler
+        document.getElementById("saveProfile").onclick = async function() {
+            const btn = this;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+            const updatedData = {
+                name: document.getElementById("profileName").value.trim(),
+                email: document.getElementById("profileEmail").value.trim(),
+                phone: document.getElementById("profilePhone").value.trim(),
+                location: document.getElementById("profileLocation").value.trim(),
+                bio: document.getElementById("profileBio").value.trim()
+            };
+
+            // Role-specific fields
+            if (user.role === 'student') {
+                updatedData.class = document.getElementById("profileClass").value.trim();
+            } else if (user.role === 'teacher') {
+                updatedData.subject = document.getElementById("profileSubject").value.trim();
+            } else if (user.role === 'owner') {
+                updatedData.school = document.getElementById("profileSchool").value.trim();
+            }
+
+            // Validate
+            if (!updatedData.name) {
+                showStatus('Please enter your full name', true);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+                return;
+            }
+            if (!updatedData.email) {
+                showStatus('Please enter your email address', true);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+                return;
+            }
+            if (!updatedData.phone) {
+                showStatus('Please enter your phone number', true);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+                return;
+            }
+
+            const success = await updateProfile(updatedData);
+            if (success) {
+                showStatus('✅ Profile updated successfully!');
+                setTimeout(() => renderProfile(), 1000);
+            }
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+        };
+    }
+
+    // ==================== AVATAR UPLOAD ====================
+    document.getElementById("uploadBtn").onclick = () => {
+        document.getElementById("avatarInput").click();
+    };
+
+    document.getElementById("avatarInput").onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // Show progress
+        const progressEl = document.getElementById('uploadProgress');
+        progressEl.style.display = 'block';
+        document.getElementById('uploadBtn').disabled = true;
+        showStatus('Uploading avatar...');
+
+        resizeImage(file, 300, async (resized) => {
+            try {
+                // Debug: Check if resized data is valid
+                console.log('Resized image data length:', resized.length);
+                console.log('Resized image starts with:', resized.substring(0, 50));
+                
+                // Make sure the data is valid
+                if (!resized || resized.length < 100) {
+                    showStatus('❌ Invalid image data', true);
+                    progressEl.style.display = 'none';
+                    document.getElementById('uploadBtn').disabled = false;
+                    return;
+                }
+                
+                const success = await updateProfile({ avatar: resized });
+                if (success) {
+                    showStatus('✅ Profile picture updated!');
+                    renderProfile();
+                } else {
+                    showStatus('❌ Failed to update profile picture', true);
+                }
+            } catch(err) {
+                console.error('Avatar upload error:', err);
+                showStatus('❌ Error uploading avatar: ' + err.message, true);
+            } finally {
+                progressEl.style.display = 'none';
+                document.getElementById('uploadBtn').disabled = false;
+            }
+        });
+        e.target.value = '';
+    };
+
+    // Enter key support
+    document.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            const saveBtn = document.getElementById('saveProfile');
+            if (saveBtn && document.activeElement.tagName !== 'TEXTAREA') {
+                saveBtn.click();
+            }
+        }
+    });
+
+    // Initialize
+    renderProfile();
+    document.getElementById("backBtn").onclick = goBack;
+    if (localStorage.getItem("busahmed_dark_mode") === "true") document.body.classList.add("dark-mode");
+</script>
+</body>
+</html>
